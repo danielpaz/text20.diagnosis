@@ -2,7 +2,12 @@
 
 <!-- General project description -->
 <project name="Diagnosis" default="all">
+        
+    <!-- SET YOUR KEYSTORE HERE -->
+    <!--property name="keystore" value="dependencies/keytool/text20keystore.p12" /-->
+    <property name="keystore" value="/Users/rb/Documents/DFKI und Uni/DFKI Keystore/text20keystore.p12" />
     
+
     <!-- Define different global variables -->
     <property name="prefix" value="atdiagnosis"/>
     <property name="version" value="0.1.0"/>
@@ -77,6 +82,12 @@
     
     
     
+    <!-- Pack the plugin -->
+    <target name="sign" description="Sign the jar">
+        <signjar jar="${distribution.root}/${prefix}-${version}.jar" alias="text20" storetype="PKCS12" storepass="replacethis" keystore="${keystore} " />
+    </target>
+
+
     
     <!-- Prepare distributables -->
     <target name="preparepublish" description="Eventually generates distributable files" depends="diagnosis">
@@ -101,6 +112,6 @@
     </target>
     
     <!-- All together -->
-    <target name="all" depends="diagnosis, preparepublish"/>
+    <target name="all" depends="diagnosis, sign, preparepublish"/>
     
 </project>
