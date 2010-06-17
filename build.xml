@@ -1,0 +1,106 @@
+<?xml version="1.0"?>
+
+<!-- General project description -->
+<project name="Diagnosis" default="all">
+    
+    <!-- Define different global variables -->
+    <property name="prefix" value="atdiagnosis"/>
+    <property name="version" value="0.1.0"/>
+    
+    <!-- Define different roots -->
+    <property name="build.root" value="ant.build/"/>
+    <property name="distribution.root" value="dist/"/>
+    
+    
+    <!-- Clear everything up -->
+    <target name="clean" description="Remove all previous build files">
+        <delete dir="${build.root}"/>
+        <delete dir="${distribution.root}"/>
+        <delete dir="documentation/api"/>
+        
+        <!--mkdir dir="documentation/api"/-->
+    </target>
+    
+    
+    <!-- Build and pack target -->
+    <target name="diagnosis" depends="clean, compile, pack"/>
+    
+    
+    <!-- Compile the plugin -->
+    <target name="compile" description="Compile the framework">
+        <!-- Create output folder -->
+        <mkdir dir="${build.root}/${prefix}/"/>
+        
+        
+        <!-- Compile all classes -->
+        <javac srcdir="src" destdir="${build.root}/${prefix}/" source="1.6" target="1.6" debug="true">
+            <classpath>
+                <fileset dir="dependencies/">
+                    <include name="*.jar"/>
+                </fileset>
+            </classpath>
+        </javac>
+		
+        <copy file="src/de/dfki/km/text20/diagnosis/gui/resources/blue.png" tofile="${build.root}/${prefix}/de/dfki/km/text20/diagnosis/gui/resources/blue.png" />
+        <copy file="src/de/dfki/km/text20/diagnosis/gui/resources/dark.png" tofile="${build.root}/${prefix}/de/dfki/km/text20/diagnosis/gui/resources/dark.png" />
+        <copy file="src/de/dfki/km/text20/diagnosis/gui/resources/green.png" tofile="${build.root}/${prefix}/de/dfki/km/text20/diagnosis/gui/resources/green.png" />
+        <copy file="src/de/dfki/km/text20/diagnosis/gui/resources/orange.png" tofile="${build.root}/${prefix}/de/dfki/km/text20/diagnosis/gui/resources/orange.png" />
+        <copy file="src/de/dfki/km/text20/diagnosis/gui/resources/red.png" tofile="${build.root}/${prefix}/de/dfki/km/text20/diagnosis/gui/resources/red.png" />
+        <copy file="src/de/dfki/km/text20/diagnosis/gui/resources/ampel_gelb.gif" tofile="${build.root}/${prefix}/de/dfki/km/text20/diagnosis/gui/resources/ampel_gelb.gif" />
+        <copy file="src/de/dfki/km/text20/diagnosis/gui/resources/ampel_gruen.gif" tofile="${build.root}/${prefix}/de/dfki/km/text20/diagnosis/gui/resources/ampel_gruen.gif" />
+        <copy file="src/de/dfki/km/text20/diagnosis/gui/resources/ampel_rot.gif" tofile="${build.root}/${prefix}/de/dfki/km/text20/diagnosis/gui/resources/ampel_rot.gif" />
+
+    </target>
+    
+    
+    <!-- Pack the plugin -->
+    <target name="pack" description="Pack the core plugin with its dependencies">
+        <!-- Create output folder -->
+        <mkdir dir="${distribution.root}/"/>
+        <mkdir dir="${distribution.root}/plugins"/>
+        
+        <!-- Unjar related -->
+        <unjar dest="${build.root}/${prefix}/">
+            <fileset dir=".">
+                <include name="dependencies/*.jar"/>
+            </fileset>
+        </unjar>
+		
+		<delete file="${build.root}/${prefix}/META-INF/AUGMENTE.RSA"/>
+        <delete file="${build.root}/${prefix}/META-INF/AUGMENTE.SF"/>
+        
+        <!-- Rejar everything -->
+        <jar destfile="${distribution.root}/${prefix}-${version}.jar" basedir="${build.root}/${prefix}/"/>
+        
+        <copyfile dest="dist/diagnosis.exe" src="dependencies/exe4j/diagnosis.exe"/>
+    </target>
+    
+    
+    
+    
+    <!-- Prepare distributables -->
+    <target name="preparepublish" description="Eventually generates distributable files" depends="diagnosis">
+        
+        <!-- Zip binary -->
+        <zip destfile="${distribution.root}/${prefix}-${version}.bin.zip">
+            <fileset dir=".">
+                <include name="documentation/**/*"/>
+                <include name="${distribution.root}/*.jar"/>
+                <include name="${distribution.root}/*.exe"/>
+                <include name="${distribution.root}/*.dll"/>
+                <include name="${distribution.root}/*.properties"/>
+            </fileset>
+        </zip>
+        
+        <!-- Zip sources -->
+        <zip destfile="${distribution.root}/${prefix}-${version}.src.zip">
+            <fileset dir=".">
+                <include name="**/*"/>
+            </fileset>
+        </zip>
+    </target>
+    
+    <!-- All together -->
+    <target name="all" depends="diagnosis, preparepublish"/>
+    
+</project>
