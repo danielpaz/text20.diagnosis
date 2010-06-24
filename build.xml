@@ -75,8 +75,12 @@
         <delete file="${build.root}/${prefix}/META-INF/AUGMENTE.SF"/>
         
         <!-- Rejar everything -->
-        <jar destfile="${distribution.root}/${prefix}-${version}.jar" basedir="${build.root}/${prefix}/"/>
-        
+        <jar destfile="${distribution.root}/${prefix}-${version}.jar" basedir="${build.root}/${prefix}/">
+        	<manifest>
+                  <attribute name="Main-Class" value="de.dfki.km.text20.diagnosis.ServerDiagnosis"/>
+            </manifest>
+        	
+    	</jar>
         <copyfile dest="dist/diagnosis.exe" src="dependencies/exe4j/diagnosis.exe"/>
     </target>
     
