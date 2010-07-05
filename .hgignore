@@ -1,0 +1,5 @@
+
+syntax: regexp
+^dist$
+syntax: regexp
+^ant\.build$
