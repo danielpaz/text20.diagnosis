@@ -297,6 +297,7 @@ public class RecalibrationDisplay extends AbstractEyeTrackingEventComponent {
 
         // Listen to the flow of gaze ... 
         openDevice.addTrackingListener(new EyeTrackingListener() {
+            @Override
             public void newTrackingEvent(final EyeTrackingEvent event) {
                 rc.get().newEyeTrackingEvent(event);
             }

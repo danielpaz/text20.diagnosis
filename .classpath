@@ -6,6 +6,6 @@
 	<classpathentry kind="lib" path="dependencies/swingx-1.0.jar"/>
 	<classpathentry kind="lib" path="dependencies/swingx-beaninfo-1.0.jar"/>
 	<classpathentry kind="lib" path="dependencies/forms.jar"/>
-	<classpathentry kind="lib" path="dependencies/text20.jar"/>
+	<classpathentry kind="lib" path="dependencies/text20.jar" sourcepath="/Text 2.0 Browser Plugin"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

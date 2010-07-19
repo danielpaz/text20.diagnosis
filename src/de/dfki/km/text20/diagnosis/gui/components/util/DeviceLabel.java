@@ -14,6 +14,10 @@ import de.dfki.km.text20.diagnosis.gui.ServerBrowserWindow;
 import de.dfki.km.text20.diagnosis.gui.panel.ServerBrowserPanel;
 import de.dfki.km.text20.services.trackingdevices.common.TrackingDevice;
 import de.dfki.km.text20.services.trackingdevices.common.TrackingDeviceProvider;
+import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingDevice;
+import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingDeviceInfo;
+import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
+import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingListener;
 
 /**
  * @author rb
@@ -106,32 +110,18 @@ public class DeviceLabel extends JLabel {
         final int height = getHeight();
         final int x = getX();
         final int y = getY();
-        Point p = new Point(x + Math.round(width / 2), y + height);
-        if (this.clockPosition == 1) {
-            p = new Point(x + Math.round(width / 2), y + height);
+        
+        switch (this.clockPosition) {
+            case 1: return new Point(x + Math.round(width / 2), y + height);
+            case 2: return new Point(x + Math.round(width / 2), y + height);
+            case 3: return new Point(x + Math.round(width / 2), y + height);
+            case 4: return new Point(x, y + Math.round(height / 2));
+            case 5: return new Point(x + Math.round(width / 2), y);
+            case 6: return new Point(x + Math.round(width / 2), y);
+            case 7: return new Point(x + Math.round(width / 2), y);
+            case 8: return new Point(x + width, y + Math.round(height / 2));
+            default: return new Point(x + Math.round(width / 2), y + height);           
         }
-        if (this.clockPosition == 2) {
-            p = new Point(x + Math.round(width / 2), y + height);
-        }
-        if (this.clockPosition == 3) {
-            p = new Point(x + Math.round(width / 2), y + height);
-        }
-        if (this.clockPosition == 4) {
-            p = new Point(x, y + Math.round(height / 2));
-        }
-        if (this.clockPosition == 5) {
-            p = new Point(x + Math.round(width / 2), y);
-        }
-        if (this.clockPosition == 6) {
-            p = new Point(x + Math.round(width / 2), y);
-        }
-        if (this.clockPosition == 7) {
-            p = new Point(x + +Math.round(width / 2), y);
-        }
-        if (this.clockPosition == 8) {
-            p = new Point(x + width, y + Math.round(height / 2));
-        }
-        return p;
     }
 
     /**
@@ -141,8 +131,8 @@ public class DeviceLabel extends JLabel {
 
         // TODO: How do we handle multiple connections?
         final PluginManager pm = ((ServerBrowserWindow) sbPanel.getRootPane().getParent()).getApplicationData().getPluginManager();//. applicationData.getPluginManager();
-        final TrackingDeviceProvider deviceProvider = pm.getPlugin(TrackingDeviceProvider.class, new OptionCapabilities("eyetrackingdevice:trackingserver"));
-        final TrackingDevice openDevice = deviceProvider.openDevice(this.uri.toString());
+        final TrackingDeviceProvider<EyeTrackingDeviceInfo, EyeTrackingEvent, EyeTrackingListener, EyeTrackingDevice> deviceProvider = pm.getPlugin(TrackingDeviceProvider.class, new OptionCapabilities("eyetrackingdevice:trackingserver"));
+        final TrackingDevice<EyeTrackingDeviceInfo, EyeTrackingEvent, EyeTrackingListener> openDevice = deviceProvider.openDevice(this.uri.toString());
         if (openDevice == null) {
             System.err.println("Error obtaining a tracking device");
             return;
@@ -153,12 +143,12 @@ public class DeviceLabel extends JLabel {
 
     @Override
     public String toString() {
-        String s = "";
-        s += "text: " + getText() + "\n";
-        s += "uri: " + getToolTipText() + "\n";
-        s += "clockposition: " + getClockPosition() + "\n";
-        s += "(x/y): (" + getX() + "/" + getY() + ")\n";
-        s += "distance: " + this.centerDistance + "\n";
-        return s;
+        StringBuilder sb = new StringBuilder(100);
+        sb.append("text: " + getText() + "\n");
+        sb.append("uri: " + getToolTipText() + "\n");
+        sb.append("clockposition: " + getClockPosition() + "\n");
+        sb.append("(x/y): (" + getX() + "/" + getY() + ")\n");
+        sb.append("distance: " + this.centerDistance + "\n");
+        return sb.toString();
     }
 }

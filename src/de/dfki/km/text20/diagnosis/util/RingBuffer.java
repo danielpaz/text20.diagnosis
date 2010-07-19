@@ -7,9 +7,12 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Vector;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+
+import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
 
 /**
  * @author ABu, rb
@@ -40,8 +43,7 @@ public class RingBuffer<T> implements Serializable {
      * 
      * @param classz 
      */
-    @SuppressWarnings("unchecked")
-    public RingBuffer(final Class classz) {
+    public RingBuffer(final Class<T> classz) {
         this(classz, -1);
     }
 
@@ -51,15 +53,8 @@ public class RingBuffer<T> implements Serializable {
      * @param classz 
      * @param ringbufferSize 
      */
-
-    @SuppressWarnings("unchecked")
-    public RingBuffer(final Class classz, final int ringbufferSize) {
-        int actualSize;
-        if (ringbufferSize > 0) {
-            actualSize = ringbufferSize;
-        } else {
-            actualSize = this.DEFAULT_BUFFER_SIZE;
-        }
+    public RingBuffer(final Class<T> classz, final int ringbufferSize) {
+        int actualSize = (ringbufferSize > 0) ? ringbufferSize : this.DEFAULT_BUFFER_SIZE;
         this.eventBuffer = (T[]) Array.newInstance(classz, actualSize);
     }
 
@@ -94,7 +89,6 @@ public class RingBuffer<T> implements Serializable {
      * @return .
      */
     public T get(final int i) {
-        // TODO Auto-generated method stub
         return this.eventBuffer[(getWritePointer() + i) % size()];
     }
 
@@ -149,7 +143,6 @@ public class RingBuffer<T> implements Serializable {
         final ObjectOutputStream objOut = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(f)));
         objOut.writeObject(evBuf);
         objOut.close();
-
     }
 
     /**
@@ -162,17 +155,16 @@ public class RingBuffer<T> implements Serializable {
     /**
      * @param size
      */
-    @SuppressWarnings("unchecked")
     public void setRingbufferSize(final int size) {
 
         // Adjust the class' content
         this.dataLock.lock();
         try {
             // Create new array
-            final Vector v = new Vector();
+            final Vector<T> v = new Vector<T>();
             v.setSize(size);
 
-            // Assign to temporary variable
+            // Assign to temporary variableâ
             T x[] = (T[]) v.toArray();
 
             int copySize = Math.min(size, this.eventBuffer.length);

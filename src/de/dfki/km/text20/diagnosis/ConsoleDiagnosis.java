@@ -75,6 +75,7 @@ public class ConsoleDiagnosis {
         openDevice.addTrackingListener(new EyeTrackingListener() {
             int i = 0;
 
+            @Override
             @SuppressWarnings("unused")
             public void newTrackingEvent(final EyeTrackingEvent event) {
                 final Point gazeCenter = event.getGazeCenter();

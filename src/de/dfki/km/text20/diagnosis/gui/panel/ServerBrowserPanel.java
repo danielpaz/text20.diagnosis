@@ -96,6 +96,7 @@ public class ServerBrowserPanel extends ServerBrowserTemplate {
         }
         
         this.getUpdateButton().addActionListener(new ActionListener(){
+            @Override
             public void actionPerformed(final ActionEvent e) {
                 ServerBrowserPanel.this.updateDeviceLabels();
                 ServerBrowserPanel.this.getUpdateButton().setEnabled(! ServerBrowserPanel.this.getUpdateButton().isEnabled());
@@ -112,6 +113,7 @@ public class ServerBrowserPanel extends ServerBrowserTemplate {
 
         
         this.timer = new javax.swing.Timer(3000, new ActionListener(){
+            @Override
             public void actionPerformed(final ActionEvent e) {
                 new WorkerThread().run();
             }});

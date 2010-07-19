@@ -28,6 +28,7 @@ public class EyetrackerDataModel extends AbstractTableModel {
     /* (non-Javadoc)
      * @see javax.swing.table.TableModel#getColumnCount()
      */
+    @Override
     public int getColumnCount() {
         return this.colData.length;
     }
@@ -35,10 +36,12 @@ public class EyetrackerDataModel extends AbstractTableModel {
     /* (non-Javadoc)
      * @see javax.swing.table.TableModel#getRowCount()
      */
+    @Override
     public int getRowCount() {
         return this.ringbuffer.size();
     }
 
+    @Override
     public Object getValueAt(final int rowIndex, final int columnIndex) {
 
         if (this.ringbuffer.get(rowIndex) == null) {

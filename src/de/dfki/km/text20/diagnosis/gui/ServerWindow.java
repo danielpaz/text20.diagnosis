@@ -33,7 +33,6 @@ import de.dfki.km.text20.diagnosis.gui.panel.ServerPanel;
 import de.dfki.km.text20.diagnosis.model.ApplicationData;
 import de.dfki.km.text20.diagnosis.model.ServerInfo;
 import de.dfki.km.text20.diagnosis.util.EyeTrackingEventRingbuffer;
-import de.dfki.km.text20.services.trackingdevices.common.TrackingDevice;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingDevice;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingDeviceProvider;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
@@ -121,6 +120,7 @@ public class ServerWindow extends JFrame {
 
         
         device.addTrackingListener(new EyeTrackingListener() {
+            @Override
             public void newTrackingEvent(final EyeTrackingEvent event) {
                 try {
                     ServerWindow.this.ringBuffer.addEvent(event);
@@ -170,7 +170,7 @@ public class ServerWindow extends JFrame {
     /**
      * @return the openDevice
      */
-    public TrackingDevice getOpenDevice() {
+    public EyeTrackingDevice getOpenDevice() {
         return this.openDevice;
     }
 

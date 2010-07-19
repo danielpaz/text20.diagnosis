@@ -79,6 +79,7 @@ public class EyeTrackingEventDataGrid extends AbstractEyeTrackingEventComponent 
 
         setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(new javax.swing.border.EmptyBorder(0, 0, 0, 0), "Tracking Event Daten; stop and start using menu \"actions\"", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.BOTTOM, new java.awt.Font("Dialog", java.awt.Font.BOLD, 12), java.awt.Color.BLUE), getBorder()));
         addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            @Override
             public void propertyChange(final java.beans.PropertyChangeEvent e) {
                 if ("border".equals(e.getPropertyName())) {
                     throw new RuntimeException();

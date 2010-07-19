@@ -62,6 +62,7 @@ public class ServerDiagnosisSystemTray {
         }
 
         final ActionListener openAppListener = new ActionListener() {
+            @Override
             public void actionPerformed(final ActionEvent e) {
                 final Collection<ServerInfo> serverInfos = applicationData.getServerInfos();
                 for (ServerInfo serverInfo : serverInfos) {
@@ -71,6 +72,7 @@ public class ServerDiagnosisSystemTray {
         };
 
         final ActionListener exitListener = new ActionListener() {
+            @Override
             public void actionPerformed(final ActionEvent e) {
                 final Collection<ServerInfo> serverInfos = applicationData.getServerInfos();
                 for (ServerInfo serverInfo : serverInfos) {

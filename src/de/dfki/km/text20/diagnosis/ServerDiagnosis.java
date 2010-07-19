@@ -41,18 +41,11 @@ public class ServerDiagnosis {
      * @param args
      */
     public static void main(final String[] args) {
-        new ServerDiagnosis();
-    }
-
-    /**
-     * Create a default server diagnosis app.
-     */
-    public ServerDiagnosis() {
         // Set Native LnF
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (final Exception e) {
-            //
+            e.printStackTrace();
         }
 
         // Dirty hack to do everything in the swing edt
@@ -73,4 +66,5 @@ public class ServerDiagnosis {
             }
         });
     }
+
 }

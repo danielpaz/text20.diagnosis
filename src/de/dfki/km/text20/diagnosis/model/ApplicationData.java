@@ -27,7 +27,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Hashtable;
 import java.util.Map;
-import java.util.Vector;
 
 import javax.swing.JFrame;
 
@@ -118,12 +117,13 @@ public class ApplicationData {
      */
     @Override
     public String toString() {
-        Vector<String>s = new Vector<String>();
-//        s.add("applicationFrame=" + this.applicationFrame.toString() + "\n");
-        s.add("plugInManager=" + this.pluginManager + "\n");
-        s.add("open windows=" + this.windowList.toString() + "\n");
-        s.add("server info=" + this.serverInfos.toString());
-        return s.toString();
+        StringBuilder sb = new StringBuilder(100);
+//        sb.append("applicationFrame=" + this.applicationFrame.toString() + "\n");
+        sb.append("plugInManager=" + this.pluginManager + "\n");
+        sb.append("open windows=" + this.windowList.toString() + "\n");
+        sb.append("server info=" + this.serverInfos.toString());
+        
+        return sb.toString();
     }
     
 }

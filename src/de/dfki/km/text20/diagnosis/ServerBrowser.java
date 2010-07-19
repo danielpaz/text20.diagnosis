@@ -33,13 +33,13 @@ import de.dfki.km.text20.diagnosis.util.CommonFunctions;
  *
  */
 public class ServerBrowser {
-
- 
     /**
+     * Server Browser app
      * Create a default server browser app.
+     * 
+     * @param args
      */
-    public ServerBrowser() {
-        
+    public static void main(final String[] args) {
         // Set Native LnF
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -50,6 +50,7 @@ public class ServerBrowser {
         // Dirty hack to do everything in the swing edt
         CommonFunctions.invokeAndWaitAndShutup(new Runnable() {
 
+            @SuppressWarnings("unused")
             @Override
             public void run() {
                 final ApplicationData applicationData = new ApplicationData();
@@ -65,16 +66,6 @@ public class ServerBrowser {
             }
         });
 
-
 //        applicationData.getServerInfos().add(serverInfo);
-    }
-
-    /**
-     * Server Browser app
-     * 
-     * @param args
-     */
-    public static void main(final String[] args) {
-        new ServerBrowser();
     }
 }

@@ -32,16 +32,102 @@ import de.dfki.km.text20.diagnosis.gui.components.PupilSizeDisplay;
  * @author Ralf Biedert
  */
 public class ServerPanelTemplate extends JPanel {
+//    private class recInd extends JStatusIndicator {
+//        /**
+//         * 
+//         */
+//        private static final long serialVersionUID = -4793194366766899056L;
+//
+//        private recInd() {
+//            initComponents();
+//        }
+//
+//        private void initComponents() {
+//            // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
+//            // Generated using JFormDesigner non-commercial license
+//            // JFormDesigner - End of component initialization  //GEN-END:initComponents
+//        }
+//
+//        // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
+//        // Generated using JFormDesigner non-commercial license
+//        // JFormDesigner - End of variables declaration  //GEN-END:variables
+//    }
+
     /**  */
     private static final long serialVersionUID = 6771868751640834350L;
 
+    public JLabel bufferSizeLabel;
+
+    public JSlider bufferSizeSlider;
+
+    protected JStatusIndicator calibrationIndicator;
+
+    protected JLabel deviceLocation;
+
+    protected JLabel deviceName;
+
+    private JLabel deviceNameLabel;
+
+    protected JLabel deviceType;
+
+    private JLabel deviceTypeLabel;
+
+    protected JLabel eventRate;
+
+    protected JStatusIndicator eventRateIndicator;
+
+    protected EyeDistanceDisplay eyeDistanceDisplay;
+
+    protected EyePositionDisplay eyePositionDisplay;
+
+    protected JXHyperlink gazePositionHistoryLink;
+
+    private JLabel gazePositionLabel;
+
+    protected JXHyperlink headDistanceHistoryLink;
+    protected JStatusIndicator headDistanceIndicator;
+    private JLabel headDistanceLabel;
+    protected JXHyperlink headPositionHistoryLink;
+    protected JStatusIndicator headPositionIndicator;
+    private JLabel headPositionLabel;
+    private JLabel label1;
+    private JLabel label10;
+    private JLabel label11;
+    private JLabel label12;
+    private JLabel label2;
+    private JLabel label5;
+    private JLabel label6;
+    private JLabel label7;
+    protected JTextPane logText;
+    protected JStatusIndicator overallQualityIndicator;
+    private JLabel overallQualityLabel;
+    protected JPanel panel1;
+    // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
+    // Generated using JFormDesigner non-commercial license
+    protected JPanel panel2;
+    private JPanel panel3;
+    private JPanel panel4;
+    protected JXHyperlink performHardwareRecalibrationLink;
+    protected JXHyperlink performRecalibrationLink;
+    protected PupilSizeDisplay pupilSizeDisplay1;
+    protected JXHyperlink pupilSizeHistoryLink;
+    private JLabel pupilSizeLabel;
+    public JStatusIndicator recordIndicator;
+    public JLabel recordingTitle;
+    public JXHyperlink recordSwitch;
+    private JScrollPane scrollPane4;
+    private JTabbedPane tabbedPane1;
+    protected JLabel trackingSince;
+    protected JCheckBox transparentRecalibration;
+
+    // JFormDesigner - End of variables declaration  //GEN-END:variables
     /** */
     public ServerPanelTemplate() {
         initComponents();
     }
 
-    public JStatusIndicator getHeadPositionIndicator() {
-        return this.headPositionIndicator;
+    public JSlider getBufferSizeSlider() {
+        return this.bufferSizeSlider;
     }
 
     public JStatusIndicator getCalibrationIndicator() {
@@ -52,44 +138,44 @@ public class ServerPanelTemplate extends JPanel {
         return this.eventRate;
     }
 
-    public JPanel getPanel2() {
-        return this.panel2;
-    }
-
-    public JStatusIndicator getOverallQualityIndicator() {
-        return this.overallQualityIndicator;
-    }
-
-    public JXHyperlink getPerformHardwareRecalibrationLink() {
-        return this.performHardwareRecalibrationLink;
-    }
-
     public JStatusIndicator getEventRateIndicator() {
         return this.eventRateIndicator;
-    }
-
-    public JSlider getBufferSizeSlider() {
-        return this.bufferSizeSlider;
-    }
-
-    public JLabel getOverallQualityLabel() {
-        return this.overallQualityLabel;
     }
 
     public JStatusIndicator getHeadDistanceIndicator() {
         return this.headDistanceIndicator;
     }
 
+    public JStatusIndicator getHeadPositionIndicator() {
+        return this.headPositionIndicator;
+    }
+
+    public JStatusIndicator getOverallQualityIndicator() {
+        return this.overallQualityIndicator;
+    }
+
+    public JLabel getOverallQualityLabel() {
+        return this.overallQualityLabel;
+    }
+
+    public JPanel getPanel2() {
+        return this.panel2;
+    }
+
+    public JXHyperlink getPerformHardwareRecalibrationLink() {
+        return this.performHardwareRecalibrationLink;
+    }
+
+    public JXHyperlink getPerformRecalibrationLink() {
+        return this.performRecalibrationLink;
+    }
+
     public JXHyperlink getPupilSizeHistoryLink() {
         return this.pupilSizeHistoryLink;
     }
 
-	public JStatusIndicator getRecordIndicator() {
-		return recordIndicator;
-	}
-
-    public JXHyperlink getPerformRecalibrationLink() {
-        return this.performRecalibrationLink;
+    public JStatusIndicator getRecordIndicator() {
+        return this.recordIndicator;
     }
 
     private void initComponents() {
@@ -142,14 +228,12 @@ public class ServerPanelTemplate extends JPanel {
         this.bufferSizeSlider = new JSlider();
         this.label11 = new JLabel();
         this.transparentRecalibration = new JCheckBox();
-        CellConstraints cc = new CellConstraints();
+        final CellConstraints cc = new CellConstraints();
 
         //======== this ========
         setPreferredSize(new Dimension(600, 720));
         setMinimumSize(new Dimension(600, 620));
-        setLayout(new FormLayout(
-            "default:grow",
-            "min, $lgap, 0dlu, $lgap, fill:[235dlu,default]:grow"));
+        setLayout(new FormLayout("default:grow", "min, $lgap, 0dlu, $lgap, fill:[235dlu,default]:grow"));
 
         //======== panel2 ========
         {
@@ -159,10 +243,8 @@ public class ServerPanelTemplate extends JPanel {
             this.panel2.setRequestFocusEnabled(false);
             this.panel2.setVerifyInputWhenFocusTarget(false);
             this.panel2.setAlignmentY(1.5F);
-            this.panel2.setLayout(new FormLayout(
-                "default:grow, 2*($lcgap, default)",
-                "fill:150dlu"));
-            ((FormLayout)this.panel2.getLayout()).setColumnGroups(new int[][] {{3, 5}});
+            this.panel2.setLayout(new FormLayout("default:grow, 2*($lcgap, default)", "fill:150dlu"));
+            ((FormLayout) this.panel2.getLayout()).setColumnGroups(new int[][] { { 3, 5 } });
 
             //---- eyePositionDisplay ----
             this.eyePositionDisplay.setPreferredSize(new Dimension(300, 200));
@@ -178,13 +260,13 @@ public class ServerPanelTemplate extends JPanel {
             this.eyeDistanceDisplay.setBackground(null);
             this.eyeDistanceDisplay.setForeground(Color.darkGray);
             this.eyeDistanceDisplay.setEyeDistanceCanvasColor(Color.darkGray);
-            this.panel2.add(this.eyeDistanceDisplay, new CellConstraints(3, 1, 1, 1, CellConstraints.DEFAULT, CellConstraints.DEFAULT, new Insets( 5, 0, 5, 0)));
+            this.panel2.add(this.eyeDistanceDisplay, new CellConstraints(3, 1, 1, 1, CellConstraints.DEFAULT, CellConstraints.DEFAULT, new Insets(5, 0, 5, 0)));
 
             //---- pupilSizeDisplay1 ----
             this.pupilSizeDisplay1.setPreferredSize(new Dimension(60, 300));
             this.pupilSizeDisplay1.setMinimumSize(new Dimension(1, 300));
             this.pupilSizeDisplay1.setPupilSizeCanvasBackgroundColor(Color.darkGray);
-            this.panel2.add(this.pupilSizeDisplay1, new CellConstraints(5, 1, 1, 1, CellConstraints.DEFAULT, CellConstraints.DEFAULT, new Insets( 5, 0, 5, 0)));
+            this.panel2.add(this.pupilSizeDisplay1, new CellConstraints(5, 1, 1, 1, CellConstraints.DEFAULT, CellConstraints.DEFAULT, new Insets(5, 0, 5, 0)));
         }
         add(this.panel2, cc.xywh(1, 1, 1, 1, CellConstraints.FILL, CellConstraints.DEFAULT));
 
@@ -193,10 +275,8 @@ public class ServerPanelTemplate extends JPanel {
 
             //======== panel1 ========
             {
-                this.panel1.setLayout(new FormLayout(
-                    "150dlu, $lcgap, default, 6dlu, default:grow",
-                    "default, $lgap, fill:default, 17*($lgap, default)"));
-                ((FormLayout)this.panel1.getLayout()).setRowGroups(new int[][] {{1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 33, 35}});
+                this.panel1.setLayout(new FormLayout("150dlu, $lcgap, default, 6dlu, default:grow", "default, $lgap, fill:default, 17*($lgap, default)"));
+                ((FormLayout) this.panel1.getLayout()).setRowGroups(new int[][] { { 1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 33, 35 } });
 
                 //---- deviceNameLabel ----
                 this.deviceNameLabel.setText("Tracking Device Name");
@@ -317,12 +397,9 @@ public class ServerPanelTemplate extends JPanel {
             }
             this.tabbedPane1.addTab("Overview", this.panel1);
 
-
             //======== panel3 ========
             {
-                this.panel3.setLayout(new FormLayout(
-                    "default:grow",
-                    "fill:default:grow"));
+                this.panel3.setLayout(new FormLayout("default:grow", "fill:default:grow"));
 
                 //======== scrollPane4 ========
                 {
@@ -332,12 +409,9 @@ public class ServerPanelTemplate extends JPanel {
             }
             this.tabbedPane1.addTab("Message Log", this.panel3);
 
-
             //======== panel4 ========
             {
-                this.panel4.setLayout(new FormLayout(
-                    "150dlu, $lcgap, 50dlu, 6dlu, default:grow",
-                    "2*(default, $lgap), default"));
+                this.panel4.setLayout(new FormLayout("150dlu, $lcgap, 50dlu, 6dlu, default:grow", "2*(default, $lgap), default"));
 
                 //---- label2 ----
                 this.label2.setText("Buffer Size History [Number of Events]");
@@ -368,95 +442,4 @@ public class ServerPanelTemplate extends JPanel {
         add(this.tabbedPane1, cc.xy(1, 5));
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
     }
-
-    // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
-    // Generated using JFormDesigner non-commercial license
-    protected JPanel panel2;
-    protected EyePositionDisplay eyePositionDisplay;
-    protected EyeDistanceDisplay eyeDistanceDisplay;
-    protected PupilSizeDisplay pupilSizeDisplay1;
-    private JTabbedPane tabbedPane1;
-    protected JPanel panel1;
-    private JLabel deviceNameLabel;
-    protected JLabel deviceName;
-    private JLabel deviceTypeLabel;
-    protected JLabel deviceType;
-    private JLabel label1;
-    protected JLabel deviceLocation;
-    private JLabel label10;
-    protected JLabel trackingSince;
-    private JLabel label7;
-    protected JStatusIndicator eventRateIndicator;
-    protected JLabel eventRate;
-    public JLabel recordingTitle;
-    public JStatusIndicator recordIndicator;
-    public JXHyperlink recordSwitch;
-    private JLabel gazePositionLabel;
-    protected JXHyperlink gazePositionHistoryLink;
-    private JLabel headPositionLabel;
-    protected JStatusIndicator headPositionIndicator;
-    protected JXHyperlink headPositionHistoryLink;
-    private JLabel headDistanceLabel;
-    protected JStatusIndicator headDistanceIndicator;
-    protected JXHyperlink headDistanceHistoryLink;
-    private JLabel pupilSizeLabel;
-    protected JXHyperlink pupilSizeHistoryLink;
-    private JLabel label5;
-    protected JStatusIndicator calibrationIndicator;
-    protected JXHyperlink performRecalibrationLink;
-    private JLabel label6;
-    protected JXHyperlink performHardwareRecalibrationLink;
-    private JLabel label12;
-    protected JStatusIndicator overallQualityIndicator;
-    private JLabel overallQualityLabel;
-    private JPanel panel3;
-    private JScrollPane scrollPane4;
-    protected JTextPane logText;
-    private JPanel panel4;
-    private JLabel label2;
-    public JLabel bufferSizeLabel;
-    public JSlider bufferSizeSlider;
-    private JLabel label11;
-    protected JCheckBox transparentRecalibration;
-    // JFormDesigner - End of variables declaration  //GEN-END:variables
-
- 
-   
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-	private class recInd extends JStatusIndicator {
-		private recInd() {
-			initComponents();
-		}
-
-		private void initComponents() {
-			// JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
-            // Generated using JFormDesigner non-commercial license
-			// JFormDesigner - End of component initialization  //GEN-END:initComponents
-		}
-
-		// JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
-        // Generated using JFormDesigner non-commercial license
-		// JFormDesigner - End of variables declaration  //GEN-END:variables
-	}
 }
-

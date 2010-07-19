@@ -169,6 +169,7 @@ public class ServerPanel extends ServerPanelTemplate implements EyeTrackingListe
 
         this.bufferSizeSlider.addChangeListener(new ChangeListener() {
 
+            @Override
             public void stateChanged(final ChangeEvent e) {
                 final int i = ((JSlider) e.getSource()).getValue();
                 ServerPanel.this.bufferSizeLabel.setText(i + "");
@@ -257,6 +258,8 @@ public class ServerPanel extends ServerPanelTemplate implements EyeTrackingListe
      */
     class CommandListener implements ActionListener {
 
+        @SuppressWarnings("synthetic-access")
+        @Override
         public void actionPerformed(final ActionEvent e) {
 
             // process all hyperlink commands
