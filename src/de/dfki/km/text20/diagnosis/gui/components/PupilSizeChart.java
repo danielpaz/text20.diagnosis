@@ -71,13 +71,13 @@ public class PupilSizeChart extends AbstractHistoryChartDisplay {
 
     @Override
     float getLeftCurrVal(int x) {
-        EyeTrackingEvent e = this.getServerInfo().getRingBuffer().get(x);
+        EyeTrackingEvent e = this.getServerInfo().getEyeTrackingRingBuffer().get(x);
         return e.getPupilSizeLeft();
     }
 
     @Override
     float getRightCurrVal(int x) {
-        EyeTrackingEvent e = this.getServerInfo().getRingBuffer().get(x);
+        EyeTrackingEvent e = this.getServerInfo().getEyeTrackingRingBuffer().get(x);
         return e.getPupilSizeRight();
     }
 }

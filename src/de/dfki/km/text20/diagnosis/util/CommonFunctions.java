@@ -135,12 +135,12 @@ public class CommonFunctions {
     /**
      * TODO: DOCUMENT ME!!!!!  
      * 
-     * calculates an average value of values from  a ringBuffer,
+     * calculates an average value of values from  a eyeTrackingRingBuffer,
      * starting from the i-th element with clusterSize elements  
      * 
      * @param i  start index 
      * @param clusterSize number of values 
-     * @param ringBuffer the ringbuffer
+     * @param eyeTrackingRingBuffer the ringbuffer
      * @param select 0: left eye;  1: right eye
      * @return average value
      */

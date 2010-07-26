@@ -1,13 +1,12 @@
 package de.dfki.km.text20.diagnosis.util;
 
-import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
-
+import de.dfki.km.text20.services.trackingdevices.brain.BrainTrackingEvent;
 
 /**
  * @author rb
  *
  */
-public class EyeTrackingEventRingbuffer extends RingBuffer<EyeTrackingEvent> {
+public class BrainTrackingEventRingbuffer extends RingBuffer<BrainTrackingEvent> {
 
     /** */
     private static final long serialVersionUID = -5401717626046752048L;
@@ -28,7 +27,7 @@ public class EyeTrackingEventRingbuffer extends RingBuffer<EyeTrackingEvent> {
     /**
      * Default constructor; sets ringbuffer size to default 
      */
-    public EyeTrackingEventRingbuffer() {
+    public BrainTrackingEventRingbuffer() {
         this(-1);
     }
 
@@ -37,8 +36,8 @@ public class EyeTrackingEventRingbuffer extends RingBuffer<EyeTrackingEvent> {
      *  
      * @param ringbufferSize 
      */
-    public EyeTrackingEventRingbuffer(final int ringbufferSize) {
-        super(EyeTrackingEvent.class, ringbufferSize);
+    public BrainTrackingEventRingbuffer(final int ringbufferSize) {
+        super(BrainTrackingEvent.class, ringbufferSize);
     }
 
 //        /**

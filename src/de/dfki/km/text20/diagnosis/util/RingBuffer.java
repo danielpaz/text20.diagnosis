@@ -7,12 +7,9 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.Vector;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-
-import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
 
 /**
  * @author ABu, rb

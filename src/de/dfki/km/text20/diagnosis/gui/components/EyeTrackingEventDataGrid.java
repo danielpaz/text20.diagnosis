@@ -93,7 +93,7 @@ public class EyeTrackingEventDataGrid extends AbstractEyeTrackingEventComponent 
         {
             this.scrollPane1.setViewportView(this.table1);
         }
-        this.table1.setModel(new EyetrackerDataModel(this.serverInfo.getRingBuffer()));
+        this.table1.setModel(new EyetrackerDataModel(this.serverInfo.getEyeTrackingRingBuffer()));
         add(this.scrollPane1, cc.xy(1, 3));
 
         int i = 0;

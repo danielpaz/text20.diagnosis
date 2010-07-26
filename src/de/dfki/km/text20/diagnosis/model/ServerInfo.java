@@ -24,7 +24,9 @@ package de.dfki.km.text20.diagnosis.model;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import de.dfki.km.text20.diagnosis.util.BrainTrackingEventRingbuffer;
 import de.dfki.km.text20.diagnosis.util.EyeTrackingEventRingbuffer;
+import de.dfki.km.text20.services.trackingdevices.brain.BrainTrackingDevice;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingDevice;
 
 /**
@@ -32,8 +34,11 @@ import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingDevice;
  *
  */
 public class ServerInfo {
-    /** Ring buffer with last tracking events */
-    private final EyeTrackingEventRingbuffer ringBuffer = new EyeTrackingEventRingbuffer();
+    /** Ring buffer with last tracking events for the eye tracker*/
+    private final EyeTrackingEventRingbuffer eyeTrackingRingBuffer = new EyeTrackingEventRingbuffer();
+    
+    /** Ring buffer with last tracking events for the brain tracker*/
+    private final BrainTrackingEventRingbuffer brainTrackingRingBuffer = new BrainTrackingEventRingbuffer();
 
     /** There is only one main window  */
     private JFrame mainWindow;
@@ -45,8 +50,12 @@ public class ServerInfo {
     private JPanel mainPanel;
 
     /** */
-    private EyeTrackingDevice device;
+    private EyeTrackingDevice eyeTrackingDevice;
 
+    /** */
+    private BrainTrackingDevice brainTrackingDevice;
+
+    
     /**
      * @param uri
      */
@@ -55,12 +64,19 @@ public class ServerInfo {
     }
 
     /**
-     * @return the ringBuffer
+     * @return the eyeTrackingRingBuffer
      */
-    public EyeTrackingEventRingbuffer getRingBuffer() {
-        return this.ringBuffer;
+    public EyeTrackingEventRingbuffer getEyeTrackingRingBuffer() {
+        return this.eyeTrackingRingBuffer;
     }
 
+    /**
+     * @return the brainTrackingRingBuffer
+     */
+    public BrainTrackingEventRingbuffer getBrainTrackingRingBuffer() {
+        return this.brainTrackingRingBuffer;
+    }
+    
     /**
      * @param mainWindow the mainWindow to set
      */
@@ -97,16 +113,30 @@ public class ServerInfo {
     }
 
     /**
-     * @param device the deviceProvider to set
+     * @param eyeTrackingDevice the deviceProvider to set
      */
-    public void setDevice(EyeTrackingDevice device) {
-        this.device = device;
+    public void setEyeTrackingDevice(EyeTrackingDevice device) {
+        this.eyeTrackingDevice = device;
     }
 
     /**
      * @return the deviceProvider
      */
-    public EyeTrackingDevice getDevice() {
-        return this.device;
+    public EyeTrackingDevice getEyeTrackingDevice() {
+        return this.eyeTrackingDevice;
+    }
+    
+    /**
+     * @param eyeTrackingDevice the deviceProvider to set
+     */
+    public void setBrainTrackingDevice(BrainTrackingDevice device) {
+        this.brainTrackingDevice = device;
+    }
+
+    /**
+     * @return the deviceProvider
+     */
+    public BrainTrackingDevice getBrainTrackingDevice() {
+        return this.brainTrackingDevice;
     }
 }

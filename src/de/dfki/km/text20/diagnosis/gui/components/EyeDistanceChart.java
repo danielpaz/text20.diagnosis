@@ -51,7 +51,7 @@ public class EyeDistanceChart extends AbstractHistoryChartDisplay {
      */
     @Override
     float getLeftCurrVal(final int x) {
-        final EyeTrackingEvent e = this.getServerInfo().getRingBuffer().get(x);
+        final EyeTrackingEvent e = this.getServerInfo().getEyeTrackingRingBuffer().get(x);
         return e.getLeftEyePosition()[2];
     }
 
@@ -60,7 +60,7 @@ public class EyeDistanceChart extends AbstractHistoryChartDisplay {
      */
     @Override
     float getRightCurrVal(final int x) {
-        final EyeTrackingEvent e = this.getServerInfo().getRingBuffer().get(x);
+        final EyeTrackingEvent e = this.getServerInfo().getEyeTrackingRingBuffer().get(x);
         return e.getRightEyePosition()[2];
     }
 }

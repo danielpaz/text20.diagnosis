@@ -60,13 +60,13 @@ public class EyePositionChart extends AbstractHistoryChartDisplay {
 
     @Override
     float getLeftCurrVal(int x) {
-        EyeTrackingEvent e = this.getServerInfo().getRingBuffer().get(x);
+        EyeTrackingEvent e = this.getServerInfo().getEyeTrackingRingBuffer().get(x);
         return e.getLeftEyePosition()[1];
     }
 
     @Override
     float getRightCurrVal(int x) {
-        EyeTrackingEvent e = this.getServerInfo().getRingBuffer().get(x);
+        EyeTrackingEvent e = this.getServerInfo().getEyeTrackingRingBuffer().get(x);
         return e.getRightEyePosition()[1];
     }
 

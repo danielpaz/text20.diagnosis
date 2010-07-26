@@ -32,7 +32,12 @@ import net.xeoh.plugins.base.options.getplugin.OptionCapabilities;
 import de.dfki.km.text20.diagnosis.gui.panel.ServerPanel;
 import de.dfki.km.text20.diagnosis.model.ApplicationData;
 import de.dfki.km.text20.diagnosis.model.ServerInfo;
+import de.dfki.km.text20.diagnosis.util.BrainTrackingEventRingbuffer;
 import de.dfki.km.text20.diagnosis.util.EyeTrackingEventRingbuffer;
+import de.dfki.km.text20.services.trackingdevices.brain.BrainTrackingDevice;
+import de.dfki.km.text20.services.trackingdevices.brain.BrainTrackingDeviceProvider;
+import de.dfki.km.text20.services.trackingdevices.brain.BrainTrackingEvent;
+import de.dfki.km.text20.services.trackingdevices.brain.BrainTrackingListener;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingDevice;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingDeviceProvider;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
@@ -60,13 +65,19 @@ public class ServerWindow extends JFrame {
     ServerInfo serverInfo;
 
     /** */
-    EyeTrackingEventRingbuffer ringBuffer;
+    EyeTrackingEventRingbuffer eyeTrackingRingBuffer;
+    
+    /** */
+    BrainTrackingEventRingbuffer brainTrackingRingBuffer;
 
     /** */
     ServerPanel serverPanel;
 
     /** */
-    private EyeTrackingDevice openDevice;
+    private EyeTrackingDevice openEyeTrackingDevice;
+    
+    /** */
+    private BrainTrackingDevice openBrainTrackingDevice;
     
 
     /**
@@ -79,7 +90,10 @@ public class ServerWindow extends JFrame {
         this.applicationData = applicationData;
         this.serverInfo = serverInfo;
         this.serverInfo.setMainWindow(this);
-        this.ringBuffer = this.serverInfo.getRingBuffer();
+        
+        // Getting ring buffers
+        this.eyeTrackingRingBuffer = this.serverInfo.getEyeTrackingRingBuffer();
+        this.brainTrackingRingBuffer = this.serverInfo.getBrainTrackingRingBuffer();
 
         //TODO reactivate Tray ??   
         //  applicationData.setTray(new ServerDiagnosisSystemTray(applicationData));
@@ -95,35 +109,83 @@ public class ServerWindow extends JFrame {
 
         // TODO: How do we handle multiple connections?
         final PluginManager pm = this.applicationData.getPluginManager();
-        final EyeTrackingDeviceProvider deviceProvider = pm.getPlugin(EyeTrackingDeviceProvider.class, new OptionCapabilities("eyetrackingdevice:trackingserver"));
-        this.openDevice = deviceProvider.openDevice(this.serverInfo.getURI());
-        if (this.openDevice == null) {
-            System.err.println("Error obtaining a tracking device");
+        
+        // Getting, opening and setting eye tracking device
+        final EyeTrackingDeviceProvider eyeTrackingDeviceProvider = pm.getPlugin(EyeTrackingDeviceProvider.class, new OptionCapabilities("eyetrackingdevice:trackingserver"));
+        
+        this.openEyeTrackingDevice = eyeTrackingDeviceProvider.openDevice(this.serverInfo.getURI());
+
+        // TODO: Make it work, if either eye or brain tracker is enabled
+        if (this.openEyeTrackingDevice == null) {
+            System.err.println("Error obtaining an eye tracking device");
         }
-        setupWithTrackingDevice(this.openDevice);
+        setupWithEyeTrackingDevice(this.openEyeTrackingDevice);        
+
+        
+        // Getting, opening and setting brain tracking device
+        final BrainTrackingDeviceProvider brainTrackingDeviceProvider = pm.getPlugin(BrainTrackingDeviceProvider.class, new OptionCapabilities("braintrackingdevice:trackingserver"));
+        
+        this.openBrainTrackingDevice = brainTrackingDeviceProvider.openDevice(this.serverInfo.getURI());
+        
+        if (this.openBrainTrackingDevice == null) {
+            System.err.println("Error obtaining a brain tracking device");
+        }
+        setupWithBrainTrackingDevice(this.openBrainTrackingDevice);
     }
 
     /**
-     * Uses the given device to set up connections
+     * Uses the given eye traking device to set up connections
      * @param device
      */
-    private void setupWithTrackingDevice(final EyeTrackingDevice device) {
+    private void setupWithEyeTrackingDevice(final EyeTrackingDevice device) {
         if (device == null) {
             System.out.println("no device; application exit");          
             shutdown();
             return;
         }
         
-        this.serverInfo.setDevice(device);
-        this.ringBuffer.setRingbufferSize(RINGBUFFER_SIZE);
-        this.ringBuffer.restartRecording();
+        this.serverInfo.setEyeTrackingDevice(device);
+        this.eyeTrackingRingBuffer.setRingbufferSize(RINGBUFFER_SIZE);
+        this.eyeTrackingRingBuffer.restartRecording();
 
         
         device.addTrackingListener(new EyeTrackingListener() {
             @Override
             public void newTrackingEvent(final EyeTrackingEvent event) {
                 try {
-                    ServerWindow.this.ringBuffer.addEvent(event);
+                    ServerWindow.this.eyeTrackingRingBuffer.addEvent(event);
+
+                    if (ServerWindow.this.serverPanel != null) {
+                        ServerWindow.this.serverPanel.newTrackingEvent(event);
+                    }
+                } catch (final Throwable t) {
+                    t.printStackTrace();
+                }
+            }
+        });
+    }
+    
+    /**
+     * Uses the given brain tracking device to set up connections
+     * @param device
+     */
+    private void setupWithBrainTrackingDevice(final BrainTrackingDevice device) {
+        if (device == null) {
+            System.out.println("no device; application exit");          
+            shutdown();
+            return;
+        }
+        
+        this.serverInfo.setBrainTrackingDevice(device);
+        this.brainTrackingRingBuffer.setRingbufferSize(RINGBUFFER_SIZE);
+        this.brainTrackingRingBuffer.restartRecording();
+
+        
+        device.addTrackingListener(new BrainTrackingListener() {
+            @Override
+            public void newTrackingEvent(final BrainTrackingEvent event) {
+                try {
+                    ServerWindow.this.brainTrackingRingBuffer.addEvent(event);
 
                     if (ServerWindow.this.serverPanel != null) {
                         ServerWindow.this.serverPanel.newTrackingEvent(event);
@@ -137,8 +199,7 @@ public class ServerWindow extends JFrame {
 
     /**  */
     private void initGUI() {
-
-        setTitle("EyeTracker Diagnosis on " + this.serverInfo.getURI());
+        setTitle("Eye-/BrainTracker Diagnosis on " + this.serverInfo.getURI());
         setResizable(false);
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -168,10 +229,10 @@ public class ServerWindow extends JFrame {
     }
 
     /**
-     * @return the openDevice
+     * @return the openEyeTrackingDevice
      */
     public EyeTrackingDevice getOpenDevice() {
-        return this.openDevice;
+        return this.openEyeTrackingDevice;
     }
 
     /**
@@ -191,7 +252,7 @@ public class ServerWindow extends JFrame {
 		} catch (Exception e) {
 			//
 		}
-    	this.openDevice = null;
+    	this.openEyeTrackingDevice = null;
     	this.applicationData = null;
     	this.serverInfo = null;
     	this.serverPanel = null;

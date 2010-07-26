@@ -48,19 +48,22 @@ import de.dfki.km.text20.diagnosis.gui.components.PupilSizeChart;
 import de.dfki.km.text20.diagnosis.gui.panel.templates.ServerPanelTemplate;
 import de.dfki.km.text20.diagnosis.model.ApplicationData;
 import de.dfki.km.text20.diagnosis.model.ServerInfo;
+import de.dfki.km.text20.diagnosis.util.BrainTrackingEventRingbuffer;
 import de.dfki.km.text20.diagnosis.util.EyeTrackingEventEvaluator;
-import de.dfki.km.text20.diagnosis.util.EyeTrackingEventRingbuffer;
 import de.dfki.km.text20.diagnosis.util.EyeTrackingEventEvaluator.DataPartition;
 import de.dfki.km.text20.diagnosis.util.EyeTrackingEventEvaluator.DiagState;
+import de.dfki.km.text20.diagnosis.util.EyeTrackingEventRingbuffer;
+import de.dfki.km.text20.services.trackingdevices.brain.BrainTrackingEvent;
+import de.dfki.km.text20.services.trackingdevices.common.TrackingEvent;
+import de.dfki.km.text20.services.trackingdevices.common.TrackingListener;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
-import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingListener;
 import de.dfki.km.text20.trackingserver.eyes.remote.TrackingCommand;
 
 /**
  * @author rb, ABu
  *
  */
-public class ServerPanel extends ServerPanelTemplate implements EyeTrackingListener {
+public class ServerPanel extends ServerPanelTemplate implements TrackingListener<TrackingEvent>{
 
     /** */
     private static final long serialVersionUID = -7647208759232985123L;
@@ -72,7 +75,10 @@ public class ServerPanel extends ServerPanelTemplate implements EyeTrackingListe
     ServerInfo serverInfo;
 
     /** */
-    EyeTrackingEventRingbuffer ringBuffer;
+    EyeTrackingEventRingbuffer eyeTrackingRingBuffer;
+    
+    /** */
+    BrainTrackingEventRingbuffer brainTrackingRingBuffer;
 
     /** */
     long intervalStartMillis = new Date().getTime();
@@ -81,7 +87,10 @@ public class ServerPanel extends ServerPanelTemplate implements EyeTrackingListe
     long intervalEndMillis;
 
     /** */
-    int eventCounter = 0;
+    int eyeTrackingEventCounter = 0;
+    
+    /** */
+    int brainTrackingEventCounter = 0;
 
     /** */
     int eventRate = 0;
@@ -101,29 +110,37 @@ public class ServerPanel extends ServerPanelTemplate implements EyeTrackingListe
     /** common listener to handle all hyperlink commands */
     private final ActionListener commandProcessor = new CommandListener();
 
-    String[] statusLabels = { "Bad", "Vage", "Ok", "Off", "On" };
+    final String[] statusLabels = { "Bad", "Vage", "Ok", "Off", "On" };
 
     /**
-     * @param ad 
-     * @param si 
+     * @param appData 
+     * @param serverInfo 
      */
-    public ServerPanel(final ApplicationData ad, final ServerInfo si) {
+    public ServerPanel(final ApplicationData appData, final ServerInfo serverInfo) {
         super();
 
-        this.applicationData = ad;
-        this.serverInfo = si;
-        this.ringBuffer = si.getRingBuffer();
+        this.applicationData = appData;
+        this.serverInfo = serverInfo;
+        
+        this.eyeTrackingRingBuffer = serverInfo.getEyeTrackingRingBuffer();
+        this.brainTrackingRingBuffer = serverInfo.getBrainTrackingRingBuffer();
+        
         setupWithTrackingDevice();
         setGUIParameters();
     }
 
     /** */
     private void setGUIParameters() {
-        for (String s : this.serverInfo.getDevice().getDeviceInfo().getKeys()) {
+        for (final String s : this.serverInfo.getEyeTrackingDevice().getDeviceInfo().getKeys()) {
             System.out.println(s);
         }
-        this.deviceName.setText(this.serverInfo.getDevice().getDeviceInfo().getInfo("DEVICE_NAME"));
-        this.deviceType.setText(this.serverInfo.getDevice().getDeviceType().name());//.getOpenDevice().getDeviceType().name());
+        
+        for (final String s : this.serverInfo.getBrainTrackingDevice().getDeviceInfo().getKeys()) {
+            System.out.println(s);
+        }
+        
+        this.eyeTrackingDeviceName.setText(this.serverInfo.getEyeTrackingDevice().getDeviceInfo().getInfo("DEVICE_NAME"));
+        this.eyeTrackingDeviceType.setText(this.serverInfo.getEyeTrackingDevice().getDeviceType().name());//.getOpenDevice().getDeviceType().name());
         this.deviceLocation.setText(this.serverInfo.getURI());
 
         this.trackingSince.setText(new java.text.SimpleDateFormat("dd.MM.yyyy HH.mm.ss").format(new Date()));
@@ -153,7 +170,9 @@ public class ServerPanel extends ServerPanelTemplate implements EyeTrackingListe
 
         });
 
-        this.serverInfo.getRingBuffer().setRecording(true);
+        
+        this.serverInfo.getEyeTrackingRingBuffer().setRecording(true);
+        this.serverInfo.getBrainTrackingRingBuffer().setRecording(true);
         this.recordIndicator.setStatus(DiagState.ON);
         this.recordSwitch.setText(this.statusLabels[this.recordIndicator.getStatus().ordinal()]);
 
@@ -173,12 +192,12 @@ public class ServerPanel extends ServerPanelTemplate implements EyeTrackingListe
             public void stateChanged(final ChangeEvent e) {
                 final int i = ((JSlider) e.getSource()).getValue();
                 ServerPanel.this.bufferSizeLabel.setText(i + "");
-                ServerPanel.this.ringBuffer.setRingbufferSize(i);
-                ServerPanel.this.recordingTitle.setText("Recording Status (" + ServerPanel.this.ringBuffer.size() + " Events)");
+                ServerPanel.this.eyeTrackingRingBuffer.setRingbufferSize(i);
+                ServerPanel.this.recordingTitle.setText("Recording Status (" + ServerPanel.this.eyeTrackingRingBuffer.size() + " Events)");
             }
         });
 
-        this.bufferSizeSlider.setValue(this.ringBuffer.size());
+        this.bufferSizeSlider.setValue(this.eyeTrackingRingBuffer.size());
 
         //        this.serverInfo.setMainWindow(this);
         new Timer().scheduleAtFixedRate(new EventCountTask(), 1000, 1000);
@@ -190,8 +209,11 @@ public class ServerPanel extends ServerPanelTemplate implements EyeTrackingListe
      * @param device
      */
     private void setupWithTrackingDevice() {
-        this.ringBuffer.setRingbufferSize(1200);
-        this.ringBuffer.restartRecording();
+        this.eyeTrackingRingBuffer.setRingbufferSize(1200);
+        this.eyeTrackingRingBuffer.restartRecording();
+        
+        this.brainTrackingRingBuffer.setRingbufferSize(1200);
+        this.brainTrackingRingBuffer.restartRecording();
     }
 
     /**
@@ -204,14 +226,18 @@ public class ServerPanel extends ServerPanelTemplate implements EyeTrackingListe
         this.getEventRate().setText("" + this.eventRate);
 
         final Map<DataPartition, DiagState> qualityStatus = EyeTrackingEventEvaluator.getOverallQualityStatus(event);
-        final DiagState hpState = qualityStatus.get(DataPartition.HEAD_POSITION);
-        this.getHeadPositionIndicator().setStatus(hpState);
-        final DiagState hdState = qualityStatus.get(DataPartition.HEAD_DISTANCE);
-        this.getHeadDistanceIndicator().setStatus(hdState);
+        
+        final DiagState headPositionState = qualityStatus.get(DataPartition.HEAD_POSITION);
+        this.getHeadPositionIndicator().setStatus(qualityStatus.get(DataPartition.HEAD_POSITION));
+        
+        final DiagState headDistanceState = qualityStatus.get(DataPartition.HEAD_DISTANCE);
+        this.getHeadDistanceIndicator().setStatus(headDistanceState);
+        
         final DiagState eventRateState = this.eventRate > 40 ? DiagState.OK : DiagState.BAD;
         this.getEventRateIndicator().setStatus(eventRateState);
 
-        final DiagState overallState = EyeTrackingEventEvaluator.getWorstState(hdState, hpState, eventRateState);
+        final DiagState overallState = EyeTrackingEventEvaluator.getWorstState(headDistanceState, headPositionState, eventRateState);
+        
         this.getOverallQualityIndicator().setStatus(overallState);
         this.getOverallQualityLabel().setText(this.statusLabels[overallState.ordinal()]);
 
@@ -222,27 +248,35 @@ public class ServerPanel extends ServerPanelTemplate implements EyeTrackingListe
     }
 
     /* (non-Javadoc)
-         * @see de.dfki.km.augmentedtext.services.trackingdevices.TrackingListener#newEyeTrackingEvent(de.dfki.km.augmentedtext.services.trackingdevices.EyeTrackingEvent)
-         */
+     * @see de.dfki.km.augmentedtext.services.trackingdevices.TrackingListener#newEyeTrackingEvent(de.dfki.km.augmentedtext.services.trackingdevices.EyeTrackingEvent)
+     */
     @Override
-    public void newTrackingEvent(final EyeTrackingEvent event) {
-
-        this.eventCounter++;
-        this.ringBuffer.addEvent(event);
-
-        evaluateEvent(event);
-
-        // fixed widgets
-        this.eyePositionDisplay.newEyeTrackingEvent(event);
-        this.eyeDistanceDisplay.newEyeTrackingEvent(event);
-        this.pupilSizeDisplay1.newEyeTrackingEvent(event);
-
-        // on demand windows
-        this.pupilSizeHistory.newEyeTrackingEvent(event);
-        this.headDistanceHistory.newEyeTrackingEvent(event);
-        this.headPositionHistory.newEyeTrackingEvent(event);
-        this.recalibrationWindow.newEyeTrackingEvent(event);
-
+    public void newTrackingEvent(TrackingEvent event) {
+        if (event instanceof EyeTrackingEvent) {
+            this.eyeTrackingEventCounter++;
+            this.eyeTrackingRingBuffer.addEvent((EyeTrackingEvent) event);
+              
+            evaluateEvent((EyeTrackingEvent) event);
+              
+            // fixed widgets
+            this.eyePositionDisplay.newEyeTrackingEvent((EyeTrackingEvent)event);
+            this.eyeDistanceDisplay.newEyeTrackingEvent((EyeTrackingEvent)event);
+            this.pupilSizeDisplay1.newEyeTrackingEvent((EyeTrackingEvent)event);
+              
+            // on demand windows
+            this.pupilSizeHistory.newEyeTrackingEvent((EyeTrackingEvent)event);
+            this.headDistanceHistory.newEyeTrackingEvent((EyeTrackingEvent)event);
+            this.headPositionHistory.newEyeTrackingEvent((EyeTrackingEvent)event);
+            this.recalibrationWindow.newEyeTrackingEvent((EyeTrackingEvent)event);
+        }
+        
+        if (event instanceof BrainTrackingEvent) {
+            this.brainTrackingEventCounter++;
+            this.brainTrackingRingBuffer.addEvent((BrainTrackingEvent) event);
+            
+            // TODO: Add brain tracking evaluation, etc
+        }
+        
     }
 
     /**
@@ -282,7 +316,7 @@ public class ServerPanel extends ServerPanelTemplate implements EyeTrackingListe
                     showHistoryFrame(ServerPanel.this.headDistanceHistory, "Head Distance History");
                 }
                 if (hl.getActionCommand() == "toggleRecording") {
-                    final EyeTrackingEventRingbuffer rb = ServerPanel.this.serverInfo.getRingBuffer();
+                    final EyeTrackingEventRingbuffer rb = ServerPanel.this.serverInfo.getEyeTrackingRingBuffer();
                     final JStatusIndicator si = ServerPanel.this.recordIndicator;
 
                     rb.setRecording(!rb.isRecording());
@@ -304,7 +338,7 @@ public class ServerPanel extends ServerPanelTemplate implements EyeTrackingListe
                 if (hl.getActionCommand() == "performHardwareRecalibration") {
                     hideEverythingElse();
                     System.out.println("Perform HW Recalib");
-                    ServerPanel.this.serverInfo.getDevice().sendLowLevelCommand(TrackingCommand.HARDWARE_CALIBRATION);
+                    ServerPanel.this.serverInfo.getEyeTrackingDevice().sendLowLevelCommand(TrackingCommand.HARDWARE_CALIBRATION);
                 }
                 // */
             }
@@ -347,8 +381,9 @@ public class ServerPanel extends ServerPanelTemplate implements EyeTrackingListe
             this.date = new Date();
             ServerPanel.this.intervalStartMillis = this.date.getTime();
             final long difference = ServerPanel.this.intervalStartMillis - ServerPanel.this.intervalEndMillis;
-            ServerPanel.this.eventRate = Math.round((float) ServerPanel.this.eventCounter / difference * 1000);
-            ServerPanel.this.eventCounter = 0;
+            ServerPanel.this.eventRate = Math.round((float) ServerPanel.this.eyeTrackingEventCounter / difference * 1000);
+            ServerPanel.this.eyeTrackingEventCounter = 0;
         }
     }
+
 }

@@ -142,14 +142,14 @@ public abstract class AbstractHistoryChartDisplay extends AbstractEyeTrackingEve
         int cnt = 0;
         int prevXPos = 0;
         int prevBufPos = 0; //this.getAreaWidth();
-        EyeTrackingEvent previousChartEyeTrackingEvent = this.serverInfo.getRingBuffer().get(prevBufPos);
+        EyeTrackingEvent previousChartEyeTrackingEvent = this.serverInfo.getEyeTrackingRingBuffer().get(prevBufPos);
 
         // one value for each x-pixel position 
         for (int i = 0; i < this.getAreaWidth(); i++) {
 
-            final int bufpos = Math.max(0, Math.round(i * this.serverInfo.getRingBuffer().size() / getAreaWidth() - 1));
+            final int bufpos = Math.max(0, Math.round(i * this.serverInfo.getEyeTrackingRingBuffer().size() / getAreaWidth() - 1));
             if ((prevBufPos != bufpos) && (previousChartEyeTrackingEvent != null)) {
-                final EyeTrackingEvent e = this.serverInfo.getRingBuffer().get(bufpos);
+                final EyeTrackingEvent e = this.serverInfo.getEyeTrackingRingBuffer().get(bufpos);
                 if (e == null) {
                     prevBufPos = bufpos;
                     previousChartEyeTrackingEvent = e;
@@ -167,7 +167,7 @@ public abstract class AbstractHistoryChartDisplay extends AbstractEyeTrackingEve
                 cnt++;
                 prevXPos = i;
             } else {
-                final EyeTrackingEvent e = this.serverInfo.getRingBuffer().get(bufpos);
+                final EyeTrackingEvent e = this.serverInfo.getEyeTrackingRingBuffer().get(bufpos);
                 previousChartEyeTrackingEvent = e;
                 prevBufPos = bufpos;
             }
@@ -423,7 +423,7 @@ public abstract class AbstractHistoryChartDisplay extends AbstractEyeTrackingEve
     protected String getValueFromMousePos(final MouseEvent e) {
         final int y = e.getY();
         final int x = e.getX() - getInsets().left - this.scaleGap - this.scaleWidth;
-        final int bufpos = Math.max(0, Math.round(x * this.serverInfo.getRingBuffer().size() / getAreaWidth() - 1));
+        final int bufpos = Math.max(0, Math.round(x * this.serverInfo.getEyeTrackingRingBuffer().size() / getAreaWidth() - 1));
 
         if (CommonFunctions.isBetweenIncludes(getLeftTopLineYPos(), getLeftBaseLineYPos(), y)) {
 

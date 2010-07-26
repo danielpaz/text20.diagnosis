@@ -153,7 +153,7 @@ public class RecalibrationWindow extends JFrame {
                 @Override
                 public void run() {
                     RecalibrationWindow.this.logger.fine("Sending recalibration.");
-                    getServerInfo().getDevice().sendLowLevelCommand(TrackingCommand.ONLINE_RECALIBRATION, orp);
+                    getServerInfo().getEyeTrackingDevice().sendLowLevelCommand(TrackingCommand.ONLINE_RECALIBRATION, orp);
                     RecalibrationWindow.this.logger.fine("Recalibration sent.");
                 }
             });
@@ -225,10 +225,10 @@ public class RecalibrationWindow extends JFrame {
         super.setVisible(b);
 
         if (b == true) {
-            if (this.serverInfo == null || this.serverInfo.getDevice() == null) return;
+            if (this.serverInfo == null || this.serverInfo.getEyeTrackingDevice() == null) return;
 
             // Drop recalib and go fullscreen.
-            this.serverInfo.getDevice().sendLowLevelCommand(TrackingCommand.DROP_RECALIBRATION);
+            this.serverInfo.getEyeTrackingDevice().sendLowLevelCommand(TrackingCommand.DROP_RECALIBRATION);
             this.recalibrationDisplay.clearCalibraionInfo();
             this.graphicsDevice.setFullScreenWindow(this);
         } else {

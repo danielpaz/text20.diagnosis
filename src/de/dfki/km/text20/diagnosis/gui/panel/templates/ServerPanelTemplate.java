@@ -64,11 +64,11 @@ public class ServerPanelTemplate extends JPanel {
 
     protected JLabel deviceLocation;
 
-    protected JLabel deviceName;
+    protected JLabel eyeTrackingDeviceName;
 
     private JLabel deviceNameLabel;
 
-    protected JLabel deviceType;
+    protected JLabel eyeTrackingDeviceType;
 
     private JLabel deviceTypeLabel;
 
@@ -188,9 +188,9 @@ public class ServerPanelTemplate extends JPanel {
         this.tabbedPane1 = new JTabbedPane();
         this.panel1 = new JPanel();
         this.deviceNameLabel = new JLabel();
-        this.deviceName = new JLabel();
+        this.eyeTrackingDeviceName = new JLabel();
         this.deviceTypeLabel = new JLabel();
-        this.deviceType = new JLabel();
+        this.eyeTrackingDeviceType = new JLabel();
         this.label1 = new JLabel();
         this.deviceLocation = new JLabel();
         this.label10 = new JLabel();
@@ -282,17 +282,17 @@ public class ServerPanelTemplate extends JPanel {
                 this.deviceNameLabel.setText("Tracking Device Name");
                 this.panel1.add(this.deviceNameLabel, cc.xy(1, 1));
 
-                //---- deviceName ----
-                this.deviceName.setText("-");
-                this.panel1.add(this.deviceName, cc.xy(5, 1));
+                //---- eyeTrackingDeviceName ----
+                this.eyeTrackingDeviceName.setText("-");
+                this.panel1.add(this.eyeTrackingDeviceName, cc.xy(5, 1));
 
                 //---- deviceTypeLabel ----
                 this.deviceTypeLabel.setText("Tracking Device Type");
                 this.panel1.add(this.deviceTypeLabel, cc.xy(1, 3));
 
-                //---- deviceType ----
-                this.deviceType.setText("-");
-                this.panel1.add(this.deviceType, cc.xy(5, 3));
+                //---- eyeTrackingDeviceType ----
+                this.eyeTrackingDeviceType.setText("-");
+                this.panel1.add(this.eyeTrackingDeviceType, cc.xy(5, 3));
 
                 //---- label1 ----
                 this.label1.setText("Tracking Device Location");
