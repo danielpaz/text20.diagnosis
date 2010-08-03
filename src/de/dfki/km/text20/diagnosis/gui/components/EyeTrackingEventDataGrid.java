@@ -22,7 +22,7 @@ import de.dfki.km.text20.diagnosis.util.EyetrackerDataModel;
  * @author rb
  *
  */
-public class EyeTrackingEventDataGrid extends AbstractEyeTrackingEventComponent {
+public class EyeTrackingEventDataGrid extends AbstractTrackingEventComponent {
 
     /**  */
     private static final long serialVersionUID = 7934421049116282411L;

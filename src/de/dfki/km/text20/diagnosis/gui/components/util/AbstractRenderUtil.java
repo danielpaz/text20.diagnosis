@@ -27,7 +27,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
 
-import de.dfki.km.text20.diagnosis.gui.components.AbstractEyeTrackingEventComponent;
+import de.dfki.km.text20.diagnosis.gui.components.AbstractTrackingEventComponent;
 import de.dfki.km.text20.diagnosis.util.CommonFunctions;
 import de.dfki.km.text20.diagnosis.util.EyeTrackingEventEvaluator;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
@@ -39,7 +39,7 @@ import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
 public class AbstractRenderUtil {
 
     /** */
-    private final AbstractEyeTrackingEventComponent component;
+    private final AbstractTrackingEventComponent component;
 
     /** pixel per mm of pupilSize*/
     private int pixelPerUnit = 10;
@@ -47,7 +47,7 @@ public class AbstractRenderUtil {
     /**
      * @param component
      */
-    public AbstractRenderUtil(final AbstractEyeTrackingEventComponent component) {
+    public AbstractRenderUtil(final AbstractTrackingEventComponent component) {
         this.component = component;
     }
 

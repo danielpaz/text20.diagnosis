@@ -39,7 +39,7 @@ import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
  * @author Nathaniel Egwu, ABu
  *
  */
-public class EyeDistanceDisplay extends AbstractEyeTrackingEventComponent {
+public class EyeDistanceDisplay extends AbstractTrackingEventComponent {
 
 
     /** */
@@ -92,8 +92,9 @@ public class EyeDistanceDisplay extends AbstractEyeTrackingEventComponent {
     @Override
     public void render(final Graphics g) {
 
+//      final EyeTrackingEvent e = this.EyeTrackingEvent;
+        final EyeTrackingEvent e = (EyeTrackingEvent) this.trackingEvent;
 
-        final EyeTrackingEvent e = this.EyeTrackingEvent;
         if ((e == null)  && (this.applicationData != null)) { return; }
 
         Insets insets;
@@ -125,15 +126,13 @@ public class EyeDistanceDisplay extends AbstractEyeTrackingEventComponent {
                    Math.round((this.upperValidDistance - this.lowerValidDistance) * getAreaHeight()));
 
 
-        if(this.applicationData == null){
+        if (this.applicationData == null){
             g.setColor(this.stateColor[DiagState.OK.ordinal()]);
             g.fillRect(this.leftEyeXPos, Math.round((0.5f - offset) * getAreaHeight()) + getInsets().top , this.eyeIconWidth, this.eyeIconHeight);
             g.fillRect(this.rightEyeXPos, Math.round((0.5f - offset) * getAreaHeight()) + getInsets().top, this.eyeIconWidth, this.eyeIconHeight);
             g.setColor(this.stateColor[DiagState.OK.ordinal()]);
-            String s = "55";
-            this.renderer.drawCenteredString (g, insets.left + this.paddingVal, middleXVal, getHeight() - insets.bottom - 20, s);
-            s = "123";
-            this.renderer.drawCenteredString (g, middleXVal, insets.left + getAreaWidth(), getHeight() - insets.bottom - 20, s);           
+            this.renderer.drawCenteredString (g, insets.left + this.paddingVal, middleXVal, getHeight() - insets.bottom - 20, "55");
+            this.renderer.drawCenteredString (g, middleXVal, insets.left + getAreaWidth(), getHeight() - insets.bottom - 20, "123");           
             return;
         }
         
@@ -153,7 +152,6 @@ public class EyeDistanceDisplay extends AbstractEyeTrackingEventComponent {
         case VAGUE:
             iconColor = this.stateVagueColor;
             break;
-
         default:
             iconColor = this.stateVagueColor;
             break;
@@ -191,7 +189,8 @@ public class EyeDistanceDisplay extends AbstractEyeTrackingEventComponent {
      * @param paddingVal the paddingVal to set
      */
     public void setPaddingVal(final int paddingVal) {
-    this.paddingVal = paddingVal;}
+        this.paddingVal = paddingVal;
+    }
 
     /**
      * @return the eyeDistanceCanvasColor
@@ -204,7 +203,8 @@ public class EyeDistanceDisplay extends AbstractEyeTrackingEventComponent {
      * @param eyeDistanceCanvasColor the eyeDistanceCanvasColor to set
      */
     public void setEyeDistanceCanvasColor(final Color eyeDistanceCanvasColor) {
-    this.eyeDistanceCanvasColor = eyeDistanceCanvasColor;}
+        this.eyeDistanceCanvasColor = eyeDistanceCanvasColor;
+    }
 
     /**
      * @return the eyeIconHeight
@@ -217,8 +217,8 @@ public class EyeDistanceDisplay extends AbstractEyeTrackingEventComponent {
      * @param eyeIconHeight the eyeIconHeight to set
      */
     public void setEyeIconHeight(final int eyeIconHeight) {
-    this.eyeIconHeight = eyeIconHeight;}
-    
+        this.eyeIconHeight = eyeIconHeight;
+    }
 
     /**
      * @return the eyeIconWidth
@@ -231,8 +231,8 @@ public class EyeDistanceDisplay extends AbstractEyeTrackingEventComponent {
      * @param eyeIconWidth the eyeIconWidth to set
      */
     public void setEyeIconWidth(final int eyeIconWidth) {
-    this.eyeIconWidth = eyeIconWidth;}
-    
+        this.eyeIconWidth = eyeIconWidth;
+    }
 
     /**
      * @return the validRectColor
@@ -245,6 +245,6 @@ public class EyeDistanceDisplay extends AbstractEyeTrackingEventComponent {
      * @param validRectColor the validRectColor to set
      */
     public void setValidRectColor(final Color validRectColor) {
-    this.validRectColor = validRectColor;}
-    
+        this.validRectColor = validRectColor;
+    }
 }

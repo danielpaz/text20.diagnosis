@@ -190,7 +190,7 @@ public class RecalibrationWindow extends JFrame {
      */
     public void newEyeTrackingEvent(final EyeTrackingEvent evt) {
         if (isVisible()) {
-            this.recalibrationDisplay.newEyeTrackingEvent(evt);
+            this.recalibrationDisplay.newTrackingEvent(evt);
         }
     }
 

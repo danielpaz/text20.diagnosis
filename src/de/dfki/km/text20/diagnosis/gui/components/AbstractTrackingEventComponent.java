@@ -31,7 +31,7 @@ import javax.swing.border.EmptyBorder;
 import de.dfki.km.text20.diagnosis.gui.components.util.AbstractRenderUtil;
 import de.dfki.km.text20.diagnosis.model.ApplicationData;
 import de.dfki.km.text20.diagnosis.model.ServerInfo;
-import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
+import de.dfki.km.text20.services.trackingdevices.common.TrackingEvent;
 
 /**
  * Base class of all tracking event panels.
@@ -40,7 +40,7 @@ import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
  *
  */
 
-public abstract class AbstractEyeTrackingEventComponent extends JComponent {
+public abstract class AbstractTrackingEventComponent extends JComponent {
 
     /** */
     private static final long serialVersionUID = -1963935140962471831L;
@@ -68,12 +68,12 @@ public abstract class AbstractEyeTrackingEventComponent extends JComponent {
 
     /** */
     final Color stateVagueColor = Color.YELLOW;
-
+    
     /** Tracking event we use for visualization. */
-    protected EyeTrackingEvent EyeTrackingEvent;
+    protected TrackingEvent trackingEvent;
 
     /** Tracking event history */
-    protected EyeTrackingEvent previousEyeTrackingEvent;
+    protected TrackingEvent previousTrackingEvent;
 
     /** */
     ApplicationData applicationData;
@@ -91,7 +91,7 @@ public abstract class AbstractEyeTrackingEventComponent extends JComponent {
     /** Default Constructor 
      * 
      * */
-    public AbstractEyeTrackingEventComponent() {
+    public AbstractTrackingEventComponent() {
         this(null, null);
     }
 
@@ -99,8 +99,7 @@ public abstract class AbstractEyeTrackingEventComponent extends JComponent {
      * @param applicationData
      * @param serverInfo
      */
-    public AbstractEyeTrackingEventComponent(final ApplicationData applicationData,
-                                          final ServerInfo serverInfo) {
+    public AbstractTrackingEventComponent(final ApplicationData applicationData, final ServerInfo serverInfo) {
         setBorder(new EmptyBorder(0, 0, 0, 0));
         this.setPreferredSize(new Dimension(this.DEFAULT_PANEL_WIDTH, this.DEFAULT_PANEL_HEIGHT));
         this.applicationData = applicationData;
@@ -112,13 +111,14 @@ public abstract class AbstractEyeTrackingEventComponent extends JComponent {
      * 
      * @param evt 
      */
-    public void newEyeTrackingEvent(final EyeTrackingEvent evt) {
-        this.previousEyeTrackingEvent = this.EyeTrackingEvent;
-        this.EyeTrackingEvent = evt;
+    public void newTrackingEvent(final TrackingEvent evt) {
+        this.previousTrackingEvent = this.trackingEvent;
+        this.trackingEvent = evt;
         if (isVisible())
-        	repaint();
+            repaint();
     }
-
+    
+    
     /* (non-Javadoc)
      * @see javax.swing.JComponent#paint(java.awt.Graphics)
      */
@@ -185,16 +185,10 @@ public abstract class AbstractEyeTrackingEventComponent extends JComponent {
     @Override
     public void setPreferredSize(final Dimension preferredSize) {
         final Dimension d = new Dimension();
-        if (preferredSize.width > 0) {
-            d.width = preferredSize.width;
-        } else {
-            d.width = this.DEFAULT_PANEL_WIDTH;
-        }
-        if (preferredSize.height > 0) {
-            d.height = preferredSize.height;
-        } else {
-            d.height = this.DEFAULT_PANEL_HEIGHT;
-        }
+
+        d.width = (preferredSize.width > 0) ? preferredSize.width : this.DEFAULT_PANEL_WIDTH;
+        d.height = (preferredSize.height > 0) ? preferredSize.height : this.DEFAULT_PANEL_HEIGHT;
+
         super.setPreferredSize(d);
     }
 

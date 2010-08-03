@@ -37,7 +37,7 @@ import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
  * @author Nathaniel Egwu, ABu
  *
  */
-public class PupilSizeDisplay extends AbstractEyeTrackingEventComponent {
+public class PupilSizeDisplay extends AbstractTrackingEventComponent {
 
     /** */
     private static final long serialVersionUID = -8142292583304142828L;
@@ -88,7 +88,7 @@ public class PupilSizeDisplay extends AbstractEyeTrackingEventComponent {
     @Override
     public void render(final Graphics g) {
 
-        final EyeTrackingEvent e = this.EyeTrackingEvent;
+        final EyeTrackingEvent e = (EyeTrackingEvent) this.trackingEvent;
         if ((e == null) && (this.applicationData != null)) { return; }
 
         Insets insets;
@@ -96,8 +96,8 @@ public class PupilSizeDisplay extends AbstractEyeTrackingEventComponent {
             insets = getBorder().getBorderInsets(this);
         } catch (final RuntimeException e1) {
             insets = new Insets(0, 0, 0, 0);
-
         }
+        
         final int middleXVal = Math.round((getAreaWidth() / 2 + insets.left));
 
         // draw canvas area 
@@ -169,8 +169,7 @@ public class PupilSizeDisplay extends AbstractEyeTrackingEventComponent {
     /**
      * @param pupilSizeCanvasBackgroundColor the pupilSizeCanvasBackgroundColor to set
      */
-    public void setPupilSizeCanvasBackgroundColor(
-                                                  final Color pupilSizeCanvasBackgroundColor) {
+    public void setPupilSizeCanvasBackgroundColor(final Color pupilSizeCanvasBackgroundColor) {
         this.pupilSizeCanvasBackgroundColor = pupilSizeCanvasBackgroundColor;
     }
 

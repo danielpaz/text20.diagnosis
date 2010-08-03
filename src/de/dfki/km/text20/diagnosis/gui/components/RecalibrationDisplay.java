@@ -48,6 +48,7 @@ import de.dfki.km.text20.diagnosis.gui.RecalibrationWindow;
 import de.dfki.km.text20.diagnosis.model.ApplicationData;
 import de.dfki.km.text20.diagnosis.model.ServerInfo;
 import de.dfki.km.text20.diagnosis.util.CommonFunctions;
+import de.dfki.km.text20.services.trackingdevices.common.TrackingEvent;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingDevice;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingDeviceProvider;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
@@ -65,7 +66,7 @@ import de.dfki.km.text20.util.filter.displacement.ReferencePoint;
  * @author rb
  *
  */
-public class RecalibrationDisplay extends AbstractEyeTrackingEventComponent {
+public class RecalibrationDisplay extends AbstractTrackingEventComponent {
 
     /**  */
     private static final long serialVersionUID = 9163930105068929634L;
@@ -178,12 +179,14 @@ public class RecalibrationDisplay extends AbstractEyeTrackingEventComponent {
      * @see de.dfki.km.augmentedtext.diagnosis.gui.components.AbstractEyeTrackingEventComponent#newEyeTrackingEvent(de.dfki.km.augmentedtext.services.trackingdevices.EyeTrackingEvent)
      */
     @Override
-    public void newEyeTrackingEvent(EyeTrackingEvent evt) {
-        boolean areValid = evt.areValid(EyeTrackingEventValidity.CENTER_POSITION_VALID);
-        if(!areValid) return;
-        Point c = evt.getGazeCenter();
-        if(c.x <= 0 || c.y<=0) return;
-        final EyeTrackingEvent filtered = this.filter.filterEvent(evt);
+    public void newTrackingEvent(TrackingEvent evt) {
+        boolean areValid = ((EyeTrackingEvent)evt).areValid(EyeTrackingEventValidity.CENTER_POSITION_VALID);
+        if (!areValid) return;
+        
+        Point c = ((EyeTrackingEvent)evt).getGazeCenter();
+        if (c.x <= 0 || c.y <= 0) return;
+        
+        final EyeTrackingEvent filtered = this.filter.filterEvent(((EyeTrackingEvent)evt));
         this.lastUnfilteredEvent = filtered;
         this.lastEvent = this.globalFilter.filterEvent(filtered);
         repaint();
@@ -262,13 +265,11 @@ public class RecalibrationDisplay extends AbstractEyeTrackingEventComponent {
                     @Override
                     public void keyTyped(KeyEvent e) {
                         // TODO Auto-generated method stub
-
                     }
 
                     @Override
                     public void keyReleased(KeyEvent e) {
                         // TODO Auto-generated method stub
-
                     }
 
                     @Override
@@ -299,7 +300,7 @@ public class RecalibrationDisplay extends AbstractEyeTrackingEventComponent {
         openDevice.addTrackingListener(new EyeTrackingListener() {
             @Override
             public void newTrackingEvent(final EyeTrackingEvent event) {
-                rc.get().newEyeTrackingEvent(event);
+                rc.get().newTrackingEvent(event);
             }
         });
     }

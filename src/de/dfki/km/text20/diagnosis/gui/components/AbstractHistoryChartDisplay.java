@@ -16,7 +16,7 @@ import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
  * @author Andreas Buhl
  *
  */
-public abstract class AbstractHistoryChartDisplay extends AbstractEyeTrackingEventComponent {
+public abstract class AbstractHistoryChartDisplay extends AbstractTrackingEventComponent {
 
     /** */
     private static final long serialVersionUID = 4805889544008857101L;
@@ -71,14 +71,10 @@ public abstract class AbstractHistoryChartDisplay extends AbstractEyeTrackingEve
 
     private String currentValue;
 
-    /**
-     * 
-     */
+    /** */
     public static boolean hasInstance = false;
 
-    /**
-     * 
-     */
+    /** */
     public AbstractHistoryChartDisplay() {
         this(null, null);
     }
@@ -87,8 +83,7 @@ public abstract class AbstractHistoryChartDisplay extends AbstractEyeTrackingEve
      * @param applicationData
      * @param serverInfo
      */
-    public AbstractHistoryChartDisplay(final ApplicationData applicationData,
-                                       final ServerInfo serverInfo) {
+    public AbstractHistoryChartDisplay(final ApplicationData applicationData, final ServerInfo serverInfo) {
         super(applicationData, serverInfo);
         this.setPreferredSize(new Dimension(this.defaultChartPanelWidth, this.defaultChartPanelHeight));
         this.spaceHeight = (1.0f - 2 * CommonFunctions.limitFloat(this.trackHeight, 0.1f, 0.45f)) / 3;
@@ -487,16 +482,10 @@ public abstract class AbstractHistoryChartDisplay extends AbstractEyeTrackingEve
     @Override
     public void setPreferredSize(final Dimension preferredSize) {
         final Dimension d = new Dimension();
-        if (preferredSize.width > 0) {
-            d.width = preferredSize.width;
-        } else {
-            d.width = this.defaultChartPanelWidth;
-        }
-        if (preferredSize.height > 0) {
-            d.height = preferredSize.height;
-        } else {
-            d.height = this.defaultChartPanelHeight;
-        }
+
+        d.width = (preferredSize.width > 0) ? preferredSize.width : this.defaultChartPanelWidth;
+        d.height = (preferredSize.height > 0) ? preferredSize.height : this.defaultChartPanelHeight;
+
         super.setPreferredSize(d);
     }
 
