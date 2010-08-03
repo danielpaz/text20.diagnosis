@@ -130,11 +130,11 @@ public class DeviceLabel extends JLabel {
     public void setFullDeviceText(ServerBrowserPanel sbPanel) {
 
         // TODO: How do we handle multiple connections?
-        final PluginManager pm = ((ServerBrowserWindow) sbPanel.getRootPane().getParent()).getApplicationData().getPluginManager();//. applicationData.getPluginManager();
-        final TrackingDeviceProvider<EyeTrackingDeviceInfo, EyeTrackingEvent, EyeTrackingListener, EyeTrackingDevice> deviceProvider = pm.getPlugin(TrackingDeviceProvider.class, new OptionCapabilities("eyetrackingdevice:trackingserver"));
+        final PluginManager pluginManager = ((ServerBrowserWindow) sbPanel.getRootPane().getParent()).getApplicationData().getPluginManager();//. applicationData.getPluginManager();
+        final TrackingDeviceProvider<EyeTrackingDeviceInfo, EyeTrackingEvent, EyeTrackingListener, EyeTrackingDevice> deviceProvider = pluginManager.getPlugin(TrackingDeviceProvider.class, new OptionCapabilities("eyetrackingdevice:trackingserver"));
         final TrackingDevice<EyeTrackingDeviceInfo, EyeTrackingEvent, EyeTrackingListener> openDevice = deviceProvider.openDevice(this.uri.toString());
         if (openDevice == null) {
-            System.err.println("Error obtaining a tracking device");
+            System.err.println("Error obtaining a eye tracking device");
             return;
         }
         setText("<html>" + openDevice.getDeviceInfo().getInfo("DEVICE_NAME") + "<br/>@" + this.uri.getHost() + ":" + this.uri.getPort() + "</html>");

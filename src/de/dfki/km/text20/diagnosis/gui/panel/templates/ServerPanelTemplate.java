@@ -1,5 +1,5 @@
 /*
- * Created by JFormDesigner on Wed Sep 02 16:51:17 CEST 2009
+ * Created by JFormDesigner on Mon Jul 26 14:40:41 CEST 2010
  */
 
 package de.dfki.km.text20.diagnosis.gui.panel.templates;
@@ -32,96 +32,77 @@ import de.dfki.km.text20.diagnosis.gui.components.PupilSizeDisplay;
  * @author Ralf Biedert
  */
 public class ServerPanelTemplate extends JPanel {
-//    private class recInd extends JStatusIndicator {
-//        /**
-//         * 
-//         */
-//        private static final long serialVersionUID = -4793194366766899056L;
-//
-//        private recInd() {
-//            initComponents();
-//        }
-//
-//        private void initComponents() {
-//            // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
-//            // Generated using JFormDesigner non-commercial license
-//            // JFormDesigner - End of component initialization  //GEN-END:initComponents
-//        }
-//
-//        // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
-//        // Generated using JFormDesigner non-commercial license
-//        // JFormDesigner - End of variables declaration  //GEN-END:variables
-//    }
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 5166137640013392483L;
 
-    /**  */
-    private static final long serialVersionUID = 6771868751640834350L;
-
-    public JLabel bufferSizeLabel;
-
-    public JSlider bufferSizeSlider;
-
-    protected JStatusIndicator calibrationIndicator;
-
-    protected JLabel deviceLocation;
-
-    protected JLabel eyeTrackingDeviceName;
-
-    private JLabel deviceNameLabel;
-
-    protected JLabel eyeTrackingDeviceType;
-
-    private JLabel deviceTypeLabel;
-
-    protected JLabel eventRate;
-
-    protected JStatusIndicator eventRateIndicator;
-
-    protected EyeDistanceDisplay eyeDistanceDisplay;
-
-    protected EyePositionDisplay eyePositionDisplay;
-
-    protected JXHyperlink gazePositionHistoryLink;
-
-    private JLabel gazePositionLabel;
-
-    protected JXHyperlink headDistanceHistoryLink;
-    protected JStatusIndicator headDistanceIndicator;
-    private JLabel headDistanceLabel;
-    protected JXHyperlink headPositionHistoryLink;
-    protected JStatusIndicator headPositionIndicator;
-    private JLabel headPositionLabel;
-    private JLabel label1;
-    private JLabel label10;
-    private JLabel label11;
-    private JLabel label12;
-    private JLabel label2;
-    private JLabel label5;
-    private JLabel label6;
-    private JLabel label7;
-    protected JTextPane logText;
-    protected JStatusIndicator overallQualityIndicator;
-    private JLabel overallQualityLabel;
-    protected JPanel panel1;
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
     // Generated using JFormDesigner non-commercial license
-    protected JPanel panel2;
-    private JPanel panel3;
-    private JPanel panel4;
-    protected JXHyperlink performHardwareRecalibrationLink;
-    protected JXHyperlink performRecalibrationLink;
-    protected PupilSizeDisplay pupilSizeDisplay1;
-    protected JXHyperlink pupilSizeHistoryLink;
-    private JLabel pupilSizeLabel;
-    public JStatusIndicator recordIndicator;
+    protected JPanel visualEyeTrackingDataPanel;
+    protected EyePositionDisplay eyePositionDisplay;
+    protected EyeDistanceDisplay eyeDistanceDisplay;
+    protected PupilSizeDisplay pupilSizeDisplay;
+    private JTabbedPane tabbedPane;
+    protected JPanel overallPanel;
+    private JLabel eyeTrackingDeviceNameLabel;
+    protected JLabel eyeTrackingDeviceNameValueLabel;
+    private JLabel eyeTrackingDeviceTypeLabel;
+    protected JLabel eyeTrackingDeviceTypeValueLabel;
+    private JLabel eyeTrackingDeviceLocationLabel;
+    protected JLabel eyeTrackingDeviceLocationValueLabel;
     public JLabel recordingTitle;
+    public JStatusIndicator recordIndicator;
     public JXHyperlink recordSwitch;
-    private JScrollPane scrollPane4;
-    private JTabbedPane tabbedPane1;
+    private JLabel eyeTrackingEventRateLabel;
+    protected JStatusIndicator eventRateIndicator;
+    protected JLabel eventRate;
+    private JLabel brainTrackingDeviceNameLabel;
+    protected JLabel brainTrackingDeviceNameValueLabel;
+    private JLabel brainTrackingDeviceLocationLabel;
+    protected JLabel brainTrackingDeviceLocationValueLabel;
+    public JLabel brainTrackerRecordingStatusLabel;
+    public JStatusIndicator brainRecordIndicator;
+    public JXHyperlink brainTrackingRecordSwitch;
+    private JLabel brainTrackingEventRateLabel;
+    protected JStatusIndicator brainTrackingEventRateIndicator;
+    protected JLabel brainTrackingEventRate;
+    private JLabel deviceTrackingSinceLabel;
     protected JLabel trackingSince;
+    private JLabel brainHistoryLabel;
+    protected JXHyperlink brainHistoryLink;
+    private JLabel gazePositionLabel;
+    protected JXHyperlink gazePositionHistoryLink;
+    private JLabel headPositionLabel;
+    protected JStatusIndicator headPositionIndicator;
+    protected JXHyperlink headPositionHistoryLink;
+    private JLabel headDistanceLabel;
+    protected JStatusIndicator headDistanceIndicator;
+    protected JXHyperlink headDistanceHistoryLink;
+    private JLabel pupilSizeLabel;
+    protected JXHyperlink pupilSizeHistoryLink;
+    private JLabel hardwareRecalibrationLabel;
+    protected JXHyperlink performHardwareRecalibrationLink;
+    private JLabel localRecalibrationVerificationLabel;
+    protected JStatusIndicator calibrationIndicator;
+    protected JXHyperlink performRecalibrationLink;
+    private JLabel qualityLabel;
+    protected JStatusIndicator overallQualityIndicator;
+    private JLabel overallQualityLabel;
+    private JPanel panel3;
+    private JScrollPane scrollPane4;
+    protected JTextPane logText;
+    private JPanel settingsPanel;
+    private JLabel bufferSizeEyeTrackerHistoryLabel;
+    public JLabel bufferSizeLabel;
+    public JSlider bufferSizeSlider;
+    private JLabel transparentLocalRecalibrationLabel;
     protected JCheckBox transparentRecalibration;
-
+    private JLabel bufferSizeBrainTrackerHistoryLabel;
+    public JLabel bufferSizeBrainTrackerHistoryValueLabel;
+    public JSlider bufferSizeBrainTrackerHistorySlider;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
-    /** */
+
     public ServerPanelTemplate() {
         initComponents();
     }
@@ -134,12 +115,12 @@ public class ServerPanelTemplate extends JPanel {
         return this.calibrationIndicator;
     }
 
-    public JLabel getEventRate() {
-        return this.eventRate;
+    public JLabel getBrainTrackingEventRate() {
+        return this.brainTrackingEventRate;
     }
 
-    public JStatusIndicator getEventRateIndicator() {
-        return this.eventRateIndicator;
+    public JStatusIndicator getBrainTrackingEventRateIndicator() {
+        return this.brainTrackingEventRateIndicator;
     }
 
     public JStatusIndicator getHeadDistanceIndicator() {
@@ -158,10 +139,6 @@ public class ServerPanelTemplate extends JPanel {
         return this.overallQualityLabel;
     }
 
-    public JPanel getPanel2() {
-        return this.panel2;
-    }
-
     public JXHyperlink getPerformHardwareRecalibrationLink() {
         return this.performHardwareRecalibrationLink;
     }
@@ -178,268 +155,370 @@ public class ServerPanelTemplate extends JPanel {
         return this.recordIndicator;
     }
 
+    public JPanel getVisualEyeTrackingDataPanel() {
+        return this.visualEyeTrackingDataPanel;
+    }
+
+    public JStatusIndicator getBrainRecordIndicator() {
+        return this.brainRecordIndicator;
+    }
+
+    public JStatusIndicator getEventRateIndicator() {
+        return this.eventRateIndicator;
+    }
+
+    public JLabel getEventRate() {
+        return this.eventRate;
+    }
+
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
         // Generated using JFormDesigner non-commercial license
-        this.panel2 = new JPanel();
-        this.eyePositionDisplay = new EyePositionDisplay();
-        this.eyeDistanceDisplay = new EyeDistanceDisplay();
-        this.pupilSizeDisplay1 = new PupilSizeDisplay();
-        this.tabbedPane1 = new JTabbedPane();
-        this.panel1 = new JPanel();
-        this.deviceNameLabel = new JLabel();
-        this.eyeTrackingDeviceName = new JLabel();
-        this.deviceTypeLabel = new JLabel();
-        this.eyeTrackingDeviceType = new JLabel();
-        this.label1 = new JLabel();
-        this.deviceLocation = new JLabel();
-        this.label10 = new JLabel();
-        this.trackingSince = new JLabel();
-        this.label7 = new JLabel();
-        this.eventRateIndicator = new JStatusIndicator();
-        this.eventRate = new JLabel();
-        this.recordingTitle = new JLabel();
-        this.recordIndicator = new JStatusIndicator();
-        this.recordSwitch = new JXHyperlink();
-        this.gazePositionLabel = new JLabel();
-        this.gazePositionHistoryLink = new JXHyperlink();
-        this.headPositionLabel = new JLabel();
-        this.headPositionIndicator = new JStatusIndicator();
-        this.headPositionHistoryLink = new JXHyperlink();
-        this.headDistanceLabel = new JLabel();
-        this.headDistanceIndicator = new JStatusIndicator();
-        this.headDistanceHistoryLink = new JXHyperlink();
-        this.pupilSizeLabel = new JLabel();
-        this.pupilSizeHistoryLink = new JXHyperlink();
-        this.label5 = new JLabel();
-        this.calibrationIndicator = new JStatusIndicator();
-        this.performRecalibrationLink = new JXHyperlink();
-        this.label6 = new JLabel();
-        this.performHardwareRecalibrationLink = new JXHyperlink();
-        this.label12 = new JLabel();
-        this.overallQualityIndicator = new JStatusIndicator();
-        this.overallQualityLabel = new JLabel();
-        this.panel3 = new JPanel();
-        this.scrollPane4 = new JScrollPane();
-        this.logText = new JTextPane();
-        this.panel4 = new JPanel();
-        this.label2 = new JLabel();
-        this.bufferSizeLabel = new JLabel();
-        this.bufferSizeSlider = new JSlider();
-        this.label11 = new JLabel();
-        this.transparentRecalibration = new JCheckBox();
-        final CellConstraints cc = new CellConstraints();
+        visualEyeTrackingDataPanel = new JPanel();
+        eyePositionDisplay = new EyePositionDisplay();
+        eyeDistanceDisplay = new EyeDistanceDisplay();
+        pupilSizeDisplay = new PupilSizeDisplay();
+        tabbedPane = new JTabbedPane();
+        overallPanel = new JPanel();
+        eyeTrackingDeviceNameLabel = new JLabel();
+        eyeTrackingDeviceNameValueLabel = new JLabel();
+        eyeTrackingDeviceTypeLabel = new JLabel();
+        eyeTrackingDeviceTypeValueLabel = new JLabel();
+        eyeTrackingDeviceLocationLabel = new JLabel();
+        eyeTrackingDeviceLocationValueLabel = new JLabel();
+        recordingTitle = new JLabel();
+        recordIndicator = new JStatusIndicator();
+        recordSwitch = new JXHyperlink();
+        eyeTrackingEventRateLabel = new JLabel();
+        eventRateIndicator = new JStatusIndicator();
+        eventRate = new JLabel();
+        brainTrackingDeviceNameLabel = new JLabel();
+        brainTrackingDeviceNameValueLabel = new JLabel();
+        brainTrackingDeviceLocationLabel = new JLabel();
+        brainTrackingDeviceLocationValueLabel = new JLabel();
+        brainTrackerRecordingStatusLabel = new JLabel();
+        brainRecordIndicator = new JStatusIndicator();
+        brainTrackingRecordSwitch = new JXHyperlink();
+        brainTrackingEventRateLabel = new JLabel();
+        brainTrackingEventRateIndicator = new JStatusIndicator();
+        brainTrackingEventRate = new JLabel();
+        deviceTrackingSinceLabel = new JLabel();
+        trackingSince = new JLabel();
+        brainHistoryLabel = new JLabel();
+        brainHistoryLink = new JXHyperlink();
+        gazePositionLabel = new JLabel();
+        gazePositionHistoryLink = new JXHyperlink();
+        headPositionLabel = new JLabel();
+        headPositionIndicator = new JStatusIndicator();
+        headPositionHistoryLink = new JXHyperlink();
+        headDistanceLabel = new JLabel();
+        headDistanceIndicator = new JStatusIndicator();
+        headDistanceHistoryLink = new JXHyperlink();
+        pupilSizeLabel = new JLabel();
+        pupilSizeHistoryLink = new JXHyperlink();
+        hardwareRecalibrationLabel = new JLabel();
+        performHardwareRecalibrationLink = new JXHyperlink();
+        localRecalibrationVerificationLabel = new JLabel();
+        calibrationIndicator = new JStatusIndicator();
+        performRecalibrationLink = new JXHyperlink();
+        qualityLabel = new JLabel();
+        overallQualityIndicator = new JStatusIndicator();
+        overallQualityLabel = new JLabel();
+        panel3 = new JPanel();
+        scrollPane4 = new JScrollPane();
+        logText = new JTextPane();
+        settingsPanel = new JPanel();
+        bufferSizeEyeTrackerHistoryLabel = new JLabel();
+        bufferSizeLabel = new JLabel();
+        bufferSizeSlider = new JSlider();
+        transparentLocalRecalibrationLabel = new JLabel();
+        transparentRecalibration = new JCheckBox();
+        bufferSizeBrainTrackerHistoryLabel = new JLabel();
+        bufferSizeBrainTrackerHistoryValueLabel = new JLabel();
+        bufferSizeBrainTrackerHistorySlider = new JSlider();
+        CellConstraints cc = new CellConstraints();
 
         //======== this ========
-        setPreferredSize(new Dimension(600, 720));
-        setMinimumSize(new Dimension(600, 620));
-        setLayout(new FormLayout("default:grow", "min, $lgap, 0dlu, $lgap, fill:[235dlu,default]:grow"));
+        setPreferredSize(new Dimension(600, 800));
+        setMinimumSize(new Dimension(600, 700));
+        setLayout(new FormLayout(
+            "default:grow",
+            "min, $lgap, 0dlu, $lgap, fill:[401dlu,default]:grow"));
 
-        //======== panel2 ========
+        //======== visualEyeTrackingDataPanel ========
         {
-            this.panel2.setBorder(new TitledBorder(null, "Visual Tracking Data", TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION));
-            this.panel2.setPreferredSize(new Dimension(506, 500));
-            this.panel2.setOpaque(false);
-            this.panel2.setRequestFocusEnabled(false);
-            this.panel2.setVerifyInputWhenFocusTarget(false);
-            this.panel2.setAlignmentY(1.5F);
-            this.panel2.setLayout(new FormLayout("default:grow, 2*($lcgap, default)", "fill:150dlu"));
-            ((FormLayout) this.panel2.getLayout()).setColumnGroups(new int[][] { { 3, 5 } });
+            visualEyeTrackingDataPanel.setBorder(new TitledBorder(null, "Visual Tracking Data", TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION));
+            visualEyeTrackingDataPanel.setPreferredSize(new Dimension(506, 500));
+            visualEyeTrackingDataPanel.setOpaque(false);
+            visualEyeTrackingDataPanel.setRequestFocusEnabled(false);
+            visualEyeTrackingDataPanel.setVerifyInputWhenFocusTarget(false);
+            visualEyeTrackingDataPanel.setAlignmentY(1.5F);
+            visualEyeTrackingDataPanel.setLayout(new FormLayout(
+                "default:grow, 2*($lcgap, default)",
+                "fill:150dlu"));
+            ((FormLayout)visualEyeTrackingDataPanel.getLayout()).setColumnGroups(new int[][] {{3, 5}});
 
             //---- eyePositionDisplay ----
-            this.eyePositionDisplay.setPreferredSize(new Dimension(300, 200));
-            this.eyePositionDisplay.setBorder(new EmptyBorder(5, 5, 5, 5));
-            this.eyePositionDisplay.setMinimumSize(new Dimension(1, 200));
-            this.eyePositionDisplay.setEyePostionCanvasBackgroundColor(Color.darkGray);
-            this.panel2.add(this.eyePositionDisplay, cc.xy(1, 1));
+            eyePositionDisplay.setPreferredSize(new Dimension(300, 200));
+            eyePositionDisplay.setBorder(new EmptyBorder(5, 5, 5, 5));
+            eyePositionDisplay.setMinimumSize(new Dimension(1, 200));
+            eyePositionDisplay.setEyePostionCanvasBackgroundColor(Color.darkGray);
+            visualEyeTrackingDataPanel.add(eyePositionDisplay, cc.xy(1, 1));
 
             //---- eyeDistanceDisplay ----
-            this.eyeDistanceDisplay.setPreferredSize(new Dimension(50, 300));
-            this.eyeDistanceDisplay.setMinimumSize(new Dimension(1, 300));
-            this.eyeDistanceDisplay.setPaddingVal(4);
-            this.eyeDistanceDisplay.setBackground(null);
-            this.eyeDistanceDisplay.setForeground(Color.darkGray);
-            this.eyeDistanceDisplay.setEyeDistanceCanvasColor(Color.darkGray);
-            this.panel2.add(this.eyeDistanceDisplay, new CellConstraints(3, 1, 1, 1, CellConstraints.DEFAULT, CellConstraints.DEFAULT, new Insets(5, 0, 5, 0)));
+            eyeDistanceDisplay.setPreferredSize(new Dimension(50, 300));
+            eyeDistanceDisplay.setMinimumSize(new Dimension(1, 300));
+            eyeDistanceDisplay.setPaddingVal(4);
+            eyeDistanceDisplay.setBackground(null);
+            eyeDistanceDisplay.setForeground(Color.darkGray);
+            eyeDistanceDisplay.setEyeDistanceCanvasColor(Color.darkGray);
+            visualEyeTrackingDataPanel.add(eyeDistanceDisplay, new CellConstraints(3, 1, 1, 1, CellConstraints.DEFAULT, CellConstraints.DEFAULT, new Insets( 5, 0, 5, 0)));
 
-            //---- pupilSizeDisplay1 ----
-            this.pupilSizeDisplay1.setPreferredSize(new Dimension(60, 300));
-            this.pupilSizeDisplay1.setMinimumSize(new Dimension(1, 300));
-            this.pupilSizeDisplay1.setPupilSizeCanvasBackgroundColor(Color.darkGray);
-            this.panel2.add(this.pupilSizeDisplay1, new CellConstraints(5, 1, 1, 1, CellConstraints.DEFAULT, CellConstraints.DEFAULT, new Insets(5, 0, 5, 0)));
+            //---- pupilSizeDisplay ----
+            pupilSizeDisplay.setPreferredSize(new Dimension(60, 300));
+            pupilSizeDisplay.setMinimumSize(new Dimension(1, 300));
+            pupilSizeDisplay.setPupilSizeCanvasBackgroundColor(Color.darkGray);
+            visualEyeTrackingDataPanel.add(pupilSizeDisplay, new CellConstraints(5, 1, 1, 1, CellConstraints.DEFAULT, CellConstraints.DEFAULT, new Insets( 5, 0, 5, 0)));
         }
-        add(this.panel2, cc.xywh(1, 1, 1, 1, CellConstraints.FILL, CellConstraints.DEFAULT));
+        add(visualEyeTrackingDataPanel, cc.xywh(1, 1, 1, 1, CellConstraints.FILL, CellConstraints.DEFAULT));
 
-        //======== tabbedPane1 ========
+        //======== tabbedPane ========
         {
 
-            //======== panel1 ========
+            //======== overallPanel ========
             {
-                this.panel1.setLayout(new FormLayout("150dlu, $lcgap, default, 6dlu, default:grow", "default, $lgap, fill:default, 17*($lgap, default)"));
-                ((FormLayout) this.panel1.getLayout()).setRowGroups(new int[][] { { 1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 33, 35 } });
+                overallPanel.setLayout(new FormLayout(
+                    "150dlu, $lcgap, default, 6dlu, default:grow",
+                    "default, $lgap, fill:default, 21*($lgap, default)"));
+                ((FormLayout)overallPanel.getLayout()).setRowGroups(new int[][] {{1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35, 37, 39, 43, 45}});
 
-                //---- deviceNameLabel ----
-                this.deviceNameLabel.setText("Tracking Device Name");
-                this.panel1.add(this.deviceNameLabel, cc.xy(1, 1));
+                //---- eyeTrackingDeviceNameLabel ----
+                eyeTrackingDeviceNameLabel.setText("Eye Tracking Device Name");
+                overallPanel.add(eyeTrackingDeviceNameLabel, cc.xy(1, 1));
 
-                //---- eyeTrackingDeviceName ----
-                this.eyeTrackingDeviceName.setText("-");
-                this.panel1.add(this.eyeTrackingDeviceName, cc.xy(5, 1));
+                //---- eyeTrackingDeviceNameValueLabel ----
+                eyeTrackingDeviceNameValueLabel.setText("-");
+                overallPanel.add(eyeTrackingDeviceNameValueLabel, cc.xy(5, 1));
 
-                //---- deviceTypeLabel ----
-                this.deviceTypeLabel.setText("Tracking Device Type");
-                this.panel1.add(this.deviceTypeLabel, cc.xy(1, 3));
+                //---- eyeTrackingDeviceTypeLabel ----
+                eyeTrackingDeviceTypeLabel.setText("Eye Tracking Device Type");
+                overallPanel.add(eyeTrackingDeviceTypeLabel, cc.xy(1, 3));
 
-                //---- eyeTrackingDeviceType ----
-                this.eyeTrackingDeviceType.setText("-");
-                this.panel1.add(this.eyeTrackingDeviceType, cc.xy(5, 3));
+                //---- eyeTrackingDeviceTypeValueLabel ----
+                eyeTrackingDeviceTypeValueLabel.setText("-");
+                overallPanel.add(eyeTrackingDeviceTypeValueLabel, cc.xy(5, 3));
 
-                //---- label1 ----
-                this.label1.setText("Tracking Device Location");
-                this.panel1.add(this.label1, cc.xy(1, 5));
+                //---- eyeTrackingDeviceLocationLabel ----
+                eyeTrackingDeviceLocationLabel.setText("Eye Tracking Device Location");
+                overallPanel.add(eyeTrackingDeviceLocationLabel, cc.xy(1, 5));
 
-                //---- deviceLocation ----
-                this.deviceLocation.setText("-");
-                this.panel1.add(this.deviceLocation, cc.xy(5, 5));
-
-                //---- label10 ----
-                this.label10.setText("Device Tracking Since");
-                this.panel1.add(this.label10, cc.xy(1, 9));
-
-                //---- trackingSince ----
-                this.trackingSince.setText("0");
-                this.panel1.add(this.trackingSince, cc.xy(5, 9));
-
-                //---- label7 ----
-                this.label7.setText("Event Rate [events / second]");
-                this.panel1.add(this.label7, cc.xy(1, 11));
-                this.panel1.add(this.eventRateIndicator, cc.xy(3, 11));
-
-                //---- eventRate ----
-                this.eventRate.setText("0");
-                this.panel1.add(this.eventRate, cc.xy(5, 11));
+                //---- eyeTrackingDeviceLocationValueLabel ----
+                eyeTrackingDeviceLocationValueLabel.setText("-");
+                overallPanel.add(eyeTrackingDeviceLocationValueLabel, cc.xy(5, 5));
 
                 //---- recordingTitle ----
-                this.recordingTitle.setText("Recording Status");
-                this.panel1.add(this.recordingTitle, cc.xy(1, 15));
-                this.panel1.add(this.recordIndicator, cc.xy(3, 15));
+                recordingTitle.setText("Eye Tracker Recording Status");
+                overallPanel.add(recordingTitle, cc.xy(1, 7));
+                overallPanel.add(recordIndicator, cc.xy(3, 7));
 
                 //---- recordSwitch ----
-                this.recordSwitch.setText("Off");
-                this.recordSwitch.setActionCommand("toggleRecording");
-                this.panel1.add(this.recordSwitch, cc.xy(5, 15));
+                recordSwitch.setText("Off");
+                recordSwitch.setActionCommand("toggleRecording");
+                overallPanel.add(recordSwitch, cc.xy(5, 7));
+
+                //---- eyeTrackingEventRateLabel ----
+                eyeTrackingEventRateLabel.setText("Eye Tracker Event Rate [events per second]");
+                overallPanel.add(eyeTrackingEventRateLabel, cc.xy(1, 9));
+                overallPanel.add(eventRateIndicator, cc.xy(3, 9));
+
+                //---- eventRate ----
+                eventRate.setText("0");
+                overallPanel.add(eventRate, cc.xy(5, 9));
+
+                //---- brainTrackingDeviceNameLabel ----
+                brainTrackingDeviceNameLabel.setText("Brain Tracking Device Name");
+                overallPanel.add(brainTrackingDeviceNameLabel, cc.xy(1, 13));
+
+                //---- brainTrackingDeviceNameValueLabel ----
+                brainTrackingDeviceNameValueLabel.setText("-");
+                overallPanel.add(brainTrackingDeviceNameValueLabel, cc.xy(5, 13));
+
+                //---- brainTrackingDeviceLocationLabel ----
+                brainTrackingDeviceLocationLabel.setText("Brain Tracking Device Location");
+                overallPanel.add(brainTrackingDeviceLocationLabel, cc.xy(1, 15));
+
+                //---- brainTrackingDeviceLocationValueLabel ----
+                brainTrackingDeviceLocationValueLabel.setText("-");
+                overallPanel.add(brainTrackingDeviceLocationValueLabel, cc.xy(5, 15));
+
+                //---- brainTrackerRecordingStatusLabel ----
+                brainTrackerRecordingStatusLabel.setText("Brain Tracker Recording Status");
+                overallPanel.add(brainTrackerRecordingStatusLabel, cc.xy(1, 17));
+                overallPanel.add(brainRecordIndicator, cc.xy(3, 17));
+
+                //---- brainTrackingRecordSwitch ----
+                brainTrackingRecordSwitch.setText("Off");
+                brainTrackingRecordSwitch.setActionCommand("toggleBrainRecording");
+                overallPanel.add(brainTrackingRecordSwitch, cc.xy(5, 17));
+
+                //---- brainTrackingEventRateLabel ----
+                brainTrackingEventRateLabel.setText("Brain Tracker Event Rate [events per second]");
+                overallPanel.add(brainTrackingEventRateLabel, cc.xy(1, 19));
+                overallPanel.add(brainTrackingEventRateIndicator, cc.xy(3, 19));
+
+                //---- brainTrackingEventRate ----
+                brainTrackingEventRate.setText("0");
+                overallPanel.add(brainTrackingEventRate, cc.xy(5, 19));
+
+                //---- deviceTrackingSinceLabel ----
+                deviceTrackingSinceLabel.setText("Device Tracking Since");
+                overallPanel.add(deviceTrackingSinceLabel, cc.xy(1, 23));
+
+                //---- trackingSince ----
+                trackingSince.setText("0");
+                overallPanel.add(trackingSince, cc.xy(5, 23));
+
+                //---- brainHistoryLabel ----
+                brainHistoryLabel.setText("Brain History");
+                overallPanel.add(brainHistoryLabel, cc.xy(1, 25));
+
+                //---- brainHistoryLink ----
+                brainHistoryLink.setText("Show brain history ...");
+                brainHistoryLink.setActionCommand("openBrainHistory");
+                overallPanel.add(brainHistoryLink, cc.xy(5, 25));
 
                 //---- gazePositionLabel ----
-                this.gazePositionLabel.setText("Gaze Position [normalized]");
-                this.panel1.add(this.gazePositionLabel, cc.xy(1, 19));
+                gazePositionLabel.setText("Gaze Position [normalized]");
+                overallPanel.add(gazePositionLabel, cc.xy(1, 29));
 
                 //---- gazePositionHistoryLink ----
-                this.gazePositionHistoryLink.setText("Gaze position history ...");
-                this.gazePositionHistoryLink.setActionCommand("openGazePositionHistory");
-                this.panel1.add(this.gazePositionHistoryLink, cc.xy(5, 19));
+                gazePositionHistoryLink.setText("Gaze position history ...");
+                gazePositionHistoryLink.setActionCommand("openGazePositionHistory");
+                overallPanel.add(gazePositionHistoryLink, cc.xy(5, 29));
 
                 //---- headPositionLabel ----
-                this.headPositionLabel.setText("Head Position [normalized]");
-                this.panel1.add(this.headPositionLabel, cc.xy(1, 21));
-                this.panel1.add(this.headPositionIndicator, cc.xy(3, 21));
+                headPositionLabel.setText("Head Position [normalized]");
+                overallPanel.add(headPositionLabel, cc.xy(1, 31));
+                overallPanel.add(headPositionIndicator, cc.xy(3, 31));
 
                 //---- headPositionHistoryLink ----
-                this.headPositionHistoryLink.setText("Head position history ...");
-                this.headPositionHistoryLink.setActionCommand("openHeadPositionHistory");
-                this.panel1.add(this.headPositionHistoryLink, cc.xy(5, 21));
+                headPositionHistoryLink.setText("Head position history ...");
+                headPositionHistoryLink.setActionCommand("openHeadPositionHistory");
+                overallPanel.add(headPositionHistoryLink, cc.xy(5, 31));
 
                 //---- headDistanceLabel ----
-                this.headDistanceLabel.setText("Head Distance [mm]");
-                this.panel1.add(this.headDistanceLabel, cc.xy(1, 23));
-                this.panel1.add(this.headDistanceIndicator, cc.xy(3, 23));
+                headDistanceLabel.setText("Head Distance [mm]");
+                overallPanel.add(headDistanceLabel, cc.xy(1, 33));
+                overallPanel.add(headDistanceIndicator, cc.xy(3, 33));
 
                 //---- headDistanceHistoryLink ----
-                this.headDistanceHistoryLink.setText("Head distance history ...");
-                this.headDistanceHistoryLink.setActionCommand("openHeadDistanceHistory");
-                this.panel1.add(this.headDistanceHistoryLink, cc.xy(5, 23));
+                headDistanceHistoryLink.setText("Head distance history ...");
+                headDistanceHistoryLink.setActionCommand("openHeadDistanceHistory");
+                overallPanel.add(headDistanceHistoryLink, cc.xy(5, 33));
 
                 //---- pupilSizeLabel ----
-                this.pupilSizeLabel.setText("Pupil Size [mm]");
-                this.panel1.add(this.pupilSizeLabel, cc.xy(1, 25));
+                pupilSizeLabel.setText("Pupil Size [mm]");
+                overallPanel.add(pupilSizeLabel, cc.xy(1, 35));
 
                 //---- pupilSizeHistoryLink ----
-                this.pupilSizeHistoryLink.setText("Pupilsize history ...");
-                this.pupilSizeHistoryLink.setActionCommand("openPupilSizeHistory");
-                this.panel1.add(this.pupilSizeHistoryLink, cc.xy(5, 25));
+                pupilSizeHistoryLink.setText("Pupilsize history ...");
+                pupilSizeHistoryLink.setActionCommand("openPupilSizeHistory");
+                overallPanel.add(pupilSizeHistoryLink, cc.xy(5, 35));
 
-                //---- label5 ----
-                this.label5.setText("Local Recalibration & Verficiation");
-                this.panel1.add(this.label5, cc.xy(1, 29));
-                this.panel1.add(this.calibrationIndicator, cc.xy(3, 29));
-
-                //---- performRecalibrationLink ----
-                this.performRecalibrationLink.setText("Perfom local recalibration ...");
-                this.performRecalibrationLink.setActionCommand("performRecalibration");
-                this.panel1.add(this.performRecalibrationLink, cc.xy(5, 29));
-
-                //---- label6 ----
-                this.label6.setText("Hardware Recalibration");
-                this.panel1.add(this.label6, cc.xy(1, 31));
+                //---- hardwareRecalibrationLabel ----
+                hardwareRecalibrationLabel.setText("Hardware Recalibration");
+                overallPanel.add(hardwareRecalibrationLabel, cc.xy(1, 39));
 
                 //---- performHardwareRecalibrationLink ----
-                this.performHardwareRecalibrationLink.setText("Perfom hardware recalibration ...");
-                this.performHardwareRecalibrationLink.setActionCommand("performHardwareRecalibration");
-                this.panel1.add(this.performHardwareRecalibrationLink, cc.xy(5, 31));
+                performHardwareRecalibrationLink.setText("Perfom hardware recalibration ...");
+                performHardwareRecalibrationLink.setActionCommand("performHardwareRecalibration");
+                overallPanel.add(performHardwareRecalibrationLink, cc.xy(5, 39));
 
-                //---- label12 ----
-                this.label12.setText("Overall Quality");
-                this.panel1.add(this.label12, cc.xy(1, 35));
-                this.panel1.add(this.overallQualityIndicator, cc.xy(3, 35));
+                //---- localRecalibrationVerificationLabel ----
+                localRecalibrationVerificationLabel.setText("Local Recalibration & Verficiation");
+                overallPanel.add(localRecalibrationVerificationLabel, cc.xy(1, 41));
+                overallPanel.add(calibrationIndicator, cc.xy(3, 41));
+
+                //---- performRecalibrationLink ----
+                performRecalibrationLink.setText("Perfom local recalibration ...");
+                performRecalibrationLink.setActionCommand("performRecalibration");
+                overallPanel.add(performRecalibrationLink, cc.xy(5, 41));
+
+                //---- qualityLabel ----
+                qualityLabel.setText("Overall Quality");
+                overallPanel.add(qualityLabel, cc.xy(1, 45));
+                overallPanel.add(overallQualityIndicator, cc.xy(3, 45));
 
                 //---- overallQualityLabel ----
-                this.overallQualityLabel.setText("Unknown");
-                this.panel1.add(this.overallQualityLabel, cc.xy(5, 35));
+                overallQualityLabel.setText("Unknown");
+                overallPanel.add(overallQualityLabel, cc.xy(5, 45));
             }
-            this.tabbedPane1.addTab("Overview", this.panel1);
+            tabbedPane.addTab("Overview", overallPanel);
+
 
             //======== panel3 ========
             {
-                this.panel3.setLayout(new FormLayout("default:grow", "fill:default:grow"));
+                panel3.setLayout(new FormLayout(
+                    "default:grow",
+                    "fill:default:grow"));
 
                 //======== scrollPane4 ========
                 {
-                    this.scrollPane4.setViewportView(this.logText);
+                    scrollPane4.setViewportView(logText);
                 }
-                this.panel3.add(this.scrollPane4, cc.xy(1, 1));
+                panel3.add(scrollPane4, cc.xy(1, 1));
             }
-            this.tabbedPane1.addTab("Message Log", this.panel3);
+            tabbedPane.addTab("Message Log", panel3);
 
-            //======== panel4 ========
+
+            //======== settingsPanel ========
             {
-                this.panel4.setLayout(new FormLayout("150dlu, $lcgap, 50dlu, 6dlu, default:grow", "2*(default, $lgap), default"));
+                settingsPanel.setLayout(new FormLayout(
+                    "150dlu, $lcgap, 50dlu, 6dlu, default:grow",
+                    "3*(default, $lgap), default"));
 
-                //---- label2 ----
-                this.label2.setText("Buffer Size History [Number of Events]");
-                this.panel4.add(this.label2, cc.xy(1, 1));
+                //---- bufferSizeEyeTrackerHistoryLabel ----
+                bufferSizeEyeTrackerHistoryLabel.setText("Buffer Size Eye Tracker History [#Events]");
+                settingsPanel.add(bufferSizeEyeTrackerHistoryLabel, cc.xy(1, 1));
 
                 //---- bufferSizeLabel ----
-                this.bufferSizeLabel.setText("300");
-                this.panel4.add(this.bufferSizeLabel, cc.xy(3, 1));
+                bufferSizeLabel.setText("300");
+                settingsPanel.add(bufferSizeLabel, cc.xy(3, 1));
 
                 //---- bufferSizeSlider ----
-                this.bufferSizeSlider.setMinimum(300);
-                this.bufferSizeSlider.setMaximum(6000);
-                this.bufferSizeSlider.setMajorTickSpacing(10);
-                this.bufferSizeSlider.setSnapToTicks(true);
-                this.panel4.add(this.bufferSizeSlider, cc.xy(5, 1));
+                bufferSizeSlider.setMinimum(300);
+                bufferSizeSlider.setMaximum(6000);
+                bufferSizeSlider.setMajorTickSpacing(10);
+                bufferSizeSlider.setSnapToTicks(true);
+                settingsPanel.add(bufferSizeSlider, cc.xy(5, 1));
 
-                //---- label11 ----
-                this.label11.setText("Transparent Local Recalibration");
-                this.panel4.add(this.label11, cc.xy(1, 3));
+                //---- transparentLocalRecalibrationLabel ----
+                transparentLocalRecalibrationLabel.setText("Transparent Local Recalibration");
+                settingsPanel.add(transparentLocalRecalibrationLabel, cc.xy(1, 3));
 
                 //---- transparentRecalibration ----
-                this.transparentRecalibration.setText("Transparent");
-                this.panel4.add(this.transparentRecalibration, cc.xy(5, 3));
+                transparentRecalibration.setText("Transparent");
+                settingsPanel.add(transparentRecalibration, cc.xy(5, 3));
+
+                //---- bufferSizeBrainTrackerHistoryLabel ----
+                bufferSizeBrainTrackerHistoryLabel.setText("Buffer Size Brain Tracker History [#Events]");
+                settingsPanel.add(bufferSizeBrainTrackerHistoryLabel, cc.xy(1, 7));
+
+                //---- bufferSizeBrainTrackerHistoryValueLabel ----
+                bufferSizeBrainTrackerHistoryValueLabel.setText("300");
+                settingsPanel.add(bufferSizeBrainTrackerHistoryValueLabel, cc.xy(3, 7));
+
+                //---- bufferSizeBrainTrackerHistorySlider ----
+                bufferSizeBrainTrackerHistorySlider.setMaximum(6000);
+                bufferSizeBrainTrackerHistorySlider.setMinimum(300);
+                bufferSizeBrainTrackerHistorySlider.setSnapToTicks(true);
+                bufferSizeBrainTrackerHistorySlider.setMajorTickSpacing(10);
+                settingsPanel.add(bufferSizeBrainTrackerHistorySlider, cc.xy(5, 7));
             }
-            this.tabbedPane1.addTab("Settings", this.panel4);
+            tabbedPane.addTab("Settings", settingsPanel);
 
         }
-        add(this.tabbedPane1, cc.xy(1, 5));
+        add(tabbedPane, cc.xy(1, 5));
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
     }
 }
