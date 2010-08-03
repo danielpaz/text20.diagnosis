@@ -16,7 +16,7 @@ import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
  * @author Andreas Buhl
  *
  */
-public abstract class AbstractHistoryChartDisplay extends AbstractTrackingEventComponent {
+public abstract class AbstractEyeTrackingHistoryChartDisplay extends AbstractTrackingEventComponent {
 
     /** */
     private static final long serialVersionUID = 4805889544008857101L;
@@ -75,7 +75,7 @@ public abstract class AbstractHistoryChartDisplay extends AbstractTrackingEventC
     public static boolean hasInstance = false;
 
     /** */
-    public AbstractHistoryChartDisplay() {
+    public AbstractEyeTrackingHistoryChartDisplay() {
         this(null, null);
     }
 
@@ -83,19 +83,19 @@ public abstract class AbstractHistoryChartDisplay extends AbstractTrackingEventC
      * @param applicationData
      * @param serverInfo
      */
-    public AbstractHistoryChartDisplay(final ApplicationData applicationData, final ServerInfo serverInfo) {
+    public AbstractEyeTrackingHistoryChartDisplay(final ApplicationData applicationData, final ServerInfo serverInfo) {
         super(applicationData, serverInfo);
         this.setPreferredSize(new Dimension(this.defaultChartPanelWidth, this.defaultChartPanelHeight));
         this.spaceHeight = (1.0f - 2 * CommonFunctions.limitFloat(this.trackHeight, 0.1f, 0.45f)) / 3;
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(final MouseEvent e) {
-                AbstractHistoryChartDisplay.this.setMousePressed(e);
+                AbstractEyeTrackingHistoryChartDisplay.this.setMousePressed(e);
             }
 
             @Override
             public void mouseReleased(final MouseEvent e) {
-                AbstractHistoryChartDisplay.this.setMousePressed(null);
+                AbstractEyeTrackingHistoryChartDisplay.this.setMousePressed(null);
             }
         });
     }
@@ -153,9 +153,11 @@ public abstract class AbstractHistoryChartDisplay extends AbstractTrackingEventC
                     continue;
                 }
                 g.setColor(Color.YELLOW);
-                g.drawLine(getXPixelPos(prevXPos), getEyeYPixelPos(getLeftEyeNormalizedValue(previousChartEyeTrackingEvent), getLeftBaseLineYPos()), getXPixelPos(i), getEyeYPixelPos(getLeftEyeNormalizedValue(e), getLeftBaseLineYPos()));
+                g.drawLine(getXPixelPos(prevXPos), getEyeYPixelPos(getLeftEyeNormalizedValue(previousChartEyeTrackingEvent), getLeftBaseLineYPos()),
+                           getXPixelPos(i), getEyeYPixelPos(getLeftEyeNormalizedValue(e), getLeftBaseLineYPos()));
                 g.setColor(Color.RED);
-                g.drawLine(getXPixelPos(prevXPos), getEyeYPixelPos(getRightEyeNormalizedValue(previousChartEyeTrackingEvent), getRightBaseLineYPos()), getXPixelPos(i), getEyeYPixelPos(getRightEyeNormalizedValue(e), getRightBaseLineYPos()));
+                g.drawLine(getXPixelPos(prevXPos), getEyeYPixelPos(getRightEyeNormalizedValue(previousChartEyeTrackingEvent), getRightBaseLineYPos()),
+                           getXPixelPos(i), getEyeYPixelPos(getRightEyeNormalizedValue(e), getRightBaseLineYPos()));
 
                 prevBufPos = bufpos;
                 previousChartEyeTrackingEvent = e;
@@ -235,8 +237,7 @@ public abstract class AbstractHistoryChartDisplay extends AbstractTrackingEventC
     /**
      * @param default_pupilsizechart_dataarea_backgroundcolor the dEFAULT_PUPILSIZECHART_DATAAREA_BACKGROUNDCOLOR to set
      */
-    public void setDataAreaBackgroundColor(
-                                           final Color default_pupilsizechart_dataarea_backgroundcolor) {
+    public void setDataAreaBackgroundColor(final Color default_pupilsizechart_dataarea_backgroundcolor) {
         this.dataAreaBackgroundColor = default_pupilsizechart_dataarea_backgroundcolor;
     }
 
@@ -414,7 +415,7 @@ public abstract class AbstractHistoryChartDisplay extends AbstractTrackingEventC
      * @return a formatted representation of the data value currently displayed 
      * on the x-position of a given mouse event (click)   
      */
-    @SuppressWarnings( { "boxing", "unused" })
+    @SuppressWarnings( { "unused" })
     protected String getValueFromMousePos(final MouseEvent e) {
         final int y = e.getY();
         final int x = e.getX() - getInsets().left - this.scaleGap - this.scaleWidth;
@@ -422,21 +423,21 @@ public abstract class AbstractHistoryChartDisplay extends AbstractTrackingEventC
 
         if (CommonFunctions.isBetweenIncludes(getLeftTopLineYPos(), getLeftBaseLineYPos(), y)) {
 
-            final float currVal = new Float(getLeftCurrVal(bufpos));
+            final float currVal = getLeftCurrVal(bufpos);
             final float delta = getLeftBaseLineYPos() - getLeftTopLineYPos();
             final float relativePos = delta - y + getLeftTopLineYPos();
             final float range = getLeftUpperLimit() - getLeftLowerLimit();
             final float portion = relativePos / delta;
             final float result = getLeftLowerLimit() + portion * range;
-            return String.format("%.2f", currVal);
+            return String.format("%.2f", new Float(currVal));
         }
         if (CommonFunctions.isBetweenIncludes(getRightTopLineYPos(), getRightBaseLineYPos(), y)) {
-            final float currVal = new Float(getRightCurrVal(bufpos));
+            final float currVal = getRightCurrVal(bufpos);
             final float delta = getRightBaseLineYPos() - getRightTopLineYPos();
             final float relativePos = delta - y + getRightTopLineYPos();
             final float range = getRightUpperLimit() - getRightLowerLimit();
             final float result = getRightLowerLimit() + relativePos / delta * range;
-            return String.format("%.2f", currVal);
+            return String.format("%.2f", new Float(currVal));
         }
 
         return "?: " + x;

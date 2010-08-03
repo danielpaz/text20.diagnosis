@@ -12,7 +12,7 @@ import de.dfki.km.text20.diagnosis.model.ServerInfo;
  * @author Vartan
  *
  */
-public class BrainDataChart extends AbstractHistoryChartDisplay {
+public class BrainDataChart extends AbstractEyeTrackingHistoryChartDisplay {
 
     /** */
     private static final long serialVersionUID = 6906924592431585405L;
@@ -33,7 +33,7 @@ public class BrainDataChart extends AbstractHistoryChartDisplay {
     }
 
     /* (non-Javadoc)
-     * @see de.dfki.km.text20.diagnosis.gui.components.AbstractHistoryChartDisplay#getLeftCurrVal(int)
+     * @see de.dfki.km.text20.diagnosis.gui.components.AbstractEyeTrackingHistoryChartDisplay#getLeftCurrVal(int)
      */
     @Override
     float getLeftCurrVal(int x) {
@@ -42,7 +42,7 @@ public class BrainDataChart extends AbstractHistoryChartDisplay {
     }
 
     /* (non-Javadoc)
-     * @see de.dfki.km.text20.diagnosis.gui.components.AbstractHistoryChartDisplay#getRightCurrVal(int)
+     * @see de.dfki.km.text20.diagnosis.gui.components.AbstractEyeTrackingHistoryChartDisplay#getRightCurrVal(int)
      */
     @Override
     float getRightCurrVal(int x) {
@@ -51,20 +51,18 @@ public class BrainDataChart extends AbstractHistoryChartDisplay {
     }
 
     /* (non-Javadoc)
-     * @see de.dfki.km.text20.diagnosis.gui.components.AbstractHistoryChartDisplay#getLeftEyeNormalizedValue(de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent)
+     * @see de.dfki.km.text20.diagnosis.gui.components.AbstractEyeTrackingHistoryChartDisplay#getLeftEyeNormalizedValue(de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent)
      */
     @Override
     protected float getLeftEyeNormalizedValue(de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent e) {
-        // TODO Auto-generated method stub
         return 0;
     }
 
     /* (non-Javadoc)
-     * @see de.dfki.km.text20.diagnosis.gui.components.AbstractHistoryChartDisplay#getRightEyeNormalizedValue(de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent)
+     * @see de.dfki.km.text20.diagnosis.gui.components.AbstractEyeTrackingHistoryChartDisplay#getRightEyeNormalizedValue(de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent)
      */
     @Override
     protected float getRightEyeNormalizedValue(de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent e) {
-        // TODO Auto-generated method stub
         return 0;
     }
 

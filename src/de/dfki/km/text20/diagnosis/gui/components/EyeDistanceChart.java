@@ -11,7 +11,7 @@ import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
  * @author rb
  *
  */
-public class EyeDistanceChart extends AbstractHistoryChartDisplay {
+public class EyeDistanceChart extends AbstractEyeTrackingHistoryChartDisplay {
 
     /** */
     private static final long serialVersionUID = -871265621650266414L;

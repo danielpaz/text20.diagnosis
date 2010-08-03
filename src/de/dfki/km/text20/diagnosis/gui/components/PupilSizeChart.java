@@ -15,7 +15,7 @@ import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
  * @author ABu
  *
  */
-public class PupilSizeChart extends AbstractHistoryChartDisplay {
+public class PupilSizeChart extends AbstractEyeTrackingHistoryChartDisplay {
 
     /** */
     private static final long serialVersionUID = -2771364762444202451L;
@@ -51,7 +51,8 @@ public class PupilSizeChart extends AbstractHistoryChartDisplay {
     private float getNormalizedValue(final float pupilsize) {
         final float pupilSizeRange = EyeTrackingEventEvaluator.MAX_PUPILSIZE - EyeTrackingEventEvaluator.MIN_PUPILSIZE;
         final float pupilSize = CommonFunctions.limitFloat(pupilsize, EyeTrackingEventEvaluator.MIN_PUPILSIZE, EyeTrackingEventEvaluator.MAX_PUPILSIZE);
-        return (pupilSize - EyeTrackingEventEvaluator.MIN_PUPILSIZE) / pupilSizeRange;
+        final float result = (pupilSize - EyeTrackingEventEvaluator.MIN_PUPILSIZE) / pupilSizeRange; 
+        return result;
     }
 
     @Override

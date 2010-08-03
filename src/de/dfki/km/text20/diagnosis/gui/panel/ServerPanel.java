@@ -329,7 +329,6 @@ public class ServerPanel extends ServerPanelTemplate implements TrackingListener
 //            for (String s : channels) {
 //                System.out.println(s + " = " + ((BrainTrackingEvent) event).getValue(s));
 //            }
-            // TODO: Add brain tracking evaluation, etc
         }
         
     }
