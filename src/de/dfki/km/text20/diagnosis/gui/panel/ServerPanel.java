@@ -316,6 +316,7 @@ public class ServerPanel extends ServerPanelTemplate implements TrackingListener
             this.pupilSizeHistory.newTrackingEvent(event);
             this.headDistanceHistory.newTrackingEvent(event);
             this.headPositionHistory.newTrackingEvent(event);
+            
             this.recalibrationWindow.newEyeTrackingEvent((EyeTrackingEvent)event);
         }
         
@@ -323,14 +324,8 @@ public class ServerPanel extends ServerPanelTemplate implements TrackingListener
             this.brainTrackingEventCounter++;
             this.brainTrackingRingBuffer.addEvent((BrainTrackingEvent) event);
             
-//            System.out.println("#### New Brain Tracking Event ####");
-//            Collection<String> channels = ((BrainTrackingEvent) event).getChannels();
-//            
-//            for (String s : channels) {
-//                System.out.println(s + " = " + ((BrainTrackingEvent) event).getValue(s));
-//            }
+            this.brainHistory.newTrackingEvent(event);
         }
-        
     }
 
     /**

@@ -91,8 +91,6 @@ public class EyeDistanceDisplay extends AbstractTrackingEventComponent {
     @SuppressWarnings({ "null", "boxing" })
     @Override
     public void render(final Graphics g) {
-
-//      final EyeTrackingEvent e = this.EyeTrackingEvent;
         final EyeTrackingEvent e = (EyeTrackingEvent) this.trackingEvent;
 
         if ((e == null)  && (this.applicationData != null)) { return; }

@@ -69,6 +69,7 @@ public abstract class AbstractTrackingEventComponent extends JComponent {
     /** */
     final Color stateVagueColor = Color.YELLOW;
     
+    // TODO: What for is  
     /** Tracking event we use for visualization. */
     protected TrackingEvent trackingEvent;
 
@@ -137,6 +138,8 @@ public abstract class AbstractTrackingEventComponent extends JComponent {
      */
     public abstract void render(Graphics g);
 
+    
+    // TODO: AAAAAAAAAAAHHHHHHHHHHHHHHHHHH. If the borders are set like above, i.e. 0,0,0,0, the getAreaWidth and getAreaHeight are useless... 
     /**
      * @return the width of the drawable area
      */

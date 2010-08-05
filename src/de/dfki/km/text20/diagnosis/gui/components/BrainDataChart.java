@@ -12,7 +12,7 @@ import de.dfki.km.text20.diagnosis.model.ServerInfo;
  * @author Vartan
  *
  */
-public class BrainDataChart extends AbstractEyeTrackingHistoryChartDisplay {
+public class BrainDataChart extends AbstractBrainTrackingHistoryChartDisplay {
 
     /** */
     private static final long serialVersionUID = 6906924592431585405L;
@@ -30,40 +30,13 @@ public class BrainDataChart extends AbstractEyeTrackingHistoryChartDisplay {
         super(applicationData, serverInfo);
 
         this.setPreferredSize(new Dimension(-1, -1));
-    }
-
-    /* (non-Javadoc)
-     * @see de.dfki.km.text20.diagnosis.gui.components.AbstractEyeTrackingHistoryChartDisplay#getLeftCurrVal(int)
-     */
-    @Override
-    float getLeftCurrVal(int x) {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-    /* (non-Javadoc)
-     * @see de.dfki.km.text20.diagnosis.gui.components.AbstractEyeTrackingHistoryChartDisplay#getRightCurrVal(int)
-     */
-    @Override
-    float getRightCurrVal(int x) {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-    /* (non-Javadoc)
-     * @see de.dfki.km.text20.diagnosis.gui.components.AbstractEyeTrackingHistoryChartDisplay#getLeftEyeNormalizedValue(de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent)
-     */
-    @Override
-    protected float getLeftEyeNormalizedValue(de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent e) {
-        return 0;
-    }
-
-    /* (non-Javadoc)
-     * @see de.dfki.km.text20.diagnosis.gui.components.AbstractEyeTrackingHistoryChartDisplay#getRightEyeNormalizedValue(de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent)
-     */
-    @Override
-    protected float getRightEyeNormalizedValue(de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent e) {
-        return 0;
+        
+//      System.out.println("#### New Brain Tracking Event ####");
+//      Collection<String> channels = ((BrainTrackingEvent) event).getChannels();
+//      
+//      for (String s : channels) {
+//          System.out.println(s + " = " + ((BrainTrackingEvent) event).getValue(s));
+//      }
     }
 
 }
