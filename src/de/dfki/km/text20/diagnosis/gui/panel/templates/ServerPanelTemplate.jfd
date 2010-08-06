@@ -24,14 +24,14 @@
        <string>preferredSize</string> 
        <object class="java.awt.Dimension"> 
         <int>600</int> 
-        <int>800</int> 
+        <int>825</int> 
        </object> 
       </void> 
       <void method="setProperty"> 
        <string>minimumSize</string> 
        <object class="java.awt.Dimension"> 
         <int>600</int> 
-        <int>700</int> 
+        <int>800</int> 
        </object> 
       </void> 
       <void property="name"> 
@@ -285,7 +285,7 @@
            </void> 
            <void method="setProperty"> 
             <string>$rowSpecs</string> 
-            <string>default, linegap, fill:default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default</string> 
+            <string>default, linegap, fill:default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default</string> 
            </void> 
            <void method="setProperty"> 
             <string>$columnGroupIds</string> 
@@ -293,7 +293,7 @@
            </void> 
            <void method="setProperty"> 
             <string>$rowGroupIds</string> 
-            <string>1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1</string> 
+            <string>1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1</string> 
            </void> 
           </object> 
           <void method="auxiliary"> 
@@ -972,7 +972,7 @@
             </void> 
             <void method="setProperty"> 
              <string>gridY</string> 
-             <int>25</int> 
+             <int>27</int> 
             </void> 
            </object> 
           </void> 
@@ -1001,7 +1001,7 @@
             <class>com.jgoodies.forms.layout.CellConstraints</class> 
             <void method="setProperty"> 
              <string>gridY</string> 
-             <int>25</int> 
+             <int>27</int> 
             </void> 
             <void method="setProperty"> 
              <string>gridX</string> 
@@ -1024,7 +1024,7 @@
             <class>com.jgoodies.forms.layout.CellConstraints</class> 
             <void method="setProperty"> 
              <string>gridY</string> 
-             <int>29</int> 
+             <int>31</int> 
             </void> 
            </object> 
           </void> 
@@ -1061,7 +1061,7 @@
             </void> 
             <void method="setProperty"> 
              <string>gridY</string> 
-             <int>29</int> 
+             <int>31</int> 
             </void> 
            </object> 
           </void> 
@@ -1084,7 +1084,7 @@
             </void> 
             <void method="setProperty"> 
              <string>gridY</string> 
-             <int>31</int> 
+             <int>33</int> 
             </void> 
            </object> 
           </void> 
@@ -1113,7 +1113,7 @@
             <class>com.jgoodies.forms.layout.CellConstraints</class> 
             <void method="setProperty"> 
              <string>gridY</string> 
-             <int>31</int> 
+             <int>33</int> 
             </void> 
             <void method="setProperty"> 
              <string>gridX</string> 
@@ -1150,7 +1150,7 @@
             <class>com.jgoodies.forms.layout.CellConstraints</class> 
             <void method="setProperty"> 
              <string>gridY</string> 
-             <int>31</int> 
+             <int>33</int> 
             </void> 
             <void method="setProperty"> 
              <string>gridX</string> 
@@ -1173,7 +1173,7 @@
             <class>com.jgoodies.forms.layout.CellConstraints</class> 
             <void method="setProperty"> 
              <string>gridY</string> 
-             <int>33</int> 
+             <int>35</int> 
             </void> 
            </object> 
           </void> 
@@ -1202,7 +1202,7 @@
             <class>com.jgoodies.forms.layout.CellConstraints</class> 
             <void method="setProperty"> 
              <string>gridY</string> 
-             <int>33</int> 
+             <int>35</int> 
             </void> 
             <void method="setProperty"> 
              <string>gridX</string> 
@@ -1239,7 +1239,7 @@
             <class>com.jgoodies.forms.layout.CellConstraints</class> 
             <void method="setProperty"> 
              <string>gridY</string> 
-             <int>33</int> 
+             <int>35</int> 
             </void> 
             <void method="setProperty"> 
              <string>gridX</string> 
@@ -1262,7 +1262,7 @@
             <class>com.jgoodies.forms.layout.CellConstraints</class> 
             <void method="setProperty"> 
              <string>gridY</string> 
-             <int>35</int> 
+             <int>37</int> 
             </void> 
            </object> 
           </void> 
@@ -1299,7 +1299,7 @@
             <class>com.jgoodies.forms.layout.CellConstraints</class> 
             <void method="setProperty"> 
              <string>gridY</string> 
-             <int>35</int> 
+             <int>37</int> 
             </void> 
             <void method="setProperty"> 
              <string>gridX</string> 
@@ -1322,7 +1322,7 @@
             <class>com.jgoodies.forms.layout.CellConstraints</class> 
             <void method="setProperty"> 
              <string>gridY</string> 
-             <int>39</int> 
+             <int>41</int> 
             </void> 
            </object> 
           </void> 
@@ -1359,7 +1359,7 @@
             <class>com.jgoodies.forms.layout.CellConstraints</class> 
             <void method="setProperty"> 
              <string>gridY</string> 
-             <int>39</int> 
+             <int>41</int> 
             </void> 
             <void method="setProperty"> 
              <string>gridX</string> 
@@ -1382,7 +1382,7 @@
             <class>com.jgoodies.forms.layout.CellConstraints</class> 
             <void method="setProperty"> 
              <string>gridY</string> 
-             <int>41</int> 
+             <int>43</int> 
             </void> 
            </object> 
           </void> 
@@ -1411,7 +1411,7 @@
             <class>com.jgoodies.forms.layout.CellConstraints</class> 
             <void method="setProperty"> 
              <string>gridY</string> 
-             <int>41</int> 
+             <int>43</int> 
             </void> 
             <void method="setProperty"> 
              <string>gridX</string> 
@@ -1452,7 +1452,7 @@
             <class>com.jgoodies.forms.layout.CellConstraints</class> 
             <void method="setProperty"> 
              <string>gridY</string> 
-             <int>41</int> 
+             <int>43</int> 
             </void> 
             <void method="setProperty"> 
              <string>gridX</string> 
@@ -1465,7 +1465,7 @@
             <string>javax.swing.JLabel</string> 
             <void method="setProperty"> 
              <string>text</string> 
-             <string>Overall Quality</string> 
+             <string>Overall Eye Tracking Quality</string> 
             </void> 
             <void property="name"> 
              <string>qualityLabel</string> 
@@ -1475,7 +1475,7 @@
             <class>com.jgoodies.forms.layout.CellConstraints</class> 
             <void method="setProperty"> 
              <string>gridY</string> 
-             <int>45</int> 
+             <int>47</int> 
             </void> 
            </object> 
           </void> 
@@ -1504,7 +1504,7 @@
             <class>com.jgoodies.forms.layout.CellConstraints</class> 
             <void method="setProperty"> 
              <string>gridY</string> 
-             <int>45</int> 
+             <int>47</int> 
             </void> 
             <void method="setProperty"> 
              <string>gridX</string> 
@@ -1541,7 +1541,7 @@
             </void> 
             <void method="setProperty"> 
              <string>gridY</string> 
-             <int>45</int> 
+             <int>47</int> 
             </void> 
            </object> 
           </void> 
@@ -1747,58 +1747,6 @@
             <string>javax.swing.JLabel</string> 
             <void method="setProperty"> 
              <string>text</string> 
-             <string>Transparent Local Recalibration</string> 
-            </void> 
-            <void property="name"> 
-             <string>transparentLocalRecalibrationLabel</string> 
-            </void> 
-           </object> 
-           <object class="com.jformdesigner.model.FormLayoutConstraints"> 
-            <class>com.jgoodies.forms.layout.CellConstraints</class> 
-            <void method="setProperty"> 
-             <string>gridX</string> 
-             <int>1</int> 
-            </void> 
-            <void method="setProperty"> 
-             <string>gridY</string> 
-             <int>3</int> 
-            </void> 
-           </object> 
-          </void> 
-          <void method="add"> 
-           <object class="com.jformdesigner.model.FormComponent"> 
-            <string>javax.swing.JCheckBox</string> 
-            <void method="setProperty"> 
-             <string>text</string> 
-             <string>Transparent</string> 
-            </void> 
-            <void property="name"> 
-             <string>transparentRecalibration</string> 
-            </void> 
-            <void method="auxiliary"> 
-             <void method="setProperty"> 
-              <string>JavaCodeGenerator.variableModifiers</string> 
-              <int>4</int> 
-             </void> 
-            </void> 
-           </object> 
-           <object class="com.jformdesigner.model.FormLayoutConstraints"> 
-            <class>com.jgoodies.forms.layout.CellConstraints</class> 
-            <void method="setProperty"> 
-             <string>gridX</string> 
-             <int>5</int> 
-            </void> 
-            <void method="setProperty"> 
-             <string>gridY</string> 
-             <int>3</int> 
-            </void> 
-           </object> 
-          </void> 
-          <void method="add"> 
-           <object class="com.jformdesigner.model.FormComponent"> 
-            <string>javax.swing.JLabel</string> 
-            <void method="setProperty"> 
-             <string>text</string> 
              <string>Buffer Size Brain Tracker History [#Events]</string> 
             </void> 
             <void property="name"> 
@@ -1808,12 +1756,8 @@
            <object class="com.jformdesigner.model.FormLayoutConstraints"> 
             <class>com.jgoodies.forms.layout.CellConstraints</class> 
             <void method="setProperty"> 
-             <string>gridX</string> 
-             <int>1</int> 
-            </void> 
-            <void method="setProperty"> 
              <string>gridY</string> 
-             <int>7</int> 
+             <int>3</int> 
             </void> 
            </object> 
           </void> 
@@ -1842,7 +1786,7 @@
             </void> 
             <void method="setProperty"> 
              <string>gridY</string> 
-             <int>7</int> 
+             <int>3</int> 
             </void> 
            </object> 
           </void> 
@@ -1851,7 +1795,7 @@
             <string>javax.swing.JSlider</string> 
             <void method="setProperty"> 
              <string>maximum</string> 
-             <int>6000</int> 
+             <int>2000</int> 
             </void> 
             <void method="setProperty"> 
              <string>minimum</string> 
@@ -1872,6 +1816,54 @@
              <void method="setProperty"> 
               <string>JavaCodeGenerator.variableModifiers</string> 
               <int>1</int> 
+             </void> 
+            </void> 
+           </object> 
+           <object class="com.jformdesigner.model.FormLayoutConstraints"> 
+            <class>com.jgoodies.forms.layout.CellConstraints</class> 
+            <void method="setProperty"> 
+             <string>gridX</string> 
+             <int>5</int> 
+            </void> 
+            <void method="setProperty"> 
+             <string>gridY</string> 
+             <int>3</int> 
+            </void> 
+           </object> 
+          </void> 
+          <void method="add"> 
+           <object class="com.jformdesigner.model.FormComponent"> 
+            <string>javax.swing.JLabel</string> 
+            <void method="setProperty"> 
+             <string>text</string> 
+             <string>Transparent Local Recalibration</string> 
+            </void> 
+            <void property="name"> 
+             <string>transparentLocalRecalibrationLabel</string> 
+            </void> 
+           </object> 
+           <object class="com.jformdesigner.model.FormLayoutConstraints"> 
+            <class>com.jgoodies.forms.layout.CellConstraints</class> 
+            <void method="setProperty"> 
+             <string>gridY</string> 
+             <int>7</int> 
+            </void> 
+           </object> 
+          </void> 
+          <void method="add"> 
+           <object class="com.jformdesigner.model.FormComponent"> 
+            <string>javax.swing.JCheckBox</string> 
+            <void method="setProperty"> 
+             <string>text</string> 
+             <string>Transparent</string> 
+            </void> 
+            <void property="name"> 
+             <string>transparentRecalibration</string> 
+            </void> 
+            <void method="auxiliary"> 
+             <void method="setProperty"> 
+              <string>JavaCodeGenerator.variableModifiers</string> 
+              <int>4</int> 
              </void> 
             </void> 
            </object> 
@@ -1919,7 +1911,7 @@
        <string>size</string> 
        <object class="java.awt.Dimension"> 
         <int>600</int> 
-        <int>935</int> 
+        <int>1030</int> 
        </object> 
       </void> 
      </object> 

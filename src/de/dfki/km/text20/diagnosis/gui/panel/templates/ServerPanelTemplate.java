@@ -96,11 +96,11 @@ public class ServerPanelTemplate extends JPanel {
     private JLabel bufferSizeEyeTrackerHistoryLabel;
     public JLabel bufferSizeLabel;
     public JSlider bufferSizeSlider;
-    private JLabel transparentLocalRecalibrationLabel;
-    protected JCheckBox transparentRecalibration;
     private JLabel bufferSizeBrainTrackerHistoryLabel;
     public JLabel bufferSizeBrainTrackerHistoryValueLabel;
     public JSlider bufferSizeBrainTrackerHistorySlider;
+    private JLabel transparentLocalRecalibrationLabel;
+    protected JCheckBox transparentRecalibration;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 
     public ServerPanelTemplate() {
@@ -231,16 +231,16 @@ public class ServerPanelTemplate extends JPanel {
         bufferSizeEyeTrackerHistoryLabel = new JLabel();
         bufferSizeLabel = new JLabel();
         bufferSizeSlider = new JSlider();
-        transparentLocalRecalibrationLabel = new JLabel();
-        transparentRecalibration = new JCheckBox();
         bufferSizeBrainTrackerHistoryLabel = new JLabel();
         bufferSizeBrainTrackerHistoryValueLabel = new JLabel();
         bufferSizeBrainTrackerHistorySlider = new JSlider();
+        transparentLocalRecalibrationLabel = new JLabel();
+        transparentRecalibration = new JCheckBox();
         CellConstraints cc = new CellConstraints();
 
         //======== this ========
-        setPreferredSize(new Dimension(600, 800));
-        setMinimumSize(new Dimension(600, 700));
+        setPreferredSize(new Dimension(600, 825));
+        setMinimumSize(new Dimension(600, 800));
         setLayout(new FormLayout(
             "default:grow",
             "min, $lgap, 0dlu, $lgap, fill:[401dlu,default]:grow"));
@@ -289,8 +289,8 @@ public class ServerPanelTemplate extends JPanel {
             {
                 overallPanel.setLayout(new FormLayout(
                     "150dlu, $lcgap, default, 6dlu, default:grow",
-                    "default, $lgap, fill:default, 21*($lgap, default)"));
-                ((FormLayout)overallPanel.getLayout()).setRowGroups(new int[][] {{1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35, 37, 39, 43, 45}});
+                    "default, $lgap, fill:default, 22*($lgap, default)"));
+                ((FormLayout)overallPanel.getLayout()).setRowGroups(new int[][] {{1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35, 37, 39, 41, 45, 47}});
 
                 //---- eyeTrackingDeviceNameLabel ----
                 eyeTrackingDeviceNameLabel.setText("Eye Tracking Device Name");
@@ -380,78 +380,78 @@ public class ServerPanelTemplate extends JPanel {
 
                 //---- brainHistoryLabel ----
                 brainHistoryLabel.setText("Brain History");
-                overallPanel.add(brainHistoryLabel, cc.xy(1, 25));
+                overallPanel.add(brainHistoryLabel, cc.xy(1, 27));
 
                 //---- brainHistoryLink ----
                 brainHistoryLink.setText("Show brain history ...");
                 brainHistoryLink.setActionCommand("openBrainHistory");
-                overallPanel.add(brainHistoryLink, cc.xy(5, 25));
+                overallPanel.add(brainHistoryLink, cc.xy(5, 27));
 
                 //---- gazePositionLabel ----
                 gazePositionLabel.setText("Gaze Position [normalized]");
-                overallPanel.add(gazePositionLabel, cc.xy(1, 29));
+                overallPanel.add(gazePositionLabel, cc.xy(1, 31));
 
                 //---- gazePositionHistoryLink ----
                 gazePositionHistoryLink.setText("Gaze position history ...");
                 gazePositionHistoryLink.setActionCommand("openGazePositionHistory");
-                overallPanel.add(gazePositionHistoryLink, cc.xy(5, 29));
+                overallPanel.add(gazePositionHistoryLink, cc.xy(5, 31));
 
                 //---- headPositionLabel ----
                 headPositionLabel.setText("Head Position [normalized]");
-                overallPanel.add(headPositionLabel, cc.xy(1, 31));
-                overallPanel.add(headPositionIndicator, cc.xy(3, 31));
+                overallPanel.add(headPositionLabel, cc.xy(1, 33));
+                overallPanel.add(headPositionIndicator, cc.xy(3, 33));
 
                 //---- headPositionHistoryLink ----
                 headPositionHistoryLink.setText("Head position history ...");
                 headPositionHistoryLink.setActionCommand("openHeadPositionHistory");
-                overallPanel.add(headPositionHistoryLink, cc.xy(5, 31));
+                overallPanel.add(headPositionHistoryLink, cc.xy(5, 33));
 
                 //---- headDistanceLabel ----
                 headDistanceLabel.setText("Head Distance [mm]");
-                overallPanel.add(headDistanceLabel, cc.xy(1, 33));
-                overallPanel.add(headDistanceIndicator, cc.xy(3, 33));
+                overallPanel.add(headDistanceLabel, cc.xy(1, 35));
+                overallPanel.add(headDistanceIndicator, cc.xy(3, 35));
 
                 //---- headDistanceHistoryLink ----
                 headDistanceHistoryLink.setText("Head distance history ...");
                 headDistanceHistoryLink.setActionCommand("openHeadDistanceHistory");
-                overallPanel.add(headDistanceHistoryLink, cc.xy(5, 33));
+                overallPanel.add(headDistanceHistoryLink, cc.xy(5, 35));
 
                 //---- pupilSizeLabel ----
                 pupilSizeLabel.setText("Pupil Size [mm]");
-                overallPanel.add(pupilSizeLabel, cc.xy(1, 35));
+                overallPanel.add(pupilSizeLabel, cc.xy(1, 37));
 
                 //---- pupilSizeHistoryLink ----
                 pupilSizeHistoryLink.setText("Pupilsize history ...");
                 pupilSizeHistoryLink.setActionCommand("openPupilSizeHistory");
-                overallPanel.add(pupilSizeHistoryLink, cc.xy(5, 35));
+                overallPanel.add(pupilSizeHistoryLink, cc.xy(5, 37));
 
                 //---- hardwareRecalibrationLabel ----
                 hardwareRecalibrationLabel.setText("Hardware Recalibration");
-                overallPanel.add(hardwareRecalibrationLabel, cc.xy(1, 39));
+                overallPanel.add(hardwareRecalibrationLabel, cc.xy(1, 41));
 
                 //---- performHardwareRecalibrationLink ----
                 performHardwareRecalibrationLink.setText("Perfom hardware recalibration ...");
                 performHardwareRecalibrationLink.setActionCommand("performHardwareRecalibration");
-                overallPanel.add(performHardwareRecalibrationLink, cc.xy(5, 39));
+                overallPanel.add(performHardwareRecalibrationLink, cc.xy(5, 41));
 
                 //---- localRecalibrationVerificationLabel ----
                 localRecalibrationVerificationLabel.setText("Local Recalibration & Verficiation");
-                overallPanel.add(localRecalibrationVerificationLabel, cc.xy(1, 41));
-                overallPanel.add(calibrationIndicator, cc.xy(3, 41));
+                overallPanel.add(localRecalibrationVerificationLabel, cc.xy(1, 43));
+                overallPanel.add(calibrationIndicator, cc.xy(3, 43));
 
                 //---- performRecalibrationLink ----
                 performRecalibrationLink.setText("Perfom local recalibration ...");
                 performRecalibrationLink.setActionCommand("performRecalibration");
-                overallPanel.add(performRecalibrationLink, cc.xy(5, 41));
+                overallPanel.add(performRecalibrationLink, cc.xy(5, 43));
 
                 //---- qualityLabel ----
-                qualityLabel.setText("Overall Quality");
-                overallPanel.add(qualityLabel, cc.xy(1, 45));
-                overallPanel.add(overallQualityIndicator, cc.xy(3, 45));
+                qualityLabel.setText("Overall Eye Tracking Quality");
+                overallPanel.add(qualityLabel, cc.xy(1, 47));
+                overallPanel.add(overallQualityIndicator, cc.xy(3, 47));
 
                 //---- overallQualityLabel ----
                 overallQualityLabel.setText("Unknown");
-                overallPanel.add(overallQualityLabel, cc.xy(5, 45));
+                overallPanel.add(overallQualityLabel, cc.xy(5, 47));
             }
             tabbedPane.addTab("Overview", overallPanel);
 
@@ -492,28 +492,28 @@ public class ServerPanelTemplate extends JPanel {
                 bufferSizeSlider.setSnapToTicks(true);
                 settingsPanel.add(bufferSizeSlider, cc.xy(5, 1));
 
-                //---- transparentLocalRecalibrationLabel ----
-                transparentLocalRecalibrationLabel.setText("Transparent Local Recalibration");
-                settingsPanel.add(transparentLocalRecalibrationLabel, cc.xy(1, 3));
-
-                //---- transparentRecalibration ----
-                transparentRecalibration.setText("Transparent");
-                settingsPanel.add(transparentRecalibration, cc.xy(5, 3));
-
                 //---- bufferSizeBrainTrackerHistoryLabel ----
                 bufferSizeBrainTrackerHistoryLabel.setText("Buffer Size Brain Tracker History [#Events]");
-                settingsPanel.add(bufferSizeBrainTrackerHistoryLabel, cc.xy(1, 7));
+                settingsPanel.add(bufferSizeBrainTrackerHistoryLabel, cc.xy(1, 3));
 
                 //---- bufferSizeBrainTrackerHistoryValueLabel ----
                 bufferSizeBrainTrackerHistoryValueLabel.setText("300");
-                settingsPanel.add(bufferSizeBrainTrackerHistoryValueLabel, cc.xy(3, 7));
+                settingsPanel.add(bufferSizeBrainTrackerHistoryValueLabel, cc.xy(3, 3));
 
                 //---- bufferSizeBrainTrackerHistorySlider ----
-                bufferSizeBrainTrackerHistorySlider.setMaximum(6000);
+                bufferSizeBrainTrackerHistorySlider.setMaximum(2000);
                 bufferSizeBrainTrackerHistorySlider.setMinimum(300);
                 bufferSizeBrainTrackerHistorySlider.setSnapToTicks(true);
                 bufferSizeBrainTrackerHistorySlider.setMajorTickSpacing(10);
-                settingsPanel.add(bufferSizeBrainTrackerHistorySlider, cc.xy(5, 7));
+                settingsPanel.add(bufferSizeBrainTrackerHistorySlider, cc.xy(5, 3));
+
+                //---- transparentLocalRecalibrationLabel ----
+                transparentLocalRecalibrationLabel.setText("Transparent Local Recalibration");
+                settingsPanel.add(transparentLocalRecalibrationLabel, cc.xy(1, 7));
+
+                //---- transparentRecalibration ----
+                transparentRecalibration.setText("Transparent");
+                settingsPanel.add(transparentRecalibration, cc.xy(5, 7));
             }
             tabbedPane.addTab("Settings", settingsPanel);
 

@@ -237,7 +237,6 @@ public class ServerPanel extends ServerPanelTemplate implements TrackingListener
         });
         this.bufferSizeBrainTrackerHistorySlider.setValue(this.brainTrackingRingBuffer.size());
         
-        
 //        this.serverInfo.setMainWindow(this);
         new Timer().scheduleAtFixedRate(new EventCountTask(), 1000, 1000);
         updateUI();
@@ -267,15 +266,6 @@ public class ServerPanel extends ServerPanelTemplate implements TrackingListener
         final DiagState eventRateState = this.eventRate > 40 ? DiagState.OK : DiagState.BAD;
         this.getEventRateIndicator().setStatus(eventRateState);
 
-        // Getting and setting the brain tracking event rate + event rate indicator
-        this.getBrainTrackingEventRate().setText("" + this.brainTrackingEventCounter);
-        
-        // TODO: Check if this threshold makes sense for brain tracker
-        final DiagState brainTrackingEventRateState = (this.brainTrackingEventRate > 5) ? DiagState.OK : DiagState.BAD;
-        this.getBrainTrackingEventRateIndicator().setStatus(brainTrackingEventRateState);
-
-        
-        
         final Map<DataPartition, DiagState> qualityStatus = EyeTrackingEventEvaluator.getOverallQualityStatus(event);
         
         final DiagState headPositionState = qualityStatus.get(DataPartition.HEAD_POSITION);
@@ -284,7 +274,6 @@ public class ServerPanel extends ServerPanelTemplate implements TrackingListener
         final DiagState headDistanceState = qualityStatus.get(DataPartition.HEAD_DISTANCE);
         this.getHeadDistanceIndicator().setStatus(headDistanceState);
         
-        // TODO: Check if an overall state indicator is neccessary with eye and brain tracking enabled...
         final DiagState overallState = EyeTrackingEventEvaluator.getWorstState(headDistanceState, headPositionState, eventRateState);
         
         this.getOverallQualityIndicator().setStatus(overallState);
@@ -441,17 +430,29 @@ public class ServerPanel extends ServerPanelTemplate implements TrackingListener
 
         @Override
         public synchronized void run() {
+            // TODO: Which time intervall is measured here and why isn't System.currentTimeMillis() or System.nanoTime() used?
             ServerPanel.this.intervalEndMillis = this.date.getTime();
             this.date = new Date();
             ServerPanel.this.intervalStartMillis = this.date.getTime();
             final long difference = ServerPanel.this.intervalStartMillis - ServerPanel.this.intervalEndMillis;
             
+            
+            
             // Calculating eye tracking event rate
             ServerPanel.this.eventRate = Math.round((float) ServerPanel.this.eyeTrackingEventCounter / difference * 1000);
             ServerPanel.this.eyeTrackingEventCounter = 0;
+                        
             
             // Calculating brain tracking event rate
             ServerPanel.this.brainTrackingEventRate = Math.round((float) ServerPanel.this.brainTrackingEventCounter / difference * 1000);
+            
+            // Getting and setting the brain tracking event rate + event rate indicator
+            ServerPanel.this.getBrainTrackingEventRate().setText("" + ServerPanel.this.brainTrackingEventCounter);
+            
+            // TODO: Check if this threshold makes sense for brain tracker
+            final DiagState brainTrackingEventRateState = (ServerPanel.this.brainTrackingEventRate > 9) ? DiagState.OK : DiagState.BAD;
+            ServerPanel.this.getBrainTrackingEventRateIndicator().setStatus(brainTrackingEventRateState);
+            
             ServerPanel.this.brainTrackingEventCounter = 0;
         }
     }
