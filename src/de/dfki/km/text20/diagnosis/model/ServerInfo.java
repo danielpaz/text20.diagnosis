@@ -113,7 +113,7 @@ public class ServerInfo {
     }
 
     /**
-     * @param eyeTrackingDevice the deviceProvider to set
+     * @param device the deviceProvider to set
      */
     public void setEyeTrackingDevice(EyeTrackingDevice device) {
         this.eyeTrackingDevice = device;
@@ -127,7 +127,7 @@ public class ServerInfo {
     }
     
     /**
-     * @param eyeTrackingDevice the deviceProvider to set
+     * @param device the deviceProvider to set
      */
     public void setBrainTrackingDevice(BrainTrackingDevice device) {
         this.brainTrackingDevice = device;

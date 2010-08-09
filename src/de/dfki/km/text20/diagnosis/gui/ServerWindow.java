@@ -1,5 +1,5 @@
 /*
- * MainWindow.java
+ * ServerWindow.java
  * 
  * Copyright (c) 2010, Ralf Biedert, DFKI. All rights reserved.
  * 
@@ -209,7 +209,6 @@ public class ServerWindow extends JFrame {
         // Pack 
         final Container contentPane = getContentPane();
         contentPane.setLayout(new BorderLayout());
-
         contentPane.add(this.serverPanel, BorderLayout.CENTER);
         pack();
         this.setVisible(true);

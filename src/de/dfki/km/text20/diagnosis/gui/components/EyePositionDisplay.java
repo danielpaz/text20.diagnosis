@@ -172,6 +172,7 @@ public class EyePositionDisplay extends AbstractTrackingEventComponent {
 				           this.renderer.getLeftPupilPixelSize(pupilSizeLeft),
 				           this.renderer.getLeftPupilPixelSize(pupilSizeLeft));
 			} catch (final RuntimeException e1) {
+			    //
 			}
 		}
 
@@ -210,7 +211,7 @@ public class EyePositionDisplay extends AbstractTrackingEventComponent {
 			}
 			
 			// TODO: ==============================================================================
-			///// hier hat am anfang gazeTrack[n1] null wenn man mit dem TrackingServer ausfŸhrt
+			///// hier hat am anfang gazeTrack[n1] null wenn man mit dem TrackingServer ausfï¿½hrt
 			// TODO: ==============================================================================
 			
 			g.drawLine(this.gazeTrack[n0].x * getAreaWidth() / this.screenXResolution + getInsets().left,

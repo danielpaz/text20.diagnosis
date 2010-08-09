@@ -50,6 +50,7 @@ public class RingBuffer<T> implements Serializable {
      * @param classz 
      * @param ringbufferSize 
      */
+    @SuppressWarnings("unchecked")
     public RingBuffer(final Class<T> classz, final int ringbufferSize) {
         int actualSize = (ringbufferSize > 0) ? ringbufferSize : this.DEFAULT_BUFFER_SIZE;
         this.eventBuffer = (T[]) Array.newInstance(classz, actualSize);
@@ -152,6 +153,7 @@ public class RingBuffer<T> implements Serializable {
     /**
      * @param size
      */
+    @SuppressWarnings("unchecked")
     public void setRingbufferSize(final int size) {
 
         // Adjust the class' content
@@ -161,7 +163,7 @@ public class RingBuffer<T> implements Serializable {
             final Vector<T> v = new Vector<T>();
             v.setSize(size);
 
-            // Assign to temporary variableâ
+            // Assign to temporary variableï¿½
             T x[] = (T[]) v.toArray();
 
             int copySize = Math.min(size, this.eventBuffer.length);

@@ -6,6 +6,9 @@ import java.util.Map;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
 
 /**
+ * 
+ * TODO: REWORK THIS!!!! As soon as two thread access this class you'll hear a loud bang.
+ * 
  * @author ABu
  *
  */

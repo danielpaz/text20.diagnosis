@@ -54,15 +54,20 @@ public class ServerDiagnosis {
             @Override
             public void run() {
                 final ApplicationData applicationData = new ApplicationData();
-//                applicationData.setTray(new ServerDiagnosisSystemTray(applicationData));
                 final ServerInfo serverInfo = new ServerInfo("discover://nearest");
+
+                // Bring up tray
+                //applicationData.setTray(new ServerDiagnosisSystemTray(applicationData));
+
+                // Register main window
                 serverInfo.setMainWindow(new ServerWindow(applicationData, serverInfo));
-                
+
+                // Add the server info 
                 applicationData.getServerInfos().add(serverInfo);
-                
+
+                // Bring up GUI
                 serverInfo.getMainWindow().setVisible(true);
                 serverInfo.getMainWindow().setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                
             }
         });
     }

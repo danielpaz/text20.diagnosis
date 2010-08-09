@@ -58,7 +58,7 @@ public class ApplicationData {
         JSPFProperties props = new JSPFProperties();
         props.setProperty(PluginManager.class, "logging.level", "WARNING");
         props.setProperty(PluginManager.class, "cache.enabled", "true");
-        props.setProperty(PluginManager.class, "cache.mode",    "weak"); //optional
+        props.setProperty(PluginManager.class, "cache.mode",    "weak");
         
         this.pluginManager = PluginManagerFactory.createPluginManager(props);
         try {
@@ -117,12 +117,10 @@ public class ApplicationData {
      */
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder(100);
-//        sb.append("applicationFrame=" + this.applicationFrame.toString() + "\n");
+        final StringBuilder sb = new StringBuilder(100);
         sb.append("plugInManager=" + this.pluginManager + "\n");
         sb.append("open windows=" + this.windowList.toString() + "\n");
         sb.append("server info=" + this.serverInfos.toString());
-        
         return sb.toString();
     }
     

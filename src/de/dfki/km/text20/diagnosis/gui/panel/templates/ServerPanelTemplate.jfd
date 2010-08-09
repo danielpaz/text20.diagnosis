@@ -17,23 +17,9 @@
        </void> 
        <void method="setProperty"> 
         <string>$rowSpecs</string> 
-        <string>min, linegap, 0dlu, linegap, fill:max(default;401dlu):grow</string> 
+        <string>min, linegap, 0dlu, linegap, fill:max(pref;200dlu):grow</string> 
        </void> 
       </object> 
-      <void method="setProperty"> 
-       <string>preferredSize</string> 
-       <object class="java.awt.Dimension"> 
-        <int>600</int> 
-        <int>825</int> 
-       </object> 
-      </void> 
-      <void method="setProperty"> 
-       <string>minimumSize</string> 
-       <object class="java.awt.Dimension"> 
-        <int>600</int> 
-        <int>800</int> 
-       </object> 
-      </void> 
       <void property="name"> 
        <string>this</string> 
       </void> 
@@ -925,7 +911,7 @@
             <string>javax.swing.JLabel</string> 
             <void method="setProperty"> 
              <string>text</string> 
-             <string>0</string> 
+             <string>Not tracking</string> 
             </void> 
             <void property="name"> 
              <string>label8</string> 
@@ -1631,7 +1617,11 @@
            </void> 
            <void method="setProperty"> 
             <string>$rowSpecs</string> 
-            <string>default, linegap, default, linegap, default, linegap, default</string> 
+            <string>default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default</string> 
+           </void> 
+           <void method="setProperty"> 
+            <string>$rowGroupIds</string> 
+            <string>1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0</string> 
            </void> 
           </object> 
           <void property="name"> 
@@ -1836,6 +1826,54 @@
             <string>javax.swing.JLabel</string> 
             <void method="setProperty"> 
              <string>text</string> 
+             <string>Display Ministatus</string> 
+            </void> 
+            <void property="name"> 
+             <string>transparentLocalRecalibrationLabel2</string> 
+            </void> 
+           </object> 
+           <object class="com.jformdesigner.model.FormLayoutConstraints"> 
+            <class>com.jgoodies.forms.layout.CellConstraints</class> 
+            <void method="setProperty"> 
+             <string>gridY</string> 
+             <int>7</int> 
+            </void> 
+           </object> 
+          </void> 
+          <void method="add"> 
+           <object class="com.jformdesigner.model.FormComponent"> 
+            <string>javax.swing.JCheckBox</string> 
+            <void method="setProperty"> 
+             <string>text</string> 
+             <string>Ministatus</string> 
+            </void> 
+            <void property="name"> 
+             <string>ministatus</string> 
+            </void> 
+            <void method="auxiliary"> 
+             <void method="setProperty"> 
+              <string>JavaCodeGenerator.variableModifiers</string> 
+              <int>4</int> 
+             </void> 
+            </void> 
+           </object> 
+           <object class="com.jformdesigner.model.FormLayoutConstraints"> 
+            <class>com.jgoodies.forms.layout.CellConstraints</class> 
+            <void method="setProperty"> 
+             <string>gridY</string> 
+             <int>7</int> 
+            </void> 
+            <void method="setProperty"> 
+             <string>gridX</string> 
+             <int>5</int> 
+            </void> 
+           </object> 
+          </void> 
+          <void method="add"> 
+           <object class="com.jformdesigner.model.FormComponent"> 
+            <string>javax.swing.JLabel</string> 
+            <void method="setProperty"> 
+             <string>text</string> 
              <string>Transparent Local Recalibration</string> 
             </void> 
             <void property="name"> 
@@ -1846,7 +1884,7 @@
             <class>com.jgoodies.forms.layout.CellConstraints</class> 
             <void method="setProperty"> 
              <string>gridY</string> 
-             <int>7</int> 
+             <int>11</int> 
             </void> 
            </object> 
           </void> 
@@ -1875,7 +1913,7 @@
             </void> 
             <void method="setProperty"> 
              <string>gridY</string> 
-             <int>7</int> 
+             <int>11</int> 
             </void> 
            </object> 
           </void> 

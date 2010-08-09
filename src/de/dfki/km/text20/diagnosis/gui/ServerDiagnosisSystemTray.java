@@ -2,19 +2,14 @@ package de.dfki.km.text20.diagnosis.gui;
 
 import java.awt.AWTException;
 import java.awt.Image;
-import java.awt.MenuItem;
 import java.awt.PopupMenu;
 import java.awt.SystemTray;
 import java.awt.TrayIcon;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.net.URL;
-import java.util.Collection;
 
 import javax.swing.ImageIcon;
 
 import de.dfki.km.text20.diagnosis.model.ApplicationData;
-import de.dfki.km.text20.diagnosis.model.ServerInfo;
 import de.dfki.km.text20.diagnosis.util.EyeTrackingEventEvaluator.DiagState;
 
 /**
@@ -35,7 +30,7 @@ public class ServerDiagnosisSystemTray {
     private final Image redLight = getStatusImage("resources/ampel_rot.gif");
 
     /** */
-    final TrayIcon trayIcon = new TrayIcon(this.greenLight, "Augmented Text Server Diagnosis", this.popup);
+    final TrayIcon trayIcon = new TrayIcon(this.greenLight, "Text 2.0 Diagnosis", this.popup);
 
     /** */
     private final PopupMenu popup = new PopupMenu();
@@ -50,10 +45,10 @@ public class ServerDiagnosisSystemTray {
      * @param applicationData
      */
     public ServerDiagnosisSystemTray(final ApplicationData applicationData) {
-
         // If no tray is supported, do nothing
         if (!SystemTray.isSupported()) { return; }
 
+        // Get the tray.
         try {
             this.tray = SystemTray.getSystemTray();
         } catch (final Exception e) {
@@ -61,43 +56,16 @@ public class ServerDiagnosisSystemTray {
             return;
         }
 
-        final ActionListener openAppListener = new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                final Collection<ServerInfo> serverInfos = applicationData.getServerInfos();
-                for (ServerInfo serverInfo : serverInfos) {
-                    serverInfo.getMainWindow().setVisible(true);
-                }
-            }
-        };
-
-        final ActionListener exitListener = new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                final Collection<ServerInfo> serverInfos = applicationData.getServerInfos();
-                for (ServerInfo serverInfo : serverInfos) {
-                    serverInfo.getMainWindow().dispose();
-                }
-            }
-        };
-
-        final MenuItem defaultItem = new MenuItem("Open Diagnosis");
-        defaultItem.addActionListener(openAppListener);
-        this.popup.add(defaultItem);
-
-        final MenuItem exitItem = new MenuItem("Exit");
-        exitItem.addActionListener(exitListener);
-        this.popup.add(exitItem);
-
+        // Configure the tray icon
         this.trayIcon.setImageAutoSize(true);
         this.trayIcon.setPopupMenu(this.popup);
 
+        // And add our icon 
         try {
             this.tray.add(this.trayIcon);
         } catch (final AWTException e) {
             System.err.println("TrayIcon could not be added.");
         }
-
     }
 
     /**
@@ -112,6 +80,8 @@ public class ServerDiagnosisSystemTray {
     }
 
     /**
+     * Loads a tray icon
+     * 
      * @param resourcePath
      * @return
      */

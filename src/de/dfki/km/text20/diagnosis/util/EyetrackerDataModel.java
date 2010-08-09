@@ -3,7 +3,7 @@ package de.dfki.km.text20.diagnosis.util;
 import javax.swing.table.AbstractTableModel;
 
 /**
- * @author rb
+ * @author ?
  *
  */
 public class EyetrackerDataModel extends AbstractTableModel {

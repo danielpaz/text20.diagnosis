@@ -35,7 +35,7 @@ import de.dfki.km.text20.diagnosis.util.CommonFunctions;
 import de.dfki.km.text20.trackingserver.eyes.remote.TrackingServerRegistry;
 
 /**
- * @author rb
+ * @author ?
  *
  */
 public class ServerBrowserPanel extends ServerBrowserTemplate {

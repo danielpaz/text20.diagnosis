@@ -8,7 +8,7 @@ import de.dfki.km.text20.diagnosis.util.CommonFunctions;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
 
 /**
- * @author rb
+ * @author ?
  *
  */
 public class EyeDistanceChart extends AbstractEyeTrackingHistoryChartDisplay {

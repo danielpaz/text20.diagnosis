@@ -20,7 +20,7 @@ import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingListener;
 
 /**
- * @author rb
+ * @author ?
  *
  */
 public class DeviceLabel extends JLabel {
@@ -129,6 +129,8 @@ public class DeviceLabel extends JLabel {
      */
     public void setFullDeviceText(ServerBrowserPanel sbPanel) {
 
+        // TODO: What the heck is this?
+        
         // TODO: How do we handle multiple connections?
         final PluginManager pluginManager = ((ServerBrowserWindow) sbPanel.getRootPane().getParent()).getApplicationData().getPluginManager();//. applicationData.getPluginManager();
         final TrackingDeviceProvider<EyeTrackingDeviceInfo, EyeTrackingEvent, EyeTrackingListener, EyeTrackingDevice> deviceProvider = pluginManager.getPlugin(TrackingDeviceProvider.class, new OptionCapabilities("eyetrackingdevice:trackingserver"));
