@@ -81,6 +81,8 @@ public class JStatusIndicator extends JComponent {
      * @param state
      */
     public void setStatus(final DiagState state) {
+        if (this.state == state) return;
+
         this.state = state;
         this.repaint();
     }
@@ -89,11 +91,11 @@ public class JStatusIndicator extends JComponent {
      * @see javax.swing.JComponent#paint(java.awt.Graphics)
      */
     @Override
-    public void paint(final Graphics g) {    	
+    public void paint(final Graphics g) {
         final Image image = this.images.get(this.state);
-    	int iw = Math.max(getPreferredSize().width,image.getWidth(this));
-    	int ih = Math.max(getPreferredSize().height,image.getHeight(this));
-    	if (iw <0 || ih < 0) System.out.println(iw + ", " + ih + "; " + getName());
+        int iw = Math.max(getPreferredSize().width, image.getWidth(this));
+        int ih = Math.max(getPreferredSize().height, image.getHeight(this));
+        if (iw < 0 || ih < 0) System.out.println(iw + ", " + ih + "; " + getName());
         g.drawImage(image, (getWidth() - iw) / 2, (getHeight() - ih) / 2, this);
     }
 
@@ -133,9 +135,7 @@ public class JStatusIndicator extends JComponent {
      * @return .
      */
     public static DiagState getDiagState(final boolean b) {
-        if (b) {
-            return DiagState.OK;
-        }
+        if (b) { return DiagState.OK; }
         return DiagState.BAD;
     }
 }

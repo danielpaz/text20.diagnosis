@@ -278,13 +278,14 @@ public class EyeTrackingEventEvaluator {
      * @param event
      * @return .
      */
-    public static Map<DataPartition, DiagState> getOverallQualityStatus(
-                                                                        final EyeTrackingEvent event) {
-        evaluateEvent(event);
-        final Map<DataPartition, DiagState> m = new HashMap<DataPartition, DiagState>();
+    public static Map<DataPartition, DiagState> getOverallQualityStatus(final EyeTrackingEvent event) {
+        final DiagState eval = evaluateEvent(event);
 
-        m.put(DataPartition.HEAD_DISTANCE,evaluateEvent(event)); // JStatusIndicator.getDiagState(isHeadInValidRange()));
-        m.put(DataPartition.HEAD_POSITION,evaluateEvent(event)); // JStatusIndicator.getDiagState(isHeadInValidRange()));
+        // FIXME: WTF is this?
+        final Map<DataPartition, DiagState> m = new HashMap<DataPartition, DiagState>();
+        m.put(DataPartition.HEAD_DISTANCE, eval); // JStatusIndicator.getDiagState(isHeadInValidRange()));
+        m.put(DataPartition.HEAD_POSITION, eval); // JStatusIndicator.getDiagState(isHeadInValidRange()));
+
         return m;
     }
 
