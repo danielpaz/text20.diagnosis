@@ -143,104 +143,121 @@ public class ServerPanel extends ServerPanelTemplate implements
 
     /** */
     private void setGUIParameters() {
-        for (final String s : this.serverInfo.getEyeTrackingDevice().getDeviceInfo().getKeys()) {
-            System.out.println(s);
+        // Setting up eye tracking components if device is available
+        if (this.serverInfo.getEyeTrackingDevice() != null) {
+            for (final String s : this.serverInfo.getEyeTrackingDevice().getDeviceInfo().getKeys()) {
+                System.out.println(s);
+            }
+            
+            this.eyeTrackingDeviceNameValueLabel.setText(this.serverInfo.getEyeTrackingDevice().getDeviceInfo().getInfo("DEVICE_NAME"));
+            this.eyeTrackingDeviceTypeValueLabel.setText(this.serverInfo.getEyeTrackingDevice().getDeviceType().name());//.getOpenDevice().getDeviceType().name());
+            this.eyeTrackingDeviceLocationValueLabel.setText(this.serverInfo.getURI());
+            
+            // Starting recording for eye tracker
+            this.serverInfo.getEyeTrackingRingBuffer().setRecording(true);
+            this.recordIndicator.setStatus(DiagState.ON);
+            this.recordSwitch.setText(this.statusLabels[this.recordIndicator.getStatus().ordinal()]);
+            
+            // Setting application data and server info for top eye visualisation displays
+            this.eyePositionDisplay.setApplicationData(this.applicationData);
+            this.eyePositionDisplay.setServerInfo(this.serverInfo);
+            
+            this.eyeDistanceDisplay.setApplicationData(this.applicationData);
+            this.eyeDistanceDisplay.setServerInfo(this.serverInfo);
+            
+            this.pupilSizeDisplay.setApplicationData(this.applicationData);
+            this.pupilSizeDisplay.setServerInfo(this.serverInfo);
+            
+            // Creating eye tracking charts
+            this.pupilSizeHistory = new PupilSizeChart(this.applicationData, this.serverInfo);
+            this.headDistanceHistory = new EyeDistanceChart(this.applicationData, this.serverInfo);
+            this.headPositionHistory = new EyePositionChart(this.applicationData, this.serverInfo);
+            this.recalibrationWindow = new RecalibrationWindow(this.applicationData, this.serverInfo);
+            
+            // Adding listeners for eye tracking components
+            this.recordSwitch.addActionListener(this.commandProcessor);
+            this.gazePositionHistoryLink.addActionListener(this.commandProcessor);
+            this.headDistanceHistoryLink.addActionListener(this.commandProcessor);
+            this.headPositionHistoryLink.addActionListener(this.commandProcessor);
+            this.pupilSizeHistoryLink.addActionListener(this.commandProcessor);
+            this.performRecalibrationLink.addActionListener(this.commandProcessor);
+            this.performHardwareRecalibrationLink.addActionListener(this.commandProcessor);
+            
+            this.recalibrationWindow.addWindowListener(new WindowAdapter() {
+
+                @Override
+                public void windowActivated(final WindowEvent e) {
+                    ((JFrame) ServerPanel.this.getRootPane().getParent()).setVisible(false);
+                }
+
+                @Override
+                public void windowDeactivated(final WindowEvent e) {
+                    ((JFrame) ServerPanel.this.getRootPane().getParent()).setVisible(true);
+                }
+
+            });
+            
+            this.calibrationIndicator.setStatus(DiagState.VAGUE);
+            
+            // Eye tracker buffer size setup
+            this.bufferSizeSlider.addChangeListener(new ChangeListener() {
+
+                @Override
+                public void stateChanged(final ChangeEvent e) {
+                    final int i = ((JSlider) e.getSource()).getValue();
+                    ServerPanel.this.bufferSizeLabel.setText(i + "");
+                    ServerPanel.this.eyeTrackingRingBuffer.setRingbufferSize(i);
+                    ServerPanel.this.recordingTitle.setText("Eye Tracking Recording Status (" + ServerPanel.this.eyeTrackingRingBuffer.size() + " Events)");
+                }
+            });
+            
+            this.bufferSizeSlider.setValue(this.eyeTrackingRingBuffer.size());
         }
 
-        for (final String s : this.serverInfo.getBrainTrackingDevice().getDeviceInfo().getKeys()) {
-            System.out.println(s);
+        
+
+        // Setting up brain tracking components if device is available
+        if (this.serverInfo.getBrainTrackingDevice() != null) {
+            for (final String s : this.serverInfo.getBrainTrackingDevice().getDeviceInfo().getKeys()) {
+                System.out.println(s);
+            }
+            
+            this.brainTrackingDeviceNameValueLabel.setText(this.serverInfo.getBrainTrackingDevice().getDeviceInfo().getInfo("DEVICE_NAME"));
+            this.brainTrackingDeviceLocationValueLabel.setText(this.serverInfo.getURI());
+            
+            // Starting recording for brain tracker
+            this.serverInfo.getBrainTrackingRingBuffer().setRecording(true);
+            this.brainRecordIndicator.setStatus(DiagState.ON);
+            this.brainTrackingRecordSwitch.setText(this.statusLabels[this.brainRecordIndicator.getStatus().ordinal()]);
+            
+            this.brainHistory = new BrainDataChart(this.applicationData, this.serverInfo);
+            
+            this.brainTrackingRecordSwitch.addActionListener(this.commandProcessor);
+            this.brainHistoryLink.addActionListener(this.commandProcessor);
+            
+            // Brain tracker buffer size setup
+            this.bufferSizeBrainTrackerHistorySlider.addChangeListener(new ChangeListener() {
+
+                @Override
+                public void stateChanged(ChangeEvent e) {
+                    final int i = ((JSlider) e.getSource()).getValue();
+                    ServerPanel.this.bufferSizeBrainTrackerHistoryValueLabel.setText(i + "");
+                    ServerPanel.this.brainTrackingRingBuffer.setRingbufferSize(i);
+                    ServerPanel.this.brainTrackerRecordingStatusLabel.setText("Brain Tracking Recording Status (" + ServerPanel.this.brainTrackingRingBuffer.size() + " Events)");
+
+                }
+            });
+            
+            this.bufferSizeBrainTrackerHistorySlider.setValue(this.brainTrackingRingBuffer.size());
         }
-
-        // Setting eye tracker name, type and location
-        this.eyeTrackingDeviceNameValueLabel.setText(this.serverInfo.getEyeTrackingDevice().getDeviceInfo().getInfo("DEVICE_NAME"));
-        this.eyeTrackingDeviceTypeValueLabel.setText(this.serverInfo.getEyeTrackingDevice().getDeviceType().name());//.getOpenDevice().getDeviceType().name());
-        this.eyeTrackingDeviceLocationValueLabel.setText(this.serverInfo.getURI());
-
-        // Starting recording for eye tracker
-        this.serverInfo.getEyeTrackingRingBuffer().setRecording(true);
-        this.recordIndicator.setStatus(DiagState.ON);
-        this.recordSwitch.setText(this.statusLabels[this.recordIndicator.getStatus().ordinal()]);
-
-        // Setting brain tracker name and location
-        this.brainTrackingDeviceNameValueLabel.setText(this.serverInfo.getBrainTrackingDevice().getDeviceInfo().getInfo("DEVICE_NAME"));
-        this.brainTrackingDeviceLocationValueLabel.setText(this.serverInfo.getURI());
-
-        // Starting recording for brain tracker
-        this.serverInfo.getBrainTrackingRingBuffer().setRecording(true);
-        this.brainRecordIndicator.setStatus(DiagState.ON);
-        this.brainTrackingRecordSwitch.setText(this.statusLabels[this.brainRecordIndicator.getStatus().ordinal()]);
 
         this.trackingSince.setText(new java.text.SimpleDateFormat("dd.MM.yyyy HH.mm.ss").format(new Date()));
 
-        this.eyePositionDisplay.setApplicationData(this.applicationData);
-        this.eyePositionDisplay.setServerInfo(this.serverInfo);
-        this.eyeDistanceDisplay.setApplicationData(this.applicationData);
-        this.eyeDistanceDisplay.setServerInfo(this.serverInfo);
-        this.pupilSizeDisplay.setApplicationData(this.applicationData);
-        this.pupilSizeDisplay.setServerInfo(this.serverInfo);
-        this.pupilSizeHistory = new PupilSizeChart(this.applicationData, this.serverInfo);
-        this.headDistanceHistory = new EyeDistanceChart(this.applicationData, this.serverInfo);
-        this.headPositionHistory = new EyePositionChart(this.applicationData, this.serverInfo);
-        this.recalibrationWindow = new RecalibrationWindow(this.applicationData, this.serverInfo);
         this.miniWindow = new MiniWindow(this.applicationData, this.serverInfo);
-
-        this.brainHistory = new BrainDataChart(this.applicationData, this.serverInfo);
-
-        this.recalibrationWindow.addWindowListener(new WindowAdapter() {
-
-            @Override
-            public void windowActivated(final WindowEvent e) {
-                ((JFrame) ServerPanel.this.getRootPane().getParent()).setVisible(false);
-            }
-
-            @Override
-            public void windowDeactivated(final WindowEvent e) {
-                ((JFrame) ServerPanel.this.getRootPane().getParent()).setVisible(true);
-            }
-
-        });
-
-        this.calibrationIndicator.setStatus(DiagState.VAGUE);
-
-        this.recordSwitch.addActionListener(this.commandProcessor);
-        this.brainTrackingRecordSwitch.addActionListener(this.commandProcessor);
-        this.brainHistoryLink.addActionListener(this.commandProcessor);
-        this.gazePositionHistoryLink.addActionListener(this.commandProcessor);
-        this.headDistanceHistoryLink.addActionListener(this.commandProcessor);
-        this.headPositionHistoryLink.addActionListener(this.commandProcessor);
-        this.pupilSizeHistoryLink.addActionListener(this.commandProcessor);
-        this.performRecalibrationLink.addActionListener(this.commandProcessor);
-        this.performHardwareRecalibrationLink.addActionListener(this.commandProcessor);
-
-        // Eye tracker buffer size setup
-        this.bufferSizeSlider.addChangeListener(new ChangeListener() {
-
-            @Override
-            public void stateChanged(final ChangeEvent e) {
-                final int i = ((JSlider) e.getSource()).getValue();
-                ServerPanel.this.bufferSizeLabel.setText(i + "");
-                ServerPanel.this.eyeTrackingRingBuffer.setRingbufferSize(i);
-                ServerPanel.this.recordingTitle.setText("Eye Tracking Recording Status (" + ServerPanel.this.eyeTrackingRingBuffer.size() + " Events)");
-            }
-        });
-        this.bufferSizeSlider.setValue(this.eyeTrackingRingBuffer.size());
-
-        // Brain tracker buffer size setup
-        this.bufferSizeBrainTrackerHistorySlider.addChangeListener(new ChangeListener() {
-
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                final int i = ((JSlider) e.getSource()).getValue();
-                ServerPanel.this.bufferSizeBrainTrackerHistoryValueLabel.setText(i + "");
-                ServerPanel.this.brainTrackingRingBuffer.setRingbufferSize(i);
-                ServerPanel.this.brainTrackerRecordingStatusLabel.setText("Brain Tracking Recording Status (" + ServerPanel.this.brainTrackingRingBuffer.size() + " Events)");
-
-            }
-        });
-        this.bufferSizeBrainTrackerHistorySlider.setValue(this.brainTrackingRingBuffer.size());
 
         // Show / Hide mini window 
         this.ministatus.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 ServerPanel.this.miniWindow.setVisible(ServerPanel.this.ministatus.isSelected());
             }
