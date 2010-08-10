@@ -47,6 +47,9 @@ public class TrackingStatusMiniPanel extends AbstractTrackingEventComponent {
         super(applicationData, serverInfo);
     }
 
+    /* (non-Javadoc)
+     * @see de.dfki.km.text20.diagnosis.gui.components.AbstractTrackingEventComponent#render(java.awt.Graphics)
+     */
     @Override
     public void render(Graphics g) {
         final EyeTrackingEvent event = (EyeTrackingEvent) this.trackingEvent;
