@@ -100,7 +100,14 @@ public class ServerPanel extends ServerPanelTemplate implements
 
     /** */
     int brainTrackingEventRate = 0;
+    
+    /** Approximated average eye tracking event rate in [events / seconds] */
+    final int avgEyeTrackingEventRate = 40;
 
+    /** Approximated average brain tracking event rate in [events / seconds] */
+    final int avgBrainTrackingEventRate = 10;
+
+    
     /** */
     PupilSizeChart pupilSizeHistory;
 
@@ -135,9 +142,14 @@ public class ServerPanel extends ServerPanelTemplate implements
         this.serverInfo = serverInfo;
 
         this.eyeTrackingRingBuffer = serverInfo.getEyeTrackingRingBuffer();
+        this.eyeTrackingRingBuffer.setRingbufferSize(1200);
+        this.eyeTrackingRingBuffer.restartRecording();
+        
         this.brainTrackingRingBuffer = serverInfo.getBrainTrackingRingBuffer();
-
-        setupWithTrackingDevice();
+        this.brainTrackingRingBuffer.setRingbufferSize(1200);
+        this.brainTrackingRingBuffer.restartRecording();
+        
+        
         setGUIParameters();
     }
 
@@ -198,20 +210,22 @@ public class ServerPanel extends ServerPanelTemplate implements
             });
             
             this.calibrationIndicator.setStatus(DiagState.VAGUE);
-            
+
             // Eye tracker buffer size setup
+            this.eyeTrackingRingBuffer.setRingbufferSize(this.bufferSizeSlider.getValue() * this.avgEyeTrackingEventRate);
+            this.recordingTitle.setText("Eye Tracking Recording Status (" + this.eyeTrackingRingBuffer.size() + " Events)");
+            
             this.bufferSizeSlider.addChangeListener(new ChangeListener() {
 
                 @Override
                 public void stateChanged(final ChangeEvent e) {
-                    final int i = ((JSlider) e.getSource()).getValue();
-                    ServerPanel.this.bufferSizeLabel.setText(i + "");
-                    ServerPanel.this.eyeTrackingRingBuffer.setRingbufferSize(i);
+                    final int sliderValue = ((JSlider) e.getSource()).getValue();
+                    
+                    ServerPanel.this.bufferSizeLabel.setText(sliderValue + "s");
+                    ServerPanel.this.eyeTrackingRingBuffer.setRingbufferSize(sliderValue * ServerPanel.this.avgEyeTrackingEventRate);
                     ServerPanel.this.recordingTitle.setText("Eye Tracking Recording Status (" + ServerPanel.this.eyeTrackingRingBuffer.size() + " Events)");
                 }
             });
-            
-            this.bufferSizeSlider.setValue(this.eyeTrackingRingBuffer.size());
         }
 
         
@@ -236,19 +250,20 @@ public class ServerPanel extends ServerPanelTemplate implements
             this.brainHistoryLink.addActionListener(this.commandProcessor);
             
             // Brain tracker buffer size setup
+            this.brainTrackingRingBuffer.setRingbufferSize(this.bufferSizeBrainTrackerHistorySlider.getValue() * this.avgBrainTrackingEventRate);
+            this.brainTrackerRecordingStatusLabel.setText("Brain Tracking Recording Status (" + this.brainTrackingRingBuffer.size() + " Events)");
+            
             this.bufferSizeBrainTrackerHistorySlider.addChangeListener(new ChangeListener() {
 
                 @Override
                 public void stateChanged(ChangeEvent e) {
-                    final int i = ((JSlider) e.getSource()).getValue();
-                    ServerPanel.this.bufferSizeBrainTrackerHistoryValueLabel.setText(i + "");
-                    ServerPanel.this.brainTrackingRingBuffer.setRingbufferSize(i);
+                    final int sliderValue = ((JSlider) e.getSource()).getValue();
+                    ServerPanel.this.bufferSizeBrainTrackerHistoryValueLabel.setText(sliderValue + "s");
+                    ServerPanel.this.brainTrackingRingBuffer.setRingbufferSize(sliderValue * ServerPanel.this.avgBrainTrackingEventRate);
                     ServerPanel.this.brainTrackerRecordingStatusLabel.setText("Brain Tracking Recording Status (" + ServerPanel.this.brainTrackingRingBuffer.size() + " Events)");
 
                 }
             });
-            
-            this.bufferSizeBrainTrackerHistorySlider.setValue(this.brainTrackingRingBuffer.size());
         }
 
         this.trackingSince.setText(new java.text.SimpleDateFormat("dd.MM.yyyy HH.mm.ss").format(new Date()));
@@ -264,20 +279,10 @@ public class ServerPanel extends ServerPanelTemplate implements
         });
 
         //        this.serverInfo.setMainWindow(this);
+        
+        // TODO: I guess this can be done a lot more efficient and elegantly
         new Timer().scheduleAtFixedRate(new EventCountTask(), 1000, 1000);
         updateUI();
-    }
-
-    /**
-     * Uses the given device to set up connections
-     * @param device
-     */
-    private void setupWithTrackingDevice() {
-        this.eyeTrackingRingBuffer.setRingbufferSize(1200);
-        this.eyeTrackingRingBuffer.restartRecording();
-
-        this.brainTrackingRingBuffer.setRingbufferSize(1200);
-        this.brainTrackingRingBuffer.restartRecording();
     }
 
     /**
@@ -289,7 +294,7 @@ public class ServerPanel extends ServerPanelTemplate implements
 
         // Getting and setting the eye tracking event rate + event rate indicator
         this.getEventRate().setText("" + this.eventRate);
-        final DiagState eventRateState = this.eventRate > 40 ? DiagState.OK : DiagState.BAD;
+        final DiagState eventRateState = this.eventRate > this.avgEyeTrackingEventRate ? DiagState.OK : DiagState.BAD;
         this.getEventRateIndicator().setStatus(eventRateState);
 
         final Map<DataPartition, DiagState> qualityStatus = EyeTrackingEventEvaluator.getOverallQualityStatus(event);
@@ -472,7 +477,7 @@ public class ServerPanel extends ServerPanelTemplate implements
             ServerPanel.this.getBrainTrackingEventRate().setText("" + ServerPanel.this.brainTrackingEventCounter);
 
             // TODO: Check if this threshold makes sense for brain tracker
-            final DiagState brainTrackingEventRateState = (ServerPanel.this.brainTrackingEventRate > 9) ? DiagState.OK : DiagState.BAD;
+            final DiagState brainTrackingEventRateState = (ServerPanel.this.brainTrackingEventRate > ServerPanel.this.avgBrainTrackingEventRate) ? DiagState.OK : DiagState.BAD;
             ServerPanel.this.getBrainTrackingEventRateIndicator().setStatus(brainTrackingEventRateState);
 
             ServerPanel.this.brainTrackingEventCounter = 0;
