@@ -66,7 +66,7 @@ public class ServerPanelTemplate extends JPanel {
     public JXHyperlink brainTrackingRecordSwitch;
     private JLabel brainTrackingEventRateLabel;
     protected JStatusIndicator brainTrackingEventRateIndicator;
-    protected JLabel brainTrackingEventRate;
+    protected JLabel brainTrackingEventRateValue;
     private JLabel deviceTrackingSinceLabel;
     protected JLabel trackingSince;
     private JLabel brainHistoryLabel;
@@ -117,8 +117,8 @@ public class ServerPanelTemplate extends JPanel {
         return this.calibrationIndicator;
     }
 
-    public JLabel getBrainTrackingEventRate() {
-        return this.brainTrackingEventRate;
+    public JLabel getBrainTrackingEventRateValue() {
+        return brainTrackingEventRateValue;
     }
 
     public JStatusIndicator getBrainTrackingEventRateIndicator() {
@@ -203,7 +203,7 @@ public class ServerPanelTemplate extends JPanel {
         brainTrackingRecordSwitch = new JXHyperlink();
         brainTrackingEventRateLabel = new JLabel();
         brainTrackingEventRateIndicator = new JStatusIndicator();
-        brainTrackingEventRate = new JLabel();
+        brainTrackingEventRateValue = new JLabel();
         deviceTrackingSinceLabel = new JLabel();
         trackingSince = new JLabel();
         brainHistoryLabel = new JLabel();
@@ -368,9 +368,9 @@ public class ServerPanelTemplate extends JPanel {
                 overallPanel.add(brainTrackingEventRateLabel, cc.xy(1, 19));
                 overallPanel.add(brainTrackingEventRateIndicator, cc.xy(3, 19));
 
-                //---- brainTrackingEventRate ----
-                brainTrackingEventRate.setText("0");
-                overallPanel.add(brainTrackingEventRate, cc.xy(5, 19));
+                //---- brainTrackingEventRateValue ----
+                brainTrackingEventRateValue.setText("0");
+                overallPanel.add(brainTrackingEventRateValue, cc.xy(5, 19));
 
                 //---- deviceTrackingSinceLabel ----
                 deviceTrackingSinceLabel.setText("Device Tracking Since");

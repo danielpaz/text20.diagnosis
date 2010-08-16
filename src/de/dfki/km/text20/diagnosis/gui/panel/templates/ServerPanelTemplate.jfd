@@ -863,7 +863,7 @@
             <void method="auxiliary"> 
              <void method="setProperty"> 
               <string>JavaCodeGenerator.variableName</string> 
-              <string>brainTrackingEventRate</string> 
+              <string>brainTrackingEventRateValue</string> 
              </void> 
              <void method="setProperty"> 
               <string>JavaCodeGenerator.variableModifiers</string> 
