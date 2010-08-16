@@ -1,21 +1,21 @@
 /*
  * EyeDistancePanel.java
- * 
+ *
  * Copyright (c) 2010, Ralf Biedert, DFKI. All rights reserved.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301  USA
  *
  */
@@ -24,7 +24,6 @@ package de.dfki.km.text20.diagnosis.gui.components;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Insets;
 
 import de.dfki.km.text20.diagnosis.model.ApplicationData;
 import de.dfki.km.text20.diagnosis.model.ServerInfo;
@@ -33,7 +32,7 @@ import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
 
 /**
  * Displays the pupil size inside a black box.
- * 
+ *
  * @author Nathaniel Egwu, ABu
  *
  */
@@ -43,27 +42,26 @@ public class PupilSizeDisplay extends AbstractTrackingEventComponent {
     private static final long serialVersionUID = -8142292583304142828L;
 
     /** */
-    private final static int DEFAULT_PUPILSIZE_CANVAS_WIDTH = 80;
-    private final static int DEFAULT_PUPILSIZE_CANVAS_HEIGHT = -1;
+    private final int defaultPupilsizeCanvasWidth = 80;
 
+    /** */
+    private final int defaultPupilsizeCanvasHeight = -1;
+
+    /** */
+    private final int pupilSizeBarWidth = 8;
+
+    /** */
+    private final int paddingVal = 5;
+
+    /** */
     private Color pupilSizeCanvasBackgroundColor = Color.BLUE;
-    private Color pupilSizBarColor = Color.CYAN;
 
-    private int pupilSizeBarWidth = 8;
+    /** */
+    private final Color pupilSizBarColor = Color.CYAN;
 
-    private int paddingVal = 5;
 
-    //    private final float lowerValidDistance = EyeTrackingEventEvaluator.EYE_DISTANCE_MIN;
-    //    private final float upperValidDistance = EyeTrackingEventEvaluator.EYE_DISTANCE_MAX;
-
-    /** horizontal position of the left eye icon */
-    private int leftPupilIconXPos;
-
-    /** horizontal position of the right eye icon */
-    private int rightPupilIconXPos;
-
-    /** 
-     * Default Constructor; 
+    /**
+     * Default Constructor;
      * initializes Panel with default Values
     */
     public PupilSizeDisplay() {
@@ -77,86 +75,74 @@ public class PupilSizeDisplay extends AbstractTrackingEventComponent {
     public PupilSizeDisplay(final ApplicationData applicationData,
                             final ServerInfo serverInfo) {
         super(applicationData, serverInfo);
-        this.setPreferredSize(new Dimension(DEFAULT_PUPILSIZE_CANVAS_WIDTH, DEFAULT_PUPILSIZE_CANVAS_HEIGHT));
+
+        this.setPreferredSize(new Dimension(this.defaultPupilsizeCanvasWidth, this.defaultPupilsizeCanvasHeight));
         this.renderer.setPixelPerUnit(20);
     }
 
     /**
      * @param g
      */
-    @SuppressWarnings( { "null", "boxing" })
     @Override
     public void render(final Graphics g) {
-
-        final EyeTrackingEvent e = (EyeTrackingEvent) this.trackingEvent;
-        if ((e == null) && (this.applicationData != null)) { return; }
-
-        Insets insets;
-        try {
-            insets = getBorder().getBorderInsets(this);
-        } catch (final RuntimeException e1) {
-            insets = new Insets(0, 0, 0, 0);
-        }
-        
-        final int middleXVal = Math.round((getAreaWidth() / 2 + insets.left));
-
-        // draw canvas area 
-        g.setColor(getPupilSizeCanvasBackgroundColor());
-        g.fillRect(insets.left, insets.top, getAreaWidth(), getAreaHeight());
-
-        // draw middle line
-        g.setColor(Color.LIGHT_GRAY);
-        g.drawLine(middleXVal, insets.top, middleXVal, getAreaHeight() + insets.top);
-
-        // draw center tick
-        g.setColor(Color.LIGHT_GRAY);
-        g.drawLine(insets.left, Math.round(getAreaHeight() / 2 + insets.top), getAreaWidth() + insets.left, Math.round(getAreaHeight() / 2 + insets.top));
-
-        this.leftPupilIconXPos = middleXVal - this.paddingVal - this.pupilSizeBarWidth;
-        this.rightPupilIconXPos = middleXVal + this.paddingVal;
-
-        if (this.applicationData == null) {
-            int pupilBarPixelHeight;
-            // draw eye icons
-            g.setColor(getPupilSizBarColor());
-            pupilBarPixelHeight = (Math.round(5 * this.renderer.getPixelPerUnit()));
-            g.fillRect(this.leftPupilIconXPos, Math.round((getAreaHeight() - pupilBarPixelHeight) / 2) + getInsets().top, this.pupilSizeBarWidth, pupilBarPixelHeight);
-            g.fillRect(this.rightPupilIconXPos, Math.round((getAreaHeight() - pupilBarPixelHeight) / 2) + getInsets().top, this.pupilSizeBarWidth, pupilBarPixelHeight);
-            this.renderer.drawCenteredString(g, insets.left + this.paddingVal, middleXVal, getHeight() - insets.bottom - 20,"3.5" );
-            this.renderer.drawCenteredString(g, middleXVal, insets.left + getAreaWidth(), getHeight() - insets.bottom - 20,"3.5" );
-//            g.drawString("3.5", middleXVal + this.paddingVal + calcNumericLabelInset(), getHeight() - insets.bottom - 20);
+        final EyeTrackingEvent event = (EyeTrackingEvent) this.trackingEvent;
+        if ((event == null) && (this.applicationData != null)) {
             return;
         }
 
-        int pupilBarPixelHeight;
-        final float leftSize = CommonFunctions.limitFloat(e.getPupilSizeLeft(),0.0f,8.0f);
-        final float rightSize = CommonFunctions.limitFloat(e.getPupilSizeRight(),0.0f,8.0f);
-        // draw eye icons
-        g.setColor(getPupilSizBarColor());
-        pupilBarPixelHeight = this.renderer.getLeftPupilPixelSize(leftSize);
-        g.fillRect(this.leftPupilIconXPos, Math.round((getAreaHeight() - pupilBarPixelHeight) / 2) + getInsets().top, this.pupilSizeBarWidth, pupilBarPixelHeight);
+        final int leftBorder = getInsets().left;
+        final int topBorder = getInsets().top;
+        final int areaWidth = getAreaWidth();
+        final int areaHeight = getAreaHeight();
 
-        pupilBarPixelHeight = this.renderer.getRightPupilPixelSize(rightSize);
-        g.fillRect(this.rightPupilIconXPos, Math.round((getAreaHeight() - pupilBarPixelHeight) / 2) + getInsets().top, this.pupilSizeBarWidth, pupilBarPixelHeight);
+        final int middleXVal = Math.round(areaWidth / 2 + leftBorder);
+        final int middleYVal = Math.round(areaHeight / 2 + topBorder);
 
-        // draw numeric output       
-        this.renderer.drawCenteredString(g, insets.left + this.paddingVal, middleXVal, getHeight() - insets.bottom - 20,String.format("%.1f", leftSize));
-        this.renderer.drawCenteredString(g, middleXVal, insets.left + getAreaWidth(), getHeight() - insets.bottom - 20,String.format("%.1f", rightSize));
+        // draw canvas area
+        g.setColor(this.pupilSizeCanvasBackgroundColor);
+        g.fillRect(leftBorder, topBorder, areaWidth, areaHeight);
 
-    }
+        // draw middle line and center tick
+        g.setColor(Color.LIGHT_GRAY);
+        g.drawLine(middleXVal, topBorder, middleXVal, areaHeight);
+        g.drawLine(leftBorder, middleYVal, areaWidth, middleYVal);
 
-    /**
-     * @return the paddingVal
-     */
-    public int getPaddingVal() {
-        return this.paddingVal;
-    }
+        // Horizontal position of the left and right eye icon
+        final int leftPupilIconXPos = middleXVal - this.paddingVal - this.pupilSizeBarWidth;
+        final int rightPupilIconXPos = middleXVal + this.paddingVal;
 
-    /**
-     * @param paddingVal the paddingVal to set
-     */
-    public void setPaddingVal(final int paddingVal) {
-        this.paddingVal = paddingVal;
+        if (this.applicationData == null) {
+            final int pupilBarPixelHeight = Math.round(5 * this.renderer.getPixelPerUnit());
+
+            // Draw eye icons
+            g.setColor(this.pupilSizBarColor);
+            g.fillRect(leftPupilIconXPos, Math.round((areaHeight - pupilBarPixelHeight) / 2) + topBorder, this.pupilSizeBarWidth, pupilBarPixelHeight);
+            g.fillRect(rightPupilIconXPos, Math.round((areaHeight - pupilBarPixelHeight) / 2) + topBorder, this.pupilSizeBarWidth, pupilBarPixelHeight);
+
+            // Draw numeric output
+            this.renderer.drawCenteredString(g, leftBorder + this.paddingVal, middleXVal, areaHeight - 20, "3.5");
+            this.renderer.drawCenteredString(g, middleXVal, leftBorder + areaWidth, areaHeight - 20, "3.5");
+
+            return;
+        }
+
+        // TODO: Why can be event.getPupilSizeLeft be null, but event.getPupilSizeRight not?
+        @SuppressWarnings("null")
+        final float leftSize = CommonFunctions.limitFloat(event.getPupilSizeLeft(), 0.0f, 8.0f);
+        final float rightSize = CommonFunctions.limitFloat(event.getPupilSizeRight(), 0.0f, 8.0f);
+
+        // Draw left eye icons
+        g.setColor(this.pupilSizBarColor);
+        final int leftPupilBarPixelHeight = this.renderer.getLeftPupilPixelSize(leftSize);
+        g.fillRect(leftPupilIconXPos, Math.round((areaHeight - leftPupilBarPixelHeight) / 2) + topBorder, this.pupilSizeBarWidth, leftPupilBarPixelHeight);
+
+        // Draw right eye icons
+        final int rightPupilBarPixelHeight = this.renderer.getRightPupilPixelSize(rightSize);
+        g.fillRect(rightPupilIconXPos, Math.round((areaHeight - rightPupilBarPixelHeight) / 2) + topBorder, this.pupilSizeBarWidth, rightPupilBarPixelHeight);
+
+        // Draw numeric output
+        this.renderer.drawCenteredString(g, leftBorder + this.paddingVal, middleXVal, areaHeight - 20, String.format("%.1f", new Float(leftSize)));
+        this.renderer.drawCenteredString(g, middleXVal, areaWidth, areaHeight - 20, String.format("%.1f", new Float(rightSize)));
     }
 
     /**
@@ -171,33 +157,5 @@ public class PupilSizeDisplay extends AbstractTrackingEventComponent {
      */
     public void setPupilSizeCanvasBackgroundColor(final Color pupilSizeCanvasBackgroundColor) {
         this.pupilSizeCanvasBackgroundColor = pupilSizeCanvasBackgroundColor;
-    }
-
-    /**
-     * @return the pupilSizeBarWidth
-     */
-    public int getPupilSizeBarWidth() {
-        return this.pupilSizeBarWidth;
-    }
-
-    /**
-     * @param pupilSizeBarWidth the pupilSizeBarWidth to set
-     */
-    public void setPupilSizeBarWidth(final int pupilSizeBarWidth) {
-        this.pupilSizeBarWidth = pupilSizeBarWidth;
-    }
-
-    /**
-     * @return the pupilSizBarColor
-     */
-    public Color getPupilSizBarColor() {
-        return this.pupilSizBarColor;
-    }
-
-    /**
-     * @param pupilSizBarColor the pupilSizBarColor to set
-     */
-    public void setPupilSizBarColor(final Color pupilSizBarColor) {
-        this.pupilSizBarColor = pupilSizBarColor;
     }
 }
