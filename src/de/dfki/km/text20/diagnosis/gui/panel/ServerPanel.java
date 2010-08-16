@@ -71,37 +71,16 @@ public class ServerPanel extends ServerPanelTemplate implements TrackingListener
     private static final long serialVersionUID = -7647208759232985123L;
 
     /** */
-    ApplicationData applicationData;
+    private final ApplicationData applicationData;
 
     /** */
-    ServerInfo serverInfo;
+    private final ServerInfo serverInfo;
 
     /** */
-    EyeTrackingEventRingbuffer eyeTrackingRingBuffer;
+    final EyeTrackingEventRingbuffer eyeTrackingRingBuffer;
 
     /** */
-    BrainTrackingEventRingbuffer brainTrackingRingBuffer;
-
-//    /** */
-//    long intervalStartMillis = new Date().getTime();
-//
-//    /** */
-//    long intervalEndMillis;
-
-
-
-    /** */
-    int eyeTrackingEventCounter = 0;
-
-    /** */
-    int brainTrackingEventCounter = 0;
-
-
-//    /** */
-//    int eyeTrackingEventRate = 0;
-//
-//    /** */
-//    int brainTrackingEventRate = 0;
+    final BrainTrackingEventRingbuffer brainTrackingRingBuffer;
 
 
     /** Approximated average eye tracking event rate in [events / seconds] */
@@ -110,6 +89,12 @@ public class ServerPanel extends ServerPanelTemplate implements TrackingListener
     /** Approximated average brain tracking event rate in [events / seconds] */
     final int avgBrainTrackingEventRate = 10;
 
+
+    /** Counter for the incoming eye tracking events */
+    int eyeTrackingEventCounter = 0;
+
+    /** Counter for the incoming brain tracking events */
+    int brainTrackingEventCounter = 0;
 
 
     /** */
@@ -132,19 +117,19 @@ public class ServerPanel extends ServerPanelTemplate implements TrackingListener
     MiniWindow miniWindow;
 
 
-    /** common listener to handle all hyperlink commands */
+    /** Common listener to handle all hyperlink commands */
     private final ActionListener commandProcessor = new CommandListener();
 
     final String[] statusLabels = { "Bad", "Vage", "Ok", "Off", "On" };
 
     /**
-     * @param appData
+     * @param applicationData
      * @param serverInfo
      */
-    public ServerPanel(final ApplicationData appData, final ServerInfo serverInfo) {
+    public ServerPanel(final ApplicationData applicationData, final ServerInfo serverInfo) {
         super();
 
-        this.applicationData = appData;
+        this.applicationData = applicationData;
         this.serverInfo = serverInfo;
 
         this.eyeTrackingRingBuffer = serverInfo.getEyeTrackingRingBuffer();
@@ -158,10 +143,7 @@ public class ServerPanel extends ServerPanelTemplate implements TrackingListener
 
         setGUIParameters();
 
-        // TODO: I guess this can be done a lot more efficient and elegantly
-//        new Timer().scheduleAtFixedRate(new EventCountTask(), 1000, 1000);
-
-        new Timer().scheduleAtFixedRate(new AverageEventRateTask(), 1000, 1000);
+        new Timer().scheduleAtFixedRate(new AverageEventRateEstimator(), 1000, 1000);
     }
 
     /** */
@@ -173,7 +155,7 @@ public class ServerPanel extends ServerPanelTemplate implements TrackingListener
             }
 
             this.eyeTrackingDeviceNameValueLabel.setText(this.serverInfo.getEyeTrackingDevice().getDeviceInfo().getInfo("DEVICE_NAME"));
-            this.eyeTrackingDeviceTypeValueLabel.setText(this.serverInfo.getEyeTrackingDevice().getDeviceType().name());//.getOpenDevice().getDeviceType().name());
+            this.eyeTrackingDeviceTypeValueLabel.setText(this.serverInfo.getEyeTrackingDevice().getDeviceType().name());
             this.eyeTrackingDeviceLocationValueLabel.setText(this.serverInfo.getURI());
 
             // Starting recording for eye tracker
@@ -289,8 +271,6 @@ public class ServerPanel extends ServerPanelTemplate implements TrackingListener
             }
         });
 
-        //        this.serverInfo.setMainWindow(this);
-
         updateUI();
     }
 
@@ -334,13 +314,6 @@ public class ServerPanel extends ServerPanelTemplate implements TrackingListener
         //TODO Reactive Tray ?
         //        final DiagState newTrayState = EyeTrackingEventEvaluator.evaluateEvent(event);
 
-        // Getting and setting the eye tracking event rate + event rate indicator
-//        this.getEventRate().setText("" + this.eyeTrackingEventRate);
-//        final DiagState eventRateState = this.eyeTrackingEventRate > this.avgEyeTrackingEventRate ? DiagState.OK : DiagState.BAD;
-//        this.getEventRateIndicator().setStatus(eventRateState);
-
-        final DiagState eventRateState = (DiagState) this.getEventRateIndicator().getStatus();
-
         final Map<DataPartition, DiagState> qualityStatus = EyeTrackingEventEvaluator.getOverallQualityStatus(event);
 
         final DiagState headPositionState = qualityStatus.get(DataPartition.HEAD_POSITION);
@@ -349,6 +322,7 @@ public class ServerPanel extends ServerPanelTemplate implements TrackingListener
         final DiagState headDistanceState = qualityStatus.get(DataPartition.HEAD_DISTANCE);
         this.getHeadDistanceIndicator().setStatus(headDistanceState);
 
+        final DiagState eventRateState = (DiagState) this.getEventRateIndicator().getStatus();
         final DiagState overallState = EyeTrackingEventEvaluator.getWorstState(headDistanceState, headPositionState, eventRateState);
 
         this.getOverallQualityIndicator().setStatus(overallState);
@@ -463,76 +437,41 @@ public class ServerPanel extends ServerPanelTemplate implements TrackingListener
         }
     }
 
-//    /**
-//     * @author buhl
-//     * implements the task used by the fixed time event rate counter
-//     */
-//    class EventCountTask extends TimerTask {
-//        Date date = new Date();
-//
-//        @Override
-//        public synchronized void run() {
-//            // TODO: Which time intervall is measured here and why isn't System.currentTimeMillis() or System.nanoTime() used?
-//            ServerPanel.this.intervalEndMillis = this.date.getTime();
-//            this.date = new Date();
-//            ServerPanel.this.intervalStartMillis = this.date.getTime();
-//            final long difference = ServerPanel.this.intervalStartMillis - ServerPanel.this.intervalEndMillis;
-//
-//            // Calculating eye tracking event rate
-//            ServerPanel.this.eyeTrackingEventRate = Math.round((float) ServerPanel.this.eyeTrackingEventCounter / difference * 1000);
-//            ServerPanel.this.eyeTrackingEventCounter = 0;
-//
-//            // Calculating brain tracking event rate
-//            ServerPanel.this.brainTrackingEventRate = Math.round((float) ServerPanel.this.brainTrackingEventCounter / difference * 1000);
-//
-//            // Getting and setting the brain tracking event rate + event rate indicator
-//            ServerPanel.this.getBrainTrackingEventRate().setText("" + ServerPanel.this.brainTrackingEventCounter);
-//
-//            // TODO: Check if this threshold makes sense for brain tracker
-//            final DiagState brainTrackingEventRateState = (ServerPanel.this.brainTrackingEventRate > ServerPanel.this.avgBrainTrackingEventRate) ? DiagState.OK : DiagState.BAD;
-//            ServerPanel.this.getBrainTrackingEventRateIndicator().setStatus(brainTrackingEventRateState);
-//
-//            ServerPanel.this.brainTrackingEventCounter = 0;
-//        }
-//    }
-
-    class AverageEventRateTask extends TimerTask {
+    /**
+     * @author Vartan
+     * This task estimates the current eye and brain tracking event rate and also sets the values in the coresponding gui elements.
+     */
+    class AverageEventRateEstimator extends TimerTask {
         private long previousTimeStamp = System.currentTimeMillis();
         private long currentTimeStamp = 0;
 
         private final int averageEyeTrackingEventRate = ServerPanel.this.avgEyeTrackingEventRate;
         private final int averageBrainTrackingEventRate = ServerPanel.this.avgBrainTrackingEventRate;
 
-
         @Override
         public void run() {
             this.currentTimeStamp = System.currentTimeMillis();
 
-            int delta = (int) Math.max((this.currentTimeStamp - this.previousTimeStamp) / 1000, 1);
+            final int delta = (int) Math.max((this.currentTimeStamp - this.previousTimeStamp) / 1000, 1);
 
-            int eyeTrackingEventRate = ServerPanel.this.eyeTrackingEventCounter / delta;
-            int brainTrackingEventRate = ServerPanel.this.brainTrackingEventCounter / delta;
+            // Calculating event rates
+            final int eyeTrackingEventRate = ServerPanel.this.eyeTrackingEventCounter / delta;
+            final int brainTrackingEventRate = ServerPanel.this.brainTrackingEventCounter / delta;
 
             // Getting and setting the eye tracking event rate + event rate indicator
             ServerPanel.this.getEventRate().setText("" + eyeTrackingEventRate);
-
-            final DiagState eyeTrackingEventRateState = (eyeTrackingEventRate > this.averageEyeTrackingEventRate) ? DiagState.OK : DiagState.BAD;
-            ServerPanel.this.getEventRateIndicator().setStatus(eyeTrackingEventRateState);
+            ServerPanel.this.getEventRateIndicator().setStatus((eyeTrackingEventRate > this.averageEyeTrackingEventRate) ? DiagState.OK : DiagState.BAD);
 
 
             // Getting and setting the brain tracking event rate + event rate indicator
             ServerPanel.this.getBrainTrackingEventRateValue().setText("" + brainTrackingEventRate);
+            ServerPanel.this.getBrainTrackingEventRateIndicator().setStatus((brainTrackingEventRate > this.averageBrainTrackingEventRate) ? DiagState.OK : DiagState.BAD);
 
-            // TODO: Check if this threshold makes sense for brain tracker
-            final DiagState brainTrackingEventRateState = (brainTrackingEventRate > this.averageBrainTrackingEventRate) ? DiagState.OK : DiagState.BAD;
-            ServerPanel.this.getBrainTrackingEventRateIndicator().setStatus(brainTrackingEventRateState);
-
-
+            // Resetting values for the next calculation iteration
             this.previousTimeStamp = this.currentTimeStamp;
             ServerPanel.this.eyeTrackingEventCounter = 0;
             ServerPanel.this.brainTrackingEventCounter = 0;
         }
-
     }
 
 }
