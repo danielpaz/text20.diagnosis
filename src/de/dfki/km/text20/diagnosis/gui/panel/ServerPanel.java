@@ -440,6 +440,7 @@ public class ServerPanel extends ServerPanelTemplate implements TrackingListener
     /**
      * @author Vartan
      * This task estimates the current eye and brain tracking event rate and also sets the values in the coresponding gui elements.
+     * For the calculation the number of events is counted between two timestamps.
      */
     class AverageEventRateEstimator extends TimerTask {
         private long previousTimeStamp = System.currentTimeMillis();
