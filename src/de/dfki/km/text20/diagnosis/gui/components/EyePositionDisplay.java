@@ -93,6 +93,7 @@ public class EyePositionDisplay extends AbstractTrackingEventComponent {
 		setBackground(this.eyePostionCanvasBackgroundColor);
 		this.setPreferredSize(new Dimension(this.defaultEyepositionCanvasWidth, this.defaultEyepositionCanvasHeight));
 
+		// Initializing gaze tracking point array
 		for(int i = 0; i < this.gazeTrack.length; i++){
             this.gazeTrack[i] = new Point(0,0);
 		}
@@ -108,11 +109,18 @@ public class EyePositionDisplay extends AbstractTrackingEventComponent {
             return;
         }
 
-		// draw Background
-		g.setColor(this.eyePostionCanvasBackgroundColor);
-		g.fillRect(getInsets().left, getInsets().top, getAreaWidth(), getAreaHeight());
+        // Getting borders and are sizes once
+        final int leftBorder = getInsets().left;
+        final int topBorder = getInsets().top;
 
-		// draw valid area rectangle
+        final int areaWidth = getAreaWidth();
+        final int areaHeight = getAreaHeight();
+
+		// Draw Background
+		g.setColor(this.eyePostionCanvasBackgroundColor);
+		g.fillRect(leftBorder, topBorder, areaWidth, areaHeight);
+
+		// Draw valid area rectangle
 		g.setColor(this.validRectColor);
 		final int x = this.renderer.getXPixelPos(EyeTrackingEventEvaluator.X_EYE_POSITION_MIN);
 		final int y = this.renderer.getYPixelPos(EyeTrackingEventEvaluator.Y_EYE_POSITION_MIN);
@@ -121,7 +129,7 @@ public class EyePositionDisplay extends AbstractTrackingEventComponent {
 		g.drawRect(x, y, w, h);
 
 
-		// calculate quality
+		// Calculate quality for state color
 		final DiagState diagnosisState = EyeTrackingEventEvaluator.evaluateEvent(event);
 		final Color currentStateColor;
 		switch (diagnosisState) {
@@ -140,9 +148,7 @@ public class EyePositionDisplay extends AbstractTrackingEventComponent {
 		}
 
 
-
-		// dray eyes
-		g.setColor(currentStateColor);
+        g.setColor(currentStateColor);
 
 		// Draw left eye
 		float pupilSizeLeft = CommonFunctions.limitFloat(event.getPupilSizeLeft(), EyeTrackingEventEvaluator.MIN_PUPILSIZE, EyeTrackingEventEvaluator.MAX_PUPILSIZE);
@@ -183,27 +189,30 @@ public class EyePositionDisplay extends AbstractTrackingEventComponent {
 
 
 
-		// draw gaceCenter track
+		// Draw gaze center track and gaze point
 		final Point gazeCenter = event.getGazeCenter();
 		if ((gazeCenter.x > 0) && (gazeCenter.y > 0)) {
 		    // Add to gaze track
 		    this.gazeTrack[this.gazeTrackPointer] = gazeCenter;
 	        this.gazeTrackPointer = (this.gazeTrackPointer + 1) % this.gazeTrackLength;
 
-			// draw gazeCenter history
-			final int n0 = (this.gazeTrackLength - 1 + this.gazeTrackPointer) % this.gazeTrackLength;
-			final int n1 = (n0 + 1) % this.gazeTrackLength;
+            final int startPositionIndex = (this.gazeTrackLength - 1 + this.gazeTrackPointer) % this.gazeTrackLength;
+            final int endPositionIndex = (startPositionIndex + 1) % this.gazeTrackLength;
 
-			// TODO: hier hat am anfang gazeTrack[n1] null wenn man mit dem TrackingServer ausführt
+            final float scalingFactorX = (float) areaWidth / this.screenXResolution;
+            final float scalingFactorY = (float) areaHeight / this.screenYResolution;
+
             g.setColor(Color.PINK);
-			g.drawLine(this.gazeTrack[n0].x * getAreaWidth() / this.screenXResolution + getInsets().left,
-			           this.gazeTrack[n0].y * getAreaHeight() / this.screenYResolution + getInsets().top,
-			           this.gazeTrack[n1].x * getAreaWidth() / this.screenXResolution + getInsets().left,
-			           this.gazeTrack[n1].y * getAreaHeight() / this.screenYResolution + getInsets().top);
 
-			// draw current gazeCenter point
-			g.fillOval((gazeCenter.x * getAreaWidth() / this.screenXResolution + getInsets().left - this.fixationPointSize / 2),
-			           (gazeCenter.y * getAreaHeight() / this.screenYResolution + getInsets().top - this.fixationPointSize / 2),
+            // Draw gaze center track history
+			g.drawLine(Math.round(this.gazeTrack[startPositionIndex].x * scalingFactorX) + leftBorder,
+			           Math.round(this.gazeTrack[startPositionIndex].y * scalingFactorY) + topBorder,
+			           Math.round(this.gazeTrack[endPositionIndex].x * scalingFactorX) + leftBorder,
+			           Math.round(this.gazeTrack[endPositionIndex].y * scalingFactorY) + topBorder);
+
+			// Draw current gaze center point
+			g.fillOval(Math.round(gazeCenter.x * scalingFactorX) + leftBorder - this.fixationPointSize / 2,
+			           Math.round(gazeCenter.y * scalingFactorY) + topBorder - this.fixationPointSize / 2,
 			           this.fixationPointSize, this.fixationPointSize);
 		}
 	}
