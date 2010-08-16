@@ -25,6 +25,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.Toolkit;
 
 import de.dfki.km.text20.diagnosis.model.ApplicationData;
 import de.dfki.km.text20.diagnosis.model.ServerInfo;
@@ -46,10 +47,10 @@ public class EyePositionDisplay extends AbstractTrackingEventComponent {
 	private static final long serialVersionUID = -8142292583304142838L;
 
 	/** */
-	private static final int DEFAULT_EYEPOSITION_CANVAS_WIDTH = 500;
+	private final int defaultEyepositionCanvasWidth = 500;
 
 	/** */
-	private static final int DEFAULT_EYEPOSITION_CANVAS_HEIGHT = 400;
+	private final int defaultEyepositionCanvasHeight = 400;
 
 	/** */
 	private final int fixationPointSize = 12;
@@ -65,13 +66,10 @@ public class EyePositionDisplay extends AbstractTrackingEventComponent {
 	private int gazeTrackPointer = 0;
 
 	/** the pixel resolution of the eyetracker monitor */
-	private final int screenXResolution = 1600;
+	private final int screenXResolution = Toolkit.getDefaultToolkit().getScreenSize().width;
 
 	/** */
-	private final int screenYResolution = 1600;
-
-
-
+	private final int screenYResolution = Toolkit.getDefaultToolkit().getScreenSize().height;
 
 
     /** */
@@ -93,9 +91,9 @@ public class EyePositionDisplay extends AbstractTrackingEventComponent {
 		super(applicationData, serverInfo);
 
 		setBackground(this.eyePostionCanvasBackgroundColor);
-		this.setPreferredSize(new Dimension(DEFAULT_EYEPOSITION_CANVAS_WIDTH, DEFAULT_EYEPOSITION_CANVAS_HEIGHT));
+		this.setPreferredSize(new Dimension(this.defaultEyepositionCanvasWidth, this.defaultEyepositionCanvasHeight));
 
-		for(int i = 0; i < this.gazeTrack.length; ++i){
+		for(int i = 0; i < this.gazeTrack.length; i++){
             this.gazeTrack[i] = new Point(0,0);
 		}
 	}
@@ -106,9 +104,9 @@ public class EyePositionDisplay extends AbstractTrackingEventComponent {
 	@Override
 	public void render(final Graphics g) {
 		final EyeTrackingEvent event = (EyeTrackingEvent) this.trackingEvent;
-		if ((event == null) && (this.applicationData != null)) {
-			return;
-		}
+        if (this.applicationData == null || event == null) {
+            return;
+        }
 
 		// draw Background
 		g.setColor(this.eyePostionCanvasBackgroundColor);
@@ -122,27 +120,23 @@ public class EyePositionDisplay extends AbstractTrackingEventComponent {
 		final int h = this.renderer.getYPixelPos(EyeTrackingEventEvaluator.Y_EYE_POSITION_MAX - EyeTrackingEventEvaluator.Y_EYE_POSITION_MIN);
 		g.drawRect(x, y, w, h);
 
-		if (this.applicationData == null || event == null) {
-			return;
-		}
-
 
 		// calculate quality
 		final DiagState diagnosisState = EyeTrackingEventEvaluator.evaluateEvent(event);
 		final Color currentStateColor;
 		switch (diagnosisState) {
-		case BAD:
-			currentStateColor = Color.RED;
-			break;
-		case OK:
-			currentStateColor = Color.GREEN;
-			break;
-		case VAGUE:
-			currentStateColor = Color.YELLOW;
-			break;
-		default:
-			currentStateColor = Color.YELLOW;
-			break;
+    		case BAD:
+    			currentStateColor = Color.RED;
+    			break;
+    		case OK:
+    			currentStateColor = Color.GREEN;
+    			break;
+    		case VAGUE:
+    			currentStateColor = Color.YELLOW;
+    			break;
+    		default:
+    			currentStateColor = Color.YELLOW;
+    			break;
 		}
 
 
@@ -155,6 +149,7 @@ public class EyePositionDisplay extends AbstractTrackingEventComponent {
 		if (CommonFunctions.isBetweenIncludes(0, 1.0f, event.getLeftEyePosition()[0]) &&
 		    CommonFunctions.isBetweenIncludes(0, 1.0f, event.getLeftEyePosition()[1]) &&
 		    CommonFunctions.isBetweenIncludes(10, 40, (int) (pupilSizeLeft * 10))) {
+
 			g.fillOval(this.renderer.getLeftEyeXPixelPos(event), this.renderer.getLeftEyeYPixelPos(event),
 			           (int) (pupilSizeLeft * 10), (int) (pupilSizeLeft * 10));
 		} else {
@@ -180,6 +175,7 @@ public class EyePositionDisplay extends AbstractTrackingEventComponent {
 			try {
 				pupilSizeRight = CommonFunctions.limitFloat(
 						((EyeTrackingEvent) this.previousTrackingEvent).getPupilSizeRight(), EyeTrackingEventEvaluator.MIN_PUPILSIZE, EyeTrackingEventEvaluator.MAX_PUPILSIZE);
+
 				g.fillOval(this.renderer.getRightEyeXPixelPos((EyeTrackingEvent) this.previousTrackingEvent), this.renderer.getRightEyeYPixelPos((EyeTrackingEvent) this.previousTrackingEvent),
 				           this.renderer.getRightPupilPixelSize(pupilSizeRight), this.renderer.getRightPupilPixelSize(pupilSizeRight));
 			} catch (final RuntimeException e) { }
