@@ -166,7 +166,7 @@ public class EyePositionDisplay extends AbstractTrackingEventComponent {
 
 				g.fillOval(this.renderer.getLeftEyeXPixelPos((EyeTrackingEvent) this.previousTrackingEvent), this.renderer.getLeftEyeYPixelPos((EyeTrackingEvent) this.previousTrackingEvent),
 				           this.renderer.getLeftPupilPixelSize(pupilSizeLeft), this.renderer.getLeftPupilPixelSize(pupilSizeLeft));
-			} catch (final RuntimeException e) { }
+			} catch (final RuntimeException e) { /* */ }
 		}
 
 		// Draw right eye
@@ -184,7 +184,7 @@ public class EyePositionDisplay extends AbstractTrackingEventComponent {
 
 				g.fillOval(this.renderer.getRightEyeXPixelPos((EyeTrackingEvent) this.previousTrackingEvent), this.renderer.getRightEyeYPixelPos((EyeTrackingEvent) this.previousTrackingEvent),
 				           this.renderer.getRightPupilPixelSize(pupilSizeRight), this.renderer.getRightPupilPixelSize(pupilSizeRight));
-			} catch (final RuntimeException e) { }
+			} catch (final RuntimeException e) { /* */ }
 		}
 
 
