@@ -127,6 +127,7 @@ public class DeviceLabel extends JLabel {
     /**
      * @param sbPanel
      */
+    @SuppressWarnings("unchecked")
     public void setFullDeviceText(ServerBrowserPanel sbPanel) {
 
         // TODO: What the heck is this?
