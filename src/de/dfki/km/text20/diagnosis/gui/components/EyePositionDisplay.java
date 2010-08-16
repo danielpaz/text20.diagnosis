@@ -55,7 +55,11 @@ public class EyePositionDisplay extends AbstractTrackingEventComponent {
 	private final int fixationPointSize = 12;
 
 	/** */
-	private final int gazeTrackLenght = 10;
+	private final int gazeTrackLength = 10;
+
+	/** */
+    private final Point[] gazeTrack = new Point[this.gazeTrackLength];
+
 
 	/** */
 	private int gazeTrackPointer = 0;
@@ -66,8 +70,6 @@ public class EyePositionDisplay extends AbstractTrackingEventComponent {
 	/** */
 	private final int screenYResolution = 1600;
 
-	/** */
-	private final Point[] gazeTrack = new Point[this.gazeTrackLenght];
 
 
 
@@ -186,32 +188,26 @@ public class EyePositionDisplay extends AbstractTrackingEventComponent {
 
 
 		// draw gaceCenter track
-		if ((event.getGazeCenter().x > 0) && (event.getGazeCenter().y > 0)) {
-		    // add to gaze track
-		    this.gazeTrack[this.gazeTrackPointer] = event.getGazeCenter();
-	        this.gazeTrackPointer = (this.gazeTrackPointer + 1) % this.gazeTrackLenght;
-
-
-			g.setColor(Color.PINK);
+		final Point gazeCenter = event.getGazeCenter();
+		if ((gazeCenter.x > 0) && (gazeCenter.y > 0)) {
+		    // Add to gaze track
+		    this.gazeTrack[this.gazeTrackPointer] = gazeCenter;
+	        this.gazeTrackPointer = (this.gazeTrackPointer + 1) % this.gazeTrackLength;
 
 			// draw gazeCenter history
-			int n0 = 0;
-			int n1 = 0;
-			for (int i = 0; i < this.gazeTrackLenght; i++) {
-				n0 = (i + this.gazeTrackPointer) % this.gazeTrackLenght;
-				n1 = (n0 + 1) % this.gazeTrackLenght;
-			}
+			final int n0 = (this.gazeTrackLength - 1 + this.gazeTrackPointer) % this.gazeTrackLength;
+			final int n1 = (n0 + 1) % this.gazeTrackLength;
 
 			// TODO: hier hat am anfang gazeTrack[n1] null wenn man mit dem TrackingServer ausfŸhrt
-
+            g.setColor(Color.PINK);
 			g.drawLine(this.gazeTrack[n0].x * getAreaWidth() / this.screenXResolution + getInsets().left,
 			           this.gazeTrack[n0].y * getAreaHeight() / this.screenYResolution + getInsets().top,
 			           this.gazeTrack[n1].x * getAreaWidth() / this.screenXResolution + getInsets().left,
 			           this.gazeTrack[n1].y * getAreaHeight() / this.screenYResolution + getInsets().top);
 
 			// draw current gazeCenter point
-			g.fillOval((event.getGazeCenter().x * getAreaWidth() / this.screenXResolution + getInsets().left),
-			           (event.getGazeCenter().y * getAreaHeight() / this.screenYResolution + getInsets().top),
+			g.fillOval((gazeCenter.x * getAreaWidth() / this.screenXResolution + getInsets().left - this.fixationPointSize / 2),
+			           (gazeCenter.y * getAreaHeight() / this.screenYResolution + getInsets().top - this.fixationPointSize / 2),
 			           this.fixationPointSize, this.fixationPointSize);
 		}
 	}
