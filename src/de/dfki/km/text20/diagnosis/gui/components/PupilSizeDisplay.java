@@ -59,7 +59,6 @@ public class PupilSizeDisplay extends AbstractTrackingEventComponent {
     /** */
     private final Color pupilSizBarColor = Color.CYAN;
 
-
     /**
      * Default Constructor;
      * initializes Panel with default Values
@@ -86,9 +85,8 @@ public class PupilSizeDisplay extends AbstractTrackingEventComponent {
     @Override
     public void render(final Graphics g) {
         final EyeTrackingEvent event = (EyeTrackingEvent) this.trackingEvent;
-        if ((event == null) && (this.applicationData != null)) {
-            return;
-        }
+
+        if ((event == null) && (this.applicationData != null)) return;
 
         final int leftBorder = getInsets().left;
         final int topBorder = getInsets().top;
@@ -126,8 +124,6 @@ public class PupilSizeDisplay extends AbstractTrackingEventComponent {
             return;
         }
 
-        // TODO: Why can be event.getPupilSizeLeft be null, but event.getPupilSizeRight not?
-        @SuppressWarnings("null")
         final float leftSize = CommonFunctions.limitFloat(event.getPupilSizeLeft(), 0.0f, 8.0f);
         final float rightSize = CommonFunctions.limitFloat(event.getPupilSizeRight(), 0.0f, 8.0f);
 

@@ -168,10 +168,6 @@ public class ServerPanel extends ServerPanelTemplate implements TrackingListener
     private void setGUIParameters() {
         // Setting up eye tracking components if device is available
         if (this.serverInfo.getEyeTrackingDevice() != null) {
-            for (final String s : this.serverInfo.getEyeTrackingDevice().getDeviceInfo().getKeys()) {
-                System.out.println(s);
-            }
-
             this.eyeTrackingDeviceNameValueLabel.setText(this.serverInfo.getEyeTrackingDevice().getDeviceInfo().getInfo("DEVICE_NAME"));
             this.eyeTrackingDeviceTypeValueLabel.setText(this.serverInfo.getEyeTrackingDevice().getDeviceType().name());
             this.eyeTrackingDeviceLocationValueLabel.setText(this.serverInfo.getURI());
@@ -233,10 +229,6 @@ public class ServerPanel extends ServerPanelTemplate implements TrackingListener
 
         // Setting up brain tracking components if device is available
         if (this.serverInfo.getBrainTrackingDevice() != null) {
-            for (final String s : this.serverInfo.getBrainTrackingDevice().getDeviceInfo().getKeys()) {
-                System.out.println(s);
-            }
-
             this.brainTrackingDeviceNameValueLabel.setText(this.serverInfo.getBrainTrackingDevice().getDeviceInfo().getInfo("DEVICE_NAME"));
             this.brainTrackingDeviceLocationValueLabel.setText(this.serverInfo.getURI());
 
