@@ -102,9 +102,8 @@ public class EyeDistanceDisplay extends AbstractTrackingEventComponent {
     public void render(final Graphics g) {
         final EyeTrackingEvent event = (EyeTrackingEvent) this.trackingEvent;
 
-        if ((event == null) && (this.applicationData != null)) {
-            return;
-        }
+        if ((event == null) && (this.applicationData != null)) return; 
+        
 
         final int leftBorder = getInsets().left;
         final int topBorder = getInsets().top;
@@ -145,8 +144,6 @@ public class EyeDistanceDisplay extends AbstractTrackingEventComponent {
             return;
         }
 
-        // TODO: Why can be event.getLeftEyePosition be null, but event.getRightEyePosition not?
-        @SuppressWarnings("null")
         final float leftEyeDistance = CommonFunctions.limitFloat(event.getLeftEyePosition()[2]);
         final float rightEyeDistance = CommonFunctions.limitFloat(event.getRightEyePosition()[2]);
 
@@ -216,7 +213,7 @@ public class EyeDistanceDisplay extends AbstractTrackingEventComponent {
     }
 
     /**
-     * @return
+     * @return .
      */
     public int getPaddingVal() {
         return this.paddingVal;
