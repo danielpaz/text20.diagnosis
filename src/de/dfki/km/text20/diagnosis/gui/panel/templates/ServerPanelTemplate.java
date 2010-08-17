@@ -33,7 +33,7 @@ import de.dfki.km.text20.diagnosis.gui.components.PupilSizeDisplay;
  */
 public class ServerPanelTemplate extends JPanel {
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 5166137640013392483L;
 
@@ -103,6 +103,7 @@ public class ServerPanelTemplate extends JPanel {
     public JCheckBox ministatus;
     private JLabel transparentLocalRecalibrationLabel;
     protected JCheckBox transparentRecalibration;
+    protected JPanel ChannelPanel;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 
     public ServerPanelTemplate() {
@@ -240,6 +241,7 @@ public class ServerPanelTemplate extends JPanel {
         ministatus = new JCheckBox();
         transparentLocalRecalibrationLabel = new JLabel();
         transparentRecalibration = new JCheckBox();
+        ChannelPanel = new JPanel();
         CellConstraints cc = new CellConstraints();
 
         //======== this ========
@@ -529,6 +531,15 @@ public class ServerPanelTemplate extends JPanel {
                 settingsPanel.add(transparentRecalibration, cc.xy(5, 11));
             }
             tabbedPane.addTab("Settings", settingsPanel);
+
+
+            //======== ChannelPanel ========
+            {
+                ChannelPanel.setLayout(new FormLayout(
+                    "default:grow",
+                    "default"));
+            }
+            tabbedPane.addTab("Channels", ChannelPanel);
 
         }
         add(tabbedPane, cc.xy(1, 5));
