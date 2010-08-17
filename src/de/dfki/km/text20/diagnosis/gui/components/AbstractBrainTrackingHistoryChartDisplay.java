@@ -30,7 +30,11 @@ public abstract class AbstractBrainTrackingHistoryChartDisplay extends AbstractT
     /** Pixel height between each channel graph */
     private final int channelPixelSpacing = 6;
 
+    /** Pixel height for every channel name */
     private final int channelNameSpacing = 20;
+
+    /** Total pixel offset */
+    private final int spacingOffset = this.channelPixelSpacing + this.channelNameSpacing;
 
     /** Stores for each channel the draw status, i.e. to be drawn or not */
     private final HashMap<String, Boolean> channelStatus;
@@ -105,13 +109,14 @@ public abstract class AbstractBrainTrackingHistoryChartDisplay extends AbstractT
 
 
         // Range in pixels in which the intervall -1.0 ... +1.0 will be displayed
-        final int offset = this.channelPixelSpacing + this.channelNameSpacing;
+        final int channelValueRange = areaHeight / channelCount - this.spacingOffset;
 
-        final int channelValueRange = areaHeight / channelCount - offset;
-        int baseLineYPosition = (channelValueRange + this.channelPixelSpacing) / 2 + this.channelNameSpacing;
-
+        // Some constants used in the loop all over again
         final int channelValueScalingFactor = channelValueRange / 2;
         final int channelNameOffset = channelValueScalingFactor + this.channelNameSpacing / 2;
+
+        // Base line y position which gets incremented by channelValueRange + this.spacingOffset every iteration
+        int baseLineYPosition = (channelValueRange + this.channelPixelSpacing) / 2 + this.channelNameSpacing;
 
         // Drawing base lines, captions and data
         for (final String channelName : this.channelStatus.keySet()) {
@@ -141,7 +146,7 @@ public abstract class AbstractBrainTrackingHistoryChartDisplay extends AbstractT
                 BrainTrackingEvent previousBrainTrackingEvent = this.serverInfo.getBrainTrackingRingBuffer().get(previousBufferPosition);
 
                 for (int currentXPosition = 0; currentXPosition < areaWidth; currentXPosition++) {
-                    final int currentBufferPosition = Math.max(0, Math.round(currentXPosition * this.serverInfo.getBrainTrackingRingBuffer().size() / areaWidth - 1));
+                    final int currentBufferPosition = Math.max(Math.round(currentXPosition * this.serverInfo.getBrainTrackingRingBuffer().size() / areaWidth - 1), 0);
 
                     // Getting current brain tracking event from ring buffer and returning if it is null
                     final BrainTrackingEvent currentBrainTrackingEvent = this.serverInfo.getBrainTrackingRingBuffer().get(currentBufferPosition);
@@ -169,7 +174,7 @@ public abstract class AbstractBrainTrackingHistoryChartDisplay extends AbstractT
                     previousBrainTrackingEvent = currentBrainTrackingEvent;
                 }
 
-                baseLineYPosition += channelValueRange + offset;
+                baseLineYPosition += channelValueRange + this.spacingOffset;
             }
         }
 
