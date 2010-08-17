@@ -25,20 +25,27 @@ import java.awt.Component;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.jdesktop.swingx.JXHyperlink;
+
+import com.jgoodies.forms.layout.CellConstraints;
+import com.jgoodies.forms.layout.FormLayout;
 
 import de.dfki.km.text20.diagnosis.gui.MiniWindow;
 import de.dfki.km.text20.diagnosis.gui.RecalibrationWindow;
@@ -77,6 +84,13 @@ public class ServerPanel extends ServerPanelTemplate implements TrackingListener
     private final ServerInfo serverInfo;
 
     /** */
+    final HashMap<String, Boolean> channelStatus = new HashMap<String, Boolean>(10);
+
+    /** */
+    private boolean listenToChannels = true;
+
+
+    /** */
     final EyeTrackingEventRingbuffer eyeTrackingRingBuffer;
 
     /** */
@@ -95,6 +109,8 @@ public class ServerPanel extends ServerPanelTemplate implements TrackingListener
 
     /** Counter for the incoming brain tracking events */
     int brainTrackingEventCounter = 0;
+
+
 
 
     /** */
@@ -119,6 +135,8 @@ public class ServerPanel extends ServerPanelTemplate implements TrackingListener
 
     /** Common listener to handle all hyperlink commands */
     private final ActionListener commandProcessor = new CommandListener();
+
+    private final ItemListener checkBoxProcessor = new CheckBoxListener();
 
     final String[] statusLabels = { "Bad", "Vage", "Ok", "Off", "On" };
 
@@ -237,7 +255,7 @@ public class ServerPanel extends ServerPanelTemplate implements TrackingListener
             this.brainRecordIndicator.setStatus(DiagState.ON);
             this.brainTrackingRecordSwitch.setText(this.statusLabels[this.brainRecordIndicator.getStatus().ordinal()]);
 
-            this.brainHistory = new BrainDataChart(this.applicationData, this.serverInfo);
+            this.brainHistory = new BrainDataChart(this.applicationData, this.serverInfo, this.channelStatus);
 
             this.brainTrackingRecordSwitch.addActionListener(this.commandProcessor);
             this.brainHistoryLink.addActionListener(this.commandProcessor);
@@ -304,6 +322,12 @@ public class ServerPanel extends ServerPanelTemplate implements TrackingListener
             this.brainTrackingRingBuffer.addEvent((BrainTrackingEvent) event);
 
             this.brainHistory.newTrackingEvent(event);
+
+            // Listening once to the channels right at the beginning and setting up the channels on the ChannelPanel
+            if (this.listenToChannels) {
+                setBrainTrackingChannelGUIComponents((BrainTrackingEvent) event);
+                this.listenToChannels = false;
+            }
         }
     }
 
@@ -336,10 +360,39 @@ public class ServerPanel extends ServerPanelTemplate implements TrackingListener
 
 
     /**
-     * Brings the window to the screen
+     * @param event
+     * Checks a given BrainTrackingEvent for its channels and constructs the layout in the ChannelPanel.
+     * For every channel found a checkbox is constructed.
      */
-    public void showOnScreen() {
-        this.setVisible(true);
+    private void setBrainTrackingChannelGUIComponents(final BrainTrackingEvent event) {
+        // Getting the number of channels found in the event
+        final int channelNumber = event.getChannels().size();
+
+        // Constraints needed for the correct gui layout
+        final CellConstraints cc = new CellConstraints();
+
+        // Clearing the checkbox stati just in case
+        this.channelStatus.clear();
+
+        // Defining the new specifications for the Formlayout, i.e. the number of rows depending on the channelNumber
+        final String encodedColumnSpecs = "default:grow";
+        final String encodedRowSpecs = channelNumber + "*(default)";
+        this.ChannelPanel.setLayout(new FormLayout(encodedColumnSpecs, encodedRowSpecs));
+
+        // Construction of the checkboxes
+        int columnIndex = 1;
+        for (String channelName : event.getChannels()) {
+            final JCheckBox checkBox = new JCheckBox(channelName, true);
+            checkBox.addItemListener(this.checkBoxProcessor);
+
+            // Adding checkbox status to the map for later access
+            this.channelStatus.put(channelName, Boolean.TRUE);
+
+            // Adding checkbox to the gui layout at the correct column position
+            this.ChannelPanel.add(checkBox, cc.xy(1, columnIndex));
+
+            columnIndex++;
+        }
     }
 
     /**
@@ -410,7 +463,6 @@ public class ServerPanel extends ServerPanelTemplate implements TrackingListener
                     hideEverythingElse();
                     ServerPanel.this.serverInfo.getEyeTrackingDevice().sendLowLevelCommand(TrackingCommand.HARDWARE_CALIBRATION);
                 }
-
             }
         }
 
@@ -425,15 +477,18 @@ public class ServerPanel extends ServerPanelTemplate implements TrackingListener
             frame.pack();
             frame.setVisible(true);
         }
-    }
 
-    /**
-     * Hide everything else ...
-     */
-    public void hideEverythingElse() {
-        final Collection<ServerInfo> serverInfos = this.applicationData.getServerInfos();
-        for (ServerInfo info : serverInfos) {
-            info.getMainWindow().setState(Frame.ICONIFIED);
+
+        /**
+         * Hide everything else ...
+         */
+        private void hideEverythingElse() {
+            @SuppressWarnings("synthetic-access")
+            final Collection<ServerInfo> serverInfos = ServerPanel.this.applicationData.getServerInfos();
+
+            for (ServerInfo info : serverInfos) {
+                info.getMainWindow().setState(Frame.ICONIFIED);
+            }
         }
     }
 
@@ -475,4 +530,27 @@ public class ServerPanel extends ServerPanelTemplate implements TrackingListener
         }
     }
 
+
+
+    /**
+     * @author Vartan
+     * This listener watches currently over the checkboxes and stores their status in a hashmap for later use by other objects
+     */
+    class CheckBoxListener implements ItemListener {
+
+        @Override
+        public void itemStateChanged(ItemEvent e) {
+            // Getting the the source checkbox which was checked/unchecked
+            Object source = e.getItemSelectable();
+
+            if (source instanceof JCheckBox) {
+                // Getting the name which equals the channel name and it state
+                final String channelName = ((JCheckBox) source).getText();
+                final Boolean channelDisplay = (e.getStateChange() == ItemEvent.SELECTED) ? Boolean.TRUE : Boolean.FALSE;
+
+                // Storing the value in the hashmap
+                ServerPanel.this.channelStatus.put(channelName, channelDisplay);
+            }
+        }
+    }
 }
