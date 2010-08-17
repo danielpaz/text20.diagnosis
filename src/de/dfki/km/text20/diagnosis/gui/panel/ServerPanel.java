@@ -111,8 +111,6 @@ public class ServerPanel extends ServerPanelTemplate implements TrackingListener
     int brainTrackingEventCounter = 0;
 
 
-
-
     /** */
     PupilSizeChart pupilSizeHistory;
 
@@ -138,7 +136,9 @@ public class ServerPanel extends ServerPanelTemplate implements TrackingListener
 
     private final ItemListener checkBoxProcessor = new CheckBoxListener();
 
-    final String[] statusLabels = { "Bad", "Vage", "Ok", "Off", "On" };
+    private final ChangeListener bufferSliderProcessor = new SliderChangedListener();
+
+    private final String[] statusLabels = { "Bad", "Vage", "Ok", "Off", "On" };
 
     /**
      * @param applicationData
@@ -226,17 +226,7 @@ public class ServerPanel extends ServerPanelTemplate implements TrackingListener
             this.eyeTrackingRingBuffer.setRingbufferSize(this.bufferSizeSlider.getValue() * this.avgEyeTrackingEventRate);
             this.recordingTitle.setText("Eye Tracking Recording Status (" + this.eyeTrackingRingBuffer.size() + " Events)");
 
-            this.bufferSizeSlider.addChangeListener(new ChangeListener() {
-
-                @Override
-                public void stateChanged(final ChangeEvent e) {
-                    final int sliderValue = ((JSlider) e.getSource()).getValue();
-
-                    ServerPanel.this.bufferSizeLabel.setText(sliderValue + "s");
-                    ServerPanel.this.eyeTrackingRingBuffer.setRingbufferSize(sliderValue * ServerPanel.this.avgEyeTrackingEventRate);
-                    ServerPanel.this.recordingTitle.setText("Eye Tracking Recording Status (" + ServerPanel.this.eyeTrackingRingBuffer.size() + " Events)");
-                }
-            });
+            this.bufferSizeSlider.addChangeListener(this.bufferSliderProcessor);
         }
 
 
@@ -255,6 +245,7 @@ public class ServerPanel extends ServerPanelTemplate implements TrackingListener
             this.brainRecordIndicator.setStatus(DiagState.ON);
             this.brainTrackingRecordSwitch.setText(this.statusLabels[this.brainRecordIndicator.getStatus().ordinal()]);
 
+            // Creating brain tracking charts
             this.brainHistory = new BrainDataChart(this.applicationData, this.serverInfo, this.channelStatus);
 
             this.brainTrackingRecordSwitch.addActionListener(this.commandProcessor);
@@ -264,17 +255,7 @@ public class ServerPanel extends ServerPanelTemplate implements TrackingListener
             this.brainTrackingRingBuffer.setRingbufferSize(this.bufferSizeBrainTrackerHistorySlider.getValue() * this.avgBrainTrackingEventRate);
             this.brainTrackerRecordingStatusLabel.setText("Brain Tracking Recording Status (" + this.brainTrackingRingBuffer.size() + " Events)");
 
-            this.bufferSizeBrainTrackerHistorySlider.addChangeListener(new ChangeListener() {
-
-                @Override
-                public void stateChanged(ChangeEvent e) {
-                    final int sliderValue = ((JSlider) e.getSource()).getValue();
-                    ServerPanel.this.bufferSizeBrainTrackerHistoryValueLabel.setText(sliderValue + "s");
-                    ServerPanel.this.brainTrackingRingBuffer.setRingbufferSize(sliderValue * ServerPanel.this.avgBrainTrackingEventRate);
-                    ServerPanel.this.brainTrackerRecordingStatusLabel.setText("Brain Tracking Recording Status (" + ServerPanel.this.brainTrackingRingBuffer.size() + " Events)");
-
-                }
-            });
+            this.bufferSizeBrainTrackerHistorySlider.addChangeListener(this.bufferSliderProcessor);
         }
 
         this.trackingSince.setText(new java.text.SimpleDateFormat("dd.MM.yyyy HH.mm.ss").format(new Date()));
@@ -530,8 +511,6 @@ public class ServerPanel extends ServerPanelTemplate implements TrackingListener
         }
     }
 
-
-
     /**
      * @author Vartan
      * This listener watches currently over the checkboxes and stores their status in a hashmap for later use by other objects
@@ -550,6 +529,31 @@ public class ServerPanel extends ServerPanelTemplate implements TrackingListener
 
                 // Storing the value in the hashmap
                 ServerPanel.this.channelStatus.put(channelName, channelDisplay);
+            }
+        }
+    }
+
+
+    /**
+     * @author Vartan
+     * One change listener for the sliders
+     */
+    class SliderChangedListener implements ChangeListener {
+
+        @Override
+        public void stateChanged(ChangeEvent e) {
+            final int sliderValue = ((JSlider) e.getSource()).getValue();
+
+            if (e.getSource() == ServerPanel.this.bufferSizeBrainTrackerHistorySlider) {
+                ServerPanel.this.bufferSizeBrainTrackerHistoryValueLabel.setText(sliderValue + "s");
+                ServerPanel.this.brainTrackingRingBuffer.setRingbufferSize(sliderValue * ServerPanel.this.avgBrainTrackingEventRate);
+                ServerPanel.this.brainTrackerRecordingStatusLabel.setText("Brain Tracking Recording Status (" + ServerPanel.this.brainTrackingRingBuffer.size() + " Events)");
+            }
+
+            if (e.getSource() == ServerPanel.this.bufferSizeSlider) {
+                ServerPanel.this.bufferSizeLabel.setText(sliderValue + "s");
+                ServerPanel.this.eyeTrackingRingBuffer.setRingbufferSize(sliderValue * ServerPanel.this.avgEyeTrackingEventRate);
+                ServerPanel.this.recordingTitle.setText("Eye Tracking Recording Status (" + ServerPanel.this.eyeTrackingRingBuffer.size() + " Events)");
             }
         }
     }
