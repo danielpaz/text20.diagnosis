@@ -110,80 +110,69 @@ public abstract class AbstractBrainTrackingHistoryChartDisplay extends AbstractT
         final int channelValueRange = areaHeight / channelCount - offset;
         int baseLineYPosition = (channelValueRange + this.channelPixelSpacing) / 2 + this.channelNameSpacing;
 
-        // Drawing the base lines with chaptions
-        g.setColor(this.scaleColor);
         final int channelValueScalingFactor = channelValueRange / 2;
-        final int channelNameOffset =  channelValueScalingFactor + this.channelNameSpacing / 2;
+        final int channelNameOffset = channelValueScalingFactor + this.channelNameSpacing / 2;
 
+        // Drawing base lines, captions and data
         for (final String channelName : this.channelStatus.keySet()) {
-            if (this.channelStatus.get(channelName).booleanValue()) {
+            final boolean shouldBeDrawn = this.channelStatus.get(channelName).booleanValue();
 
+            if (shouldBeDrawn) {
+                // Drawing base line
+                g.setColor(this.scaleColor);
                 this.renderer.drawDottedLine((Graphics2D) g, leftBorder, baseLineYPosition, areaWidth, baseLineYPosition);
 
-                // Shifting chaptions one pixel so that isn't touching the left border or the base line
+
+
+                // Shifting captions one pixel so that isn't touching the left border or the base line
                 g.drawString("0.0", leftBorder + 1, baseLineYPosition - 1);
 
+                // Drawing channel name caption
                 g.drawString(channelName, this.dataAreaBorder + 1, baseLineYPosition - channelNameOffset);
+
+
+
+
+                // Drawing the data
+                int previousBufferPosition = 0;
+                int previousXPosition = 0;
+
+                // Getting previous tracking event from ring buffer
+                BrainTrackingEvent previousBrainTrackingEvent = this.serverInfo.getBrainTrackingRingBuffer().get(previousBufferPosition);
+
+                for (int currentXPosition = 0; currentXPosition < areaWidth; currentXPosition++) {
+                    final int currentBufferPosition = Math.max(0, Math.round(currentXPosition * this.serverInfo.getBrainTrackingRingBuffer().size() / areaWidth - 1));
+
+                    // Getting current brain tracking event from ring buffer and returning if it is null
+                    final BrainTrackingEvent currentBrainTrackingEvent = this.serverInfo.getBrainTrackingRingBuffer().get(currentBufferPosition);
+                    if (currentBrainTrackingEvent == null) {
+                        previousBufferPosition = currentBufferPosition;
+                        previousBrainTrackingEvent = currentBrainTrackingEvent;
+                        previousXPosition = currentXPosition;
+                        continue;
+                    }
+
+                    if ((previousBufferPosition != currentBufferPosition) && (previousBrainTrackingEvent != null)) {
+                        final double previousTrackingValue = previousBrainTrackingEvent.getValue(channelName);
+                        final double currentTrackingValue = currentBrainTrackingEvent.getValue(channelName);
+
+                        // Moving cursor to the previous position and drawing a line to the current position
+                        // Y Position is from the baseLineYPosition up or down by the among of the tracking value scaled up to fit the designated area
+                        g.setColor(this.dataColor);
+                        g.drawLine(this.dataAreaBorder + previousXPosition, (int) Math.round(baseLineYPosition + previousTrackingValue * channelValueScalingFactor),
+                                   this.dataAreaBorder + currentXPosition , (int) Math.round(baseLineYPosition + currentTrackingValue * channelValueScalingFactor));
+
+                        previousXPosition = currentXPosition;
+                    }
+
+                    previousBufferPosition = currentBufferPosition;
+                    previousBrainTrackingEvent = currentBrainTrackingEvent;
+                }
 
                 baseLineYPosition += channelValueRange + offset;
             }
         }
 
-        // Drawing the data
-        int previousXPosition = 0;
-        int previousBufferPosition = 0;
-
-        // Getting previous tracking event from ring buffer
-        BrainTrackingEvent previousBrainTrackingEvent = this.serverInfo.getBrainTrackingRingBuffer().get(previousBufferPosition);
-
-        // Iterating over every x Position
-        for (int currentXPosition = 0; currentXPosition < areaWidth; currentXPosition++) {
-
-            final int currentBufferPosition = Math.max(0, Math.round(currentXPosition * this.serverInfo.getBrainTrackingRingBuffer().size() / areaWidth - 1));
-
-            // Getting current brain tracking event from ring buffer and returning if it is null
-            final BrainTrackingEvent currentBrainTrackingEvent = this.serverInfo.getBrainTrackingRingBuffer().get(currentBufferPosition);
-            if (currentBrainTrackingEvent == null) {
-                previousBufferPosition = currentBufferPosition;
-                previousBrainTrackingEvent = currentBrainTrackingEvent;
-                previousXPosition = currentXPosition;
-                continue;
-            }
-
-            if ((previousBufferPosition != currentBufferPosition) && (previousBrainTrackingEvent != null)) {
-
-                g.setColor(this.dataColor);
-
-                // Reusing baseLineYPosition variable for the same purpose used above
-                baseLineYPosition = (channelValueRange + this.channelPixelSpacing) / 2  + this.channelNameSpacing;
-
-                // Interating over every channel in the previousBrainTrackingEvent and assuming that the current one has the same
-                for (final String channelName : previousBrainTrackingEvent.getChannels()) {
-                    // TODO: Might want to catch the case if the number of channels change while tracking
-
-                    // Skip this iteration if nothing should be drawn
-                    final boolean shouldBeDrawn = this.channelStatus.get(channelName).booleanValue();
-                    if (!shouldBeDrawn) {
-                        continue;
-                    }
-
-                    final double previousTrackingValue = previousBrainTrackingEvent.getValue(channelName);
-                    final double currentTrackingValue = currentBrainTrackingEvent.getValue(channelName);
-
-                    // Moving cursor to the previous position and drawing a line to the current position
-                    // Y Position is from the baseLineYPosition up or down by the among of the tracking value scaled up to fit the designated area
-                    g.drawLine(this.dataAreaBorder + previousXPosition, (int) Math.round(baseLineYPosition + previousTrackingValue * channelValueScalingFactor),
-                               this.dataAreaBorder + currentXPosition , (int) Math.round(baseLineYPosition + currentTrackingValue * channelValueScalingFactor));
-
-                    baseLineYPosition += channelValueRange + offset;
-                }
-
-                previousXPosition = currentXPosition;
-            }
-
-            previousBufferPosition = currentBufferPosition;
-            previousBrainTrackingEvent = currentBrainTrackingEvent;
-        }
 
         // TODO: If neccessary output warning if no buffered data
     }
