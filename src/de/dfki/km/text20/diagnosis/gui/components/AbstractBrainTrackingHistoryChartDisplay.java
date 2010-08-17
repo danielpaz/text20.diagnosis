@@ -28,11 +28,12 @@ public abstract class AbstractBrainTrackingHistoryChartDisplay extends AbstractT
     private final int dataAreaBorder = this.scaleAreaWidth + this.scaleGap;
 
     /** Pixel height between each channel graph */
-    private final int channelPixelSpacing = 2;
+    private final int channelPixelSpacing = 6;
 
+    private final int channelNameSpacing = 20;
 
+    /** Stores for each channel the draw status, i.e. to be drawn or not */
     private final HashMap<String, Boolean> channelStatus;
-
 
     /** Color of the messages */
     private final Color messageColor = Color.CYAN;
@@ -68,14 +69,14 @@ public abstract class AbstractBrainTrackingHistoryChartDisplay extends AbstractT
     public void render(final Graphics g) {
         // Calculating border positions in pixels
         final int leftBorder = getInsets().left;
-        final int rightBorder = leftBorder + getAreaWidth();
+        final int areaWidth = leftBorder + getAreaWidth();
         final int topBorder = getInsets().top;
-        final int bottomBorder = topBorder + getAreaHeight();
+        final int areaHeight = topBorder + getAreaHeight();
 
         // Return if there is no application data
         if (this.applicationData == null) {
             g.setColor(this.messageColor);
-            g.drawString("Offline ...", Math.round(leftBorder + rightBorder / 2), Math.round(topBorder + bottomBorder / 2));
+            g.drawString("Offline ...", Math.round(leftBorder + areaWidth / 2), Math.round(topBorder + areaHeight / 2));
             return;
         }
 
@@ -83,14 +84,14 @@ public abstract class AbstractBrainTrackingHistoryChartDisplay extends AbstractT
 
         // Drawing background with a white gap as scale
         g.setColor(this.backgroundColor);
-        g.fillRect(leftBorder, topBorder, this.scaleAreaWidth, bottomBorder);
-        g.fillRect(leftBorder  + this.dataAreaBorder, topBorder,
-                   rightBorder - this.dataAreaBorder, bottomBorder);
+        g.fillRect(leftBorder, topBorder, this.scaleAreaWidth, areaHeight);
+        g.fillRect(leftBorder + this.dataAreaBorder, topBorder,
+                   areaWidth  - this.dataAreaBorder, areaHeight);
 
 
         // Getting the number of channels that are enabled
         int channelCount = 0;
-        for (Boolean b : this.channelStatus.values()) {
+        for (final Boolean b : this.channelStatus.values()) {
             if (b.booleanValue()) {
                 channelCount++;
             }
@@ -101,22 +102,32 @@ public abstract class AbstractBrainTrackingHistoryChartDisplay extends AbstractT
             return;
         }
 
+
+
         // Range in pixels in which the intervall -1.0 ... +1.0 will be displayed
-        final int channelValueRange = bottomBorder / channelCount - this.channelPixelSpacing;
-        int baseLineYPosition = (channelValueRange + this.channelPixelSpacing) / 2;
+        final int offset = this.channelPixelSpacing + this.channelNameSpacing;
+
+        final int channelValueRange = areaHeight / channelCount - offset;
+        int baseLineYPosition = (channelValueRange + this.channelPixelSpacing) / 2 + this.channelNameSpacing;
 
         // Drawing the base lines with chaptions
         g.setColor(this.scaleColor);
-        for (int i = 0; i < channelCount; i++) {
-            this.renderer.drawDottedLine((Graphics2D) g, leftBorder, baseLineYPosition, rightBorder, baseLineYPosition);
+        final int channelValueScalingFactor = channelValueRange / 2;
+        final int channelNameOffset =  channelValueScalingFactor + this.channelNameSpacing / 2;
 
-            // Shifting chaptions one pixel so that isn't touching the left border or the base line
-            g.drawString("0.0", leftBorder + 1, baseLineYPosition - 1);
+        for (final String channelName : this.channelStatus.keySet()) {
+            if (this.channelStatus.get(channelName).booleanValue()) {
 
-            baseLineYPosition += channelValueRange + this.channelPixelSpacing;
+                this.renderer.drawDottedLine((Graphics2D) g, leftBorder, baseLineYPosition, areaWidth, baseLineYPosition);
+
+                // Shifting chaptions one pixel so that isn't touching the left border or the base line
+                g.drawString("0.0", leftBorder + 1, baseLineYPosition - 1);
+
+                g.drawString(channelName, this.dataAreaBorder + 1, baseLineYPosition - channelNameOffset);
+
+                baseLineYPosition += channelValueRange + offset;
+            }
         }
-
-
 
         // Drawing the data
         int previousXPosition = 0;
@@ -126,9 +137,9 @@ public abstract class AbstractBrainTrackingHistoryChartDisplay extends AbstractT
         BrainTrackingEvent previousBrainTrackingEvent = this.serverInfo.getBrainTrackingRingBuffer().get(previousBufferPosition);
 
         // Iterating over every x Position
-        for (int currentXPosition = 0; currentXPosition < rightBorder; currentXPosition++) {
+        for (int currentXPosition = 0; currentXPosition < areaWidth; currentXPosition++) {
 
-            final int currentBufferPosition = Math.max(0, Math.round(currentXPosition * this.serverInfo.getBrainTrackingRingBuffer().size() / rightBorder - 1));
+            final int currentBufferPosition = Math.max(0, Math.round(currentXPosition * this.serverInfo.getBrainTrackingRingBuffer().size() / areaWidth - 1));
 
             // Getting current brain tracking event from ring buffer and returning if it is null
             final BrainTrackingEvent currentBrainTrackingEvent = this.serverInfo.getBrainTrackingRingBuffer().get(currentBufferPosition);
@@ -144,15 +155,14 @@ public abstract class AbstractBrainTrackingHistoryChartDisplay extends AbstractT
                 g.setColor(this.dataColor);
 
                 // Reusing baseLineYPosition variable for the same purpose used above
-                baseLineYPosition = (channelValueRange + this.channelPixelSpacing) / 2;
-                final int channelValueScalingFactor = channelValueRange / 2;
+                baseLineYPosition = (channelValueRange + this.channelPixelSpacing) / 2  + this.channelNameSpacing;
 
                 // Interating over every channel in the previousBrainTrackingEvent and assuming that the current one has the same
                 for (final String channelName : previousBrainTrackingEvent.getChannels()) {
                     // TODO: Might want to catch the case if the number of channels change while tracking
 
                     // Skip this iteration if nothing should be drawn
-                    boolean shouldBeDrawn = this.channelStatus.get(channelName).booleanValue();
+                    final boolean shouldBeDrawn = this.channelStatus.get(channelName).booleanValue();
                     if (!shouldBeDrawn) {
                         continue;
                     }
@@ -165,7 +175,7 @@ public abstract class AbstractBrainTrackingHistoryChartDisplay extends AbstractT
                     g.drawLine(this.dataAreaBorder + previousXPosition, (int) Math.round(baseLineYPosition + previousTrackingValue * channelValueScalingFactor),
                                this.dataAreaBorder + currentXPosition , (int) Math.round(baseLineYPosition + currentTrackingValue * channelValueScalingFactor));
 
-                    baseLineYPosition += channelValueRange + this.channelPixelSpacing;
+                    baseLineYPosition += channelValueRange + offset;
                 }
 
                 previousXPosition = currentXPosition;
