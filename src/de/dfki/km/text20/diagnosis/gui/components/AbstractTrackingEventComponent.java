@@ -1,21 +1,21 @@
 /*
  * EyeTrackingEventPanel.java
- * 
+ *
  * Copyright (c) 2010, Ralf Biedert, DFKI. All rights reserved.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301  USA
  *
  */
@@ -35,7 +35,7 @@ import de.dfki.km.text20.services.trackingdevices.common.TrackingEvent;
 
 /**
  * Base class of all tracking event panels.
- * 
+ *
  * @author Ralf Biedert, Andreas Buhl
  *
  */
@@ -68,8 +68,8 @@ public abstract class AbstractTrackingEventComponent extends JComponent {
 
     /** */
     final Color stateVagueColor = Color.YELLOW;
-    
-    // TODO: What for is  
+
+    // TODO: What for is
     /** Tracking event we use for visualization. */
     protected TrackingEvent trackingEvent;
 
@@ -86,11 +86,11 @@ public abstract class AbstractTrackingEventComponent extends JComponent {
     final AbstractRenderUtil renderer = new AbstractRenderUtil(this);
 
     /** */
-    Color stateColor[] = { Color.RED, Color.YELLOW, Color.GREEN };
+    final Color stateColor[] = { Color.RED, Color.YELLOW, Color.GREEN };
 
-    
-    /** Default Constructor 
-     * 
+
+    /** Default Constructor
+     *
      * */
     public AbstractTrackingEventComponent() {
         this(null, null);
@@ -109,8 +109,8 @@ public abstract class AbstractTrackingEventComponent extends JComponent {
 
     /**
      * Updates a new tracking event.
-     * 
-     * @param evt 
+     *
+     * @param evt
      */
     public void newTrackingEvent(final TrackingEvent evt) {
         this.previousTrackingEvent = this.trackingEvent;
@@ -118,28 +118,23 @@ public abstract class AbstractTrackingEventComponent extends JComponent {
         if (isVisible())
             repaint();
     }
-    
-    
-    /* (non-Javadoc)
-     * @see javax.swing.JComponent#paint(java.awt.Graphics)
-     */
+
     @Override
-    public void paint(final Graphics g) {
+    public void paintComponent(Graphics g) {
         if (isVisible()){
-	        super.paint(g);
-	        render(g);
+            render(g);
         }
     }
 
     /**
-     * Can be overridden by subclasses to render. 
-     * 
+     * Can be overridden by subclasses to render.
+     *
      * @param g
      */
     public abstract void render(Graphics g);
 
-    
-    // TODO: AAAAAAAAAAAHHHHHHHHHHHHHHHHHH. If the borders are set like above, i.e. 0,0,0,0, the getAreaWidth and getAreaHeight are useless... 
+
+    // TODO: AAAAAAAAAAAHHHHHHHHHHHHHHHHHH. If the borders are set like above, i.e. 0,0,0,0, the getAreaWidth and getAreaHeight are useless...
     /**
      * @return the width of the drawable area
      */
