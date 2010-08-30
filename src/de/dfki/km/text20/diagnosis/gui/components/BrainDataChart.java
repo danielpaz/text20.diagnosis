@@ -2,6 +2,7 @@ package de.dfki.km.text20.diagnosis.gui.components;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.HashMap;
@@ -20,7 +21,7 @@ public class BrainDataChart extends AbstractTrackingEventComponent {
     private static final long serialVersionUID = 4805889544008857101L;
 
     /** Pixel width of scale area */
-    private final int scaleAreaWidth = 30;
+    private final int scaleAreaWidth = 40;
 
     /** Pixel width of space between scale and data area */
     private final int scaleGap = 3;
@@ -49,6 +50,9 @@ public class BrainDataChart extends AbstractTrackingEventComponent {
     /** Color of the scales */
     private final Color scaleColor = Color.ORANGE;
 
+    /** Color of the +1.0 and -1.0 scales */
+    private final Color helperScaleColor = this.scaleColor.darker().darker();
+
     /** Color of the data */
     private final Color dataColor = Color.RED;
 
@@ -68,6 +72,8 @@ public class BrainDataChart extends AbstractTrackingEventComponent {
         this.channelStatus = channelStatus;
 
         setPreferredSize(new Dimension(-1, -1));
+
+        setFont(new Font( Font.MONOSPACED, Font.PLAIN, 14 ));
     }
 
     /* (non-Javadoc)
@@ -129,16 +135,24 @@ public class BrainDataChart extends AbstractTrackingEventComponent {
             if (shouldBeDrawn) {
                 // Drawing base line
                 g.setColor(this.scaleColor);
-                this.renderer.drawDottedLine((Graphics2D) g, leftBorder, baseLineYPosition, areaWidth, baseLineYPosition);
-
-
+                this.renderer.drawDottedLine((Graphics2D) g, this.dataAreaBorder, baseLineYPosition, areaWidth, baseLineYPosition);
 
                 // Shifting captions one pixel so that isn't touching the left border or the base line
-                g.drawString("0.0", leftBorder + 1, baseLineYPosition - 1);
+                g.drawString(" 0.0", this.dataAreaBorder - 39, baseLineYPosition + 6);
 
                 // Drawing channel name caption
-                g.drawString(channelName, this.dataAreaBorder + 1, baseLineYPosition - channelNameOffset);
+                g.drawString(channelName, this.dataAreaBorder + 3, baseLineYPosition - channelNameOffset + 6);
 
+
+                final int minusOneYPosition = baseLineYPosition + channelValueScalingFactor;
+                final int plusOneYPosition = baseLineYPosition - channelValueScalingFactor;
+
+                g.setColor(this.helperScaleColor);
+                this.renderer.drawDottedLine((Graphics2D) g, this.dataAreaBorder, plusOneYPosition, areaWidth, plusOneYPosition);
+                this.renderer.drawDottedLine((Graphics2D) g, this.dataAreaBorder, minusOneYPosition, areaWidth, minusOneYPosition);
+
+                g.drawString("+1.0", this.dataAreaBorder - 39, plusOneYPosition + 9);
+                g.drawString("-1.0", this.dataAreaBorder - 39, minusOneYPosition + 1);
 
 
 
