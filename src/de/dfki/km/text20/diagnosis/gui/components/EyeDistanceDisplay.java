@@ -24,6 +24,7 @@ package de.dfki.km.text20.diagnosis.gui.components;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 import de.dfki.km.text20.diagnosis.model.ApplicationData;
 import de.dfki.km.text20.diagnosis.model.ServerInfo;
@@ -102,8 +103,9 @@ public class EyeDistanceDisplay extends AbstractTrackingEventComponent {
     public void render(final Graphics g) {
         final EyeTrackingEvent event = (EyeTrackingEvent) this.trackingEvent;
 
-        if ((event == null) && (this.applicationData != null)) return; 
-        
+        if ((event == null) && (this.applicationData != null)) return;
+
+        Graphics2D g2d = (Graphics2D) g.create();
 
         final int leftBorder = getInsets().left;
         final int topBorder = getInsets().top;
@@ -111,8 +113,8 @@ public class EyeDistanceDisplay extends AbstractTrackingEventComponent {
         final int areaHeight = getAreaHeight();
 
         // Draw canvas area
-        g.setColor(this.eyeDistanceCanvasColor);
-        g.fillRect(leftBorder, topBorder, areaWidth, areaHeight);
+        g2d.setBackground(this.eyeDistanceCanvasColor);
+        g2d.clearRect(leftBorder, topBorder, areaWidth, areaHeight);
 
         // get and calculate scale parameters
         final int middleXPosition = Math.round((areaWidth / 2 + leftBorder));
@@ -121,25 +123,25 @@ public class EyeDistanceDisplay extends AbstractTrackingEventComponent {
         final float offset = this.lowerValidDistance - (1.0f - this.upperValidDistance  + this.lowerValidDistance) /2;
 
         // draw middle line
-        g.setColor(Color.LIGHT_GRAY);
-        g.drawLine(middleXPosition, topBorder, middleXPosition, areaHeight+ topBorder);
+        g2d.setColor(Color.LIGHT_GRAY);
+        g2d.drawLine(middleXPosition, topBorder, middleXPosition, areaHeight+ topBorder);
 
         //draw valid range indicator rectangle
-        g.setColor(this.validRectColor);
+        g2d.setColor(this.validRectColor);
 
-        g.drawRect(leftBorder + this.paddingVal, topBorder + Math.round((this.lowerValidDistance - offset) * areaHeight),
+        g2d.drawRect(leftBorder + this.paddingVal, topBorder + Math.round((this.lowerValidDistance - offset) * areaHeight),
                    areaWidth - this.paddingVal * 2, Math.round((this.upperValidDistance - this.lowerValidDistance) * areaHeight));
 
 
         if (this.applicationData == null){
-            g.setColor(this.stateColor[DiagState.OK.ordinal()]);
+            g2d.setColor(this.stateColor[DiagState.OK.ordinal()]);
 
-            g.fillRect(this.leftEyeXPos, Math.round((0.5f - offset) * areaHeight) + topBorder, this.eyeIconWidth, this.eyeIconHeight);
-            g.fillRect(this.rightEyeXPos, Math.round((0.5f - offset) * areaHeight) + topBorder, this.eyeIconWidth, this.eyeIconHeight);
+            g2d.fillRect(this.leftEyeXPos, Math.round((0.5f - offset) * areaHeight) + topBorder, this.eyeIconWidth, this.eyeIconHeight);
+            g2d.fillRect(this.rightEyeXPos, Math.round((0.5f - offset) * areaHeight) + topBorder, this.eyeIconWidth, this.eyeIconHeight);
 
-            g.setColor(this.stateColor[DiagState.OK.ordinal()]);
-            this.renderer.drawCenteredString(g, leftBorder + this.paddingVal, middleXPosition, areaHeight - 20, "55");
-            this.renderer.drawCenteredString(g, middleXPosition, leftBorder + areaWidth, areaHeight - 20, "123");
+            g2d.setColor(this.stateColor[DiagState.OK.ordinal()]);
+            this.renderer.drawCenteredString(g2d, leftBorder + this.paddingVal, middleXPosition, areaHeight - 20, "55");
+            this.renderer.drawCenteredString(g2d, middleXPosition, leftBorder + areaWidth, areaHeight - 20, "123");
 
             return;
         }
@@ -167,21 +169,23 @@ public class EyeDistanceDisplay extends AbstractTrackingEventComponent {
 
 
         // draw eye icons and numeric output
-        g.setColor(iconColor);
+        g2d.setColor(iconColor);
 
         final String sLeft = String.format("%.0f", new Float(CommonFunctions.limitFloat(leftEyeDistance, 0.0f, 1.0f) * 100));
-        this.renderer.drawCenteredString (g, leftBorder + this.paddingVal, middleXPosition, areaHeight - 20, (leftEyeDistance >= 0) ? sLeft : "- -");
+        this.renderer.drawCenteredString (g2d, leftBorder + this.paddingVal, middleXPosition, areaHeight - 20, (leftEyeDistance >= 0) ? sLeft : "- -");
 
         if (leftEyeDistance >= 0) {
-            g.fillRect(this.leftEyeXPos, Math.round((leftEyeDistance - offset) * areaHeight) + topBorder , this.eyeIconWidth, this.eyeIconHeight);
+            g2d.fillRect(this.leftEyeXPos, Math.round((leftEyeDistance - offset) * areaHeight) + topBorder , this.eyeIconWidth, this.eyeIconHeight);
         }
 
         final String sRight = String.format("%.0f", new Float(CommonFunctions.limitFloat(rightEyeDistance, 0.0f, 1.0f) * 100));
-        this.renderer.drawCenteredString (g, middleXPosition, leftBorder + areaWidth, areaHeight - 20, (rightEyeDistance >= 0) ? sRight : "- -");
+        this.renderer.drawCenteredString (g2d, middleXPosition, leftBorder + areaWidth, areaHeight - 20, (rightEyeDistance >= 0) ? sRight : "- -");
 
         if (rightEyeDistance >= 0) {
-            g.fillRect(this.rightEyeXPos, Math.round((rightEyeDistance - offset) * areaHeight) + topBorder, this.eyeIconWidth, this.eyeIconHeight);
+            g2d.fillRect(this.rightEyeXPos, Math.round((rightEyeDistance - offset) * areaHeight) + topBorder, this.eyeIconWidth, this.eyeIconHeight);
         }
+
+        g2d.dispose();
     }
 
     /**

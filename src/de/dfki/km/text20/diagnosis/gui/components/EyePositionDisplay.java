@@ -24,6 +24,8 @@ package de.dfki.km.text20.diagnosis.gui.components;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.Toolkit;
 
@@ -78,6 +80,8 @@ public class EyePositionDisplay extends AbstractTrackingEventComponent {
 	/** */
 	private Color validRectColor = Color.RED;
 
+
+
 	/** */
 	public EyePositionDisplay() {
 		this(null, null);
@@ -97,6 +101,7 @@ public class EyePositionDisplay extends AbstractTrackingEventComponent {
 		for(int i = 0; i < this.gazeTrack.length; i++){
             this.gazeTrack[i] = new Point(0,0);
 		}
+
 	}
 
 	/**
@@ -109,6 +114,8 @@ public class EyePositionDisplay extends AbstractTrackingEventComponent {
             return;
         }
 
+        Graphics2D g2d = (Graphics2D) g.create();
+
         // Getting borders and are sizes once
         final int leftBorder = getInsets().left;
         final int topBorder = getInsets().top;
@@ -117,16 +124,16 @@ public class EyePositionDisplay extends AbstractTrackingEventComponent {
         final int areaHeight = getAreaHeight();
 
 		// Draw Background
-		g.setColor(this.eyePostionCanvasBackgroundColor);
-		g.fillRect(leftBorder, topBorder, areaWidth, areaHeight);
+		g2d.setBackground(this.eyePostionCanvasBackgroundColor);
+		g2d.clearRect(leftBorder, topBorder, areaWidth, areaHeight);
 
 		// Draw valid area rectangle
-		g.setColor(this.validRectColor);
+		g2d.setColor(this.validRectColor);
 		final int x = this.renderer.getXPixelPos(EyeTrackingEventEvaluator.X_EYE_POSITION_MIN);
 		final int y = this.renderer.getYPixelPos(EyeTrackingEventEvaluator.Y_EYE_POSITION_MIN);
 		final int w = this.renderer.getXPixelPos(EyeTrackingEventEvaluator.X_EYE_POSITION_MAX - EyeTrackingEventEvaluator.X_EYE_POSITION_MIN);
 		final int h = this.renderer.getYPixelPos(EyeTrackingEventEvaluator.Y_EYE_POSITION_MAX - EyeTrackingEventEvaluator.Y_EYE_POSITION_MIN);
-		g.drawRect(x, y, w, h);
+		g2d.drawRect(x, y, w, h);
 
 
 		// Calculate quality for state color
@@ -148,7 +155,7 @@ public class EyePositionDisplay extends AbstractTrackingEventComponent {
 		}
 
 
-        g.setColor(currentStateColor);
+        g2d.setColor(currentStateColor);
 
 		// Draw left eye
 		float pupilSizeLeft = CommonFunctions.limitFloat(event.getPupilSizeLeft(), EyeTrackingEventEvaluator.MIN_PUPILSIZE, EyeTrackingEventEvaluator.MAX_PUPILSIZE);
@@ -156,7 +163,7 @@ public class EyePositionDisplay extends AbstractTrackingEventComponent {
 		    CommonFunctions.isBetweenIncludes(0, 1.0f, event.getLeftEyePosition()[1]) &&
 		    CommonFunctions.isBetweenIncludes(10, 40, (int) (pupilSizeLeft * 10))) {
 
-			g.fillOval(this.renderer.getLeftEyeXPixelPos(event), this.renderer.getLeftEyeYPixelPos(event),
+			g2d.fillOval(this.renderer.getLeftEyeXPixelPos(event), this.renderer.getLeftEyeYPixelPos(event),
 			           (int) (pupilSizeLeft * 10), (int) (pupilSizeLeft * 10));
 		} else {
 			try {
@@ -164,7 +171,7 @@ public class EyePositionDisplay extends AbstractTrackingEventComponent {
 						((EyeTrackingEvent) this.previousTrackingEvent).getPupilSizeLeft(),
 						EyeTrackingEventEvaluator.MIN_PUPILSIZE, EyeTrackingEventEvaluator.MAX_PUPILSIZE);
 
-				g.fillOval(this.renderer.getLeftEyeXPixelPos((EyeTrackingEvent) this.previousTrackingEvent), this.renderer.getLeftEyeYPixelPos((EyeTrackingEvent) this.previousTrackingEvent),
+				g2d.fillOval(this.renderer.getLeftEyeXPixelPos((EyeTrackingEvent) this.previousTrackingEvent), this.renderer.getLeftEyeYPixelPos((EyeTrackingEvent) this.previousTrackingEvent),
 				           this.renderer.getLeftPupilPixelSize(pupilSizeLeft), this.renderer.getLeftPupilPixelSize(pupilSizeLeft));
 			} catch (final RuntimeException e) { /* */ }
 		}
@@ -175,14 +182,14 @@ public class EyePositionDisplay extends AbstractTrackingEventComponent {
 		    CommonFunctions.isBetweenIncludes(0, 1.0f, event.getRightEyePosition()[1]) &&
 		    CommonFunctions.isBetweenIncludes(10, 40, (int) (pupilSizeRight * 10))) {
 
-			g.fillOval(this.renderer.getRightEyeXPixelPos(event), this.renderer.getRightEyeYPixelPos(event),
+			g2d.fillOval(this.renderer.getRightEyeXPixelPos(event), this.renderer.getRightEyeYPixelPos(event),
 			           (int) (pupilSizeRight * 10), (int) (pupilSizeRight * 10));
 		} else {
 			try {
 				pupilSizeRight = CommonFunctions.limitFloat(
 						((EyeTrackingEvent) this.previousTrackingEvent).getPupilSizeRight(), EyeTrackingEventEvaluator.MIN_PUPILSIZE, EyeTrackingEventEvaluator.MAX_PUPILSIZE);
 
-				g.fillOval(this.renderer.getRightEyeXPixelPos((EyeTrackingEvent) this.previousTrackingEvent), this.renderer.getRightEyeYPixelPos((EyeTrackingEvent) this.previousTrackingEvent),
+				g2d.fillOval(this.renderer.getRightEyeXPixelPos((EyeTrackingEvent) this.previousTrackingEvent), this.renderer.getRightEyeYPixelPos((EyeTrackingEvent) this.previousTrackingEvent),
 				           this.renderer.getRightPupilPixelSize(pupilSizeRight), this.renderer.getRightPupilPixelSize(pupilSizeRight));
 			} catch (final RuntimeException e) { /* */ }
 		}
@@ -202,19 +209,21 @@ public class EyePositionDisplay extends AbstractTrackingEventComponent {
             final float scalingFactorX = (float) areaWidth / this.screenXResolution;
             final float scalingFactorY = (float) areaHeight / this.screenYResolution;
 
-            g.setColor(Color.PINK);
+            g2d.setColor(Color.PINK);
 
             // Draw gaze center track history
-			g.drawLine(Math.round(this.gazeTrack[startPositionIndex].x * scalingFactorX) + leftBorder,
+			g2d.drawLine(Math.round(this.gazeTrack[startPositionIndex].x * scalingFactorX) + leftBorder,
 			           Math.round(this.gazeTrack[startPositionIndex].y * scalingFactorY) + topBorder,
 			           Math.round(this.gazeTrack[endPositionIndex].x * scalingFactorX) + leftBorder,
 			           Math.round(this.gazeTrack[endPositionIndex].y * scalingFactorY) + topBorder);
 
 			// Draw current gaze center point
-			g.fillOval(Math.round(gazeCenter.x * scalingFactorX) + leftBorder - this.fixationPointSize / 2,
+			g2d.fillOval(Math.round(gazeCenter.x * scalingFactorX) + leftBorder - this.fixationPointSize / 2,
 			           Math.round(gazeCenter.y * scalingFactorY) + topBorder - this.fixationPointSize / 2,
 			           this.fixationPointSize, this.fixationPointSize);
 		}
+
+		g2d.dispose();
 	}
 
 	/**

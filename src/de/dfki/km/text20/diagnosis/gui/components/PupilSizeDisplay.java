@@ -24,6 +24,7 @@ package de.dfki.km.text20.diagnosis.gui.components;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 import de.dfki.km.text20.diagnosis.model.ApplicationData;
 import de.dfki.km.text20.diagnosis.model.ServerInfo;
@@ -88,6 +89,8 @@ public class PupilSizeDisplay extends AbstractTrackingEventComponent {
 
         if ((event == null) && (this.applicationData != null)) return;
 
+        Graphics2D g2d = (Graphics2D) g.create();
+
         final int leftBorder = getInsets().left;
         final int topBorder = getInsets().top;
         final int areaWidth = getAreaWidth();
@@ -97,13 +100,13 @@ public class PupilSizeDisplay extends AbstractTrackingEventComponent {
         final int middleYVal = Math.round(areaHeight / 2 + topBorder);
 
         // draw canvas area
-        g.setColor(this.pupilSizeCanvasBackgroundColor);
-        g.fillRect(leftBorder, topBorder, areaWidth, areaHeight);
+        g2d.setBackground(this.pupilSizeCanvasBackgroundColor);
+        g2d.clearRect(leftBorder, topBorder, areaWidth, areaHeight);
 
         // draw middle line and center tick
-        g.setColor(Color.LIGHT_GRAY);
-        g.drawLine(middleXVal, topBorder, middleXVal, areaHeight);
-        g.drawLine(leftBorder, middleYVal, areaWidth, middleYVal);
+        g2d.setColor(Color.LIGHT_GRAY);
+        g2d.drawLine(middleXVal, topBorder, middleXVal, areaHeight);
+        g2d.drawLine(leftBorder, middleYVal, areaWidth, middleYVal);
 
         // Horizontal position of the left and right eye icon
         final int leftPupilIconXPos = middleXVal - this.paddingVal - this.pupilSizeBarWidth;
@@ -113,14 +116,15 @@ public class PupilSizeDisplay extends AbstractTrackingEventComponent {
             final int pupilBarPixelHeight = Math.round(5 * this.renderer.getPixelPerUnit());
 
             // Draw eye icons
-            g.setColor(this.pupilSizBarColor);
-            g.fillRect(leftPupilIconXPos, Math.round((areaHeight - pupilBarPixelHeight) / 2) + topBorder, this.pupilSizeBarWidth, pupilBarPixelHeight);
-            g.fillRect(rightPupilIconXPos, Math.round((areaHeight - pupilBarPixelHeight) / 2) + topBorder, this.pupilSizeBarWidth, pupilBarPixelHeight);
+            g2d.setColor(this.pupilSizBarColor);
+            g2d.fillRect(leftPupilIconXPos, Math.round((areaHeight - pupilBarPixelHeight) / 2) + topBorder, this.pupilSizeBarWidth, pupilBarPixelHeight);
+            g2d.fillRect(rightPupilIconXPos, Math.round((areaHeight - pupilBarPixelHeight) / 2) + topBorder, this.pupilSizeBarWidth, pupilBarPixelHeight);
 
             // Draw numeric output
-            this.renderer.drawCenteredString(g, leftBorder + this.paddingVal, middleXVal, areaHeight - 20, "3.5");
-            this.renderer.drawCenteredString(g, middleXVal, leftBorder + areaWidth, areaHeight - 20, "3.5");
+            this.renderer.drawCenteredString(g2d, leftBorder + this.paddingVal, middleXVal, areaHeight - 20, "3.5");
+            this.renderer.drawCenteredString(g2d, middleXVal, leftBorder + areaWidth, areaHeight - 20, "3.5");
 
+            g2d.dispose();
             return;
         }
 
@@ -128,17 +132,19 @@ public class PupilSizeDisplay extends AbstractTrackingEventComponent {
         final float rightSize = CommonFunctions.limitFloat(event.getPupilSizeRight(), 0.0f, 8.0f);
 
         // Draw left eye icons
-        g.setColor(this.pupilSizBarColor);
+        g2d.setColor(this.pupilSizBarColor);
         final int leftPupilBarPixelHeight = this.renderer.getLeftPupilPixelSize(leftSize);
-        g.fillRect(leftPupilIconXPos, Math.round((areaHeight - leftPupilBarPixelHeight) / 2) + topBorder, this.pupilSizeBarWidth, leftPupilBarPixelHeight);
+        g2d.fillRect(leftPupilIconXPos, Math.round((areaHeight - leftPupilBarPixelHeight) / 2) + topBorder, this.pupilSizeBarWidth, leftPupilBarPixelHeight);
 
         // Draw right eye icons
         final int rightPupilBarPixelHeight = this.renderer.getRightPupilPixelSize(rightSize);
-        g.fillRect(rightPupilIconXPos, Math.round((areaHeight - rightPupilBarPixelHeight) / 2) + topBorder, this.pupilSizeBarWidth, rightPupilBarPixelHeight);
+        g2d.fillRect(rightPupilIconXPos, Math.round((areaHeight - rightPupilBarPixelHeight) / 2) + topBorder, this.pupilSizeBarWidth, rightPupilBarPixelHeight);
 
         // Draw numeric output
-        this.renderer.drawCenteredString(g, leftBorder + this.paddingVal, middleXVal, areaHeight - 20, String.format("%.1f", new Float(leftSize)));
-        this.renderer.drawCenteredString(g, middleXVal, areaWidth, areaHeight - 20, String.format("%.1f", new Float(rightSize)));
+        this.renderer.drawCenteredString(g2d, leftBorder + this.paddingVal, middleXVal, areaHeight - 20, String.format("%.1f", new Float(leftSize)));
+        this.renderer.drawCenteredString(g2d, middleXVal, areaWidth, areaHeight - 20, String.format("%.1f", new Float(rightSize)));
+
+        g2d.dispose();
     }
 
     /**

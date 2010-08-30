@@ -81,6 +81,9 @@ public class BrainDataChart extends AbstractTrackingEventComponent {
      */
     @Override
     public void render(final Graphics g) {
+
+        Graphics2D g2d = (Graphics2D) g.create();
+
         // Calculating border positions in pixels
         final int leftBorder = getInsets().left;
         final int areaWidth = leftBorder + getAreaWidth();
@@ -89,18 +92,23 @@ public class BrainDataChart extends AbstractTrackingEventComponent {
 
         // Return if there is no application data
         if (this.applicationData == null) {
-            g.setColor(this.messageColor);
-            g.drawString("Offline ...", Math.round(leftBorder + areaWidth / 2), Math.round(topBorder + areaHeight / 2));
+            g2d.setColor(this.messageColor);
+            g2d.drawString("Offline ...", Math.round(leftBorder + areaWidth / 2), Math.round(topBorder + areaHeight / 2));
             return;
         }
 
 
 
         // Drawing background with a white gap as scale
-        g.setColor(this.backgroundColor);
-        g.fillRect(leftBorder, topBorder, this.scaleAreaWidth, areaHeight);
-        g.fillRect(leftBorder + this.dataAreaBorder, topBorder,
-                   areaWidth  - this.dataAreaBorder, areaHeight);
+//        g.setColor(this.backgroundColor);
+//        g.fillRect(leftBorder, topBorder, this.scaleAreaWidth, areaHeight);
+//        g.fillRect(leftBorder + this.dataAreaBorder, topBorder,
+//                   areaWidth  - this.dataAreaBorder, areaHeight);
+        g2d.setBackground(this.backgroundColor);
+        g2d.clearRect(leftBorder, topBorder, areaWidth, areaHeight);
+
+        g2d.setColor(Color.WHITE);
+        g2d.fillRect(this.scaleAreaWidth, topBorder, this.scaleGap, areaHeight);
 
 
         // Getting the number of channels that are enabled
@@ -134,25 +142,25 @@ public class BrainDataChart extends AbstractTrackingEventComponent {
 
             if (shouldBeDrawn) {
                 // Drawing base line
-                g.setColor(this.scaleColor);
-                this.renderer.drawDottedLine((Graphics2D) g, this.dataAreaBorder, baseLineYPosition, areaWidth, baseLineYPosition);
+                g2d.setColor(this.scaleColor);
+                this.renderer.drawDottedLine(g2d, this.dataAreaBorder, baseLineYPosition, areaWidth, baseLineYPosition);
 
                 // Shifting captions one pixel so that isn't touching the left border or the base line
-                g.drawString(" 0.0", this.dataAreaBorder - 39, baseLineYPosition + 6);
+                g2d.drawString(" 0.0", this.dataAreaBorder - 39, baseLineYPosition + 6);
 
                 // Drawing channel name caption
-                g.drawString(channelName, this.dataAreaBorder + 3, baseLineYPosition - channelNameOffset + 6);
+                g2d.drawString(channelName, this.dataAreaBorder + 3, baseLineYPosition - channelNameOffset + 6);
 
 
                 final int minusOneYPosition = baseLineYPosition + channelValueScalingFactor;
                 final int plusOneYPosition = baseLineYPosition - channelValueScalingFactor;
 
-                g.setColor(this.helperScaleColor);
-                this.renderer.drawDottedLine((Graphics2D) g, this.dataAreaBorder, plusOneYPosition, areaWidth, plusOneYPosition);
-                this.renderer.drawDottedLine((Graphics2D) g, this.dataAreaBorder, minusOneYPosition, areaWidth, minusOneYPosition);
+                g2d.setColor(this.helperScaleColor);
+                this.renderer.drawDottedLine(g2d, this.dataAreaBorder, plusOneYPosition, areaWidth, plusOneYPosition);
+                this.renderer.drawDottedLine(g2d, this.dataAreaBorder, minusOneYPosition, areaWidth, minusOneYPosition);
 
-                g.drawString("+1.0", this.dataAreaBorder - 39, plusOneYPosition + 9);
-                g.drawString("-1.0", this.dataAreaBorder - 39, minusOneYPosition + 1);
+                g2d.drawString("+1.0", this.dataAreaBorder - 39, plusOneYPosition + 9);
+                g2d.drawString("-1.0", this.dataAreaBorder - 39, minusOneYPosition + 1);
 
 
 
@@ -181,8 +189,8 @@ public class BrainDataChart extends AbstractTrackingEventComponent {
 
                         // Moving cursor to the previous position and drawing a line to the current position
                         // Y Position is from the baseLineYPosition up or down by the among of the tracking value scaled up to fit the designated area
-                        g.setColor(this.dataColor);
-                        g.drawLine(this.dataAreaBorder + previousXPosition, (int) Math.round(baseLineYPosition + previousTrackingValue * channelValueScalingFactor),
+                        g2d.setColor(this.dataColor);
+                        g2d.drawLine(this.dataAreaBorder + previousXPosition, (int) Math.round(baseLineYPosition + previousTrackingValue * channelValueScalingFactor),
                                    this.dataAreaBorder + currentXPosition , (int) Math.round(baseLineYPosition + currentTrackingValue * channelValueScalingFactor));
 
                         previousXPosition = currentXPosition;
@@ -196,6 +204,7 @@ public class BrainDataChart extends AbstractTrackingEventComponent {
             }
         }
 
+        g2d.dispose();
 
         // TODO: If neccessary output warning if no buffered data
     }
