@@ -146,6 +146,7 @@ public class EyeDistanceDisplay extends AbstractTrackingEventComponent {
             return;
         }
 
+        if (event == null) return;
         final float leftEyeDistance = CommonFunctions.limitFloat(event.getLeftEyePosition()[2]);
         final float rightEyeDistance = CommonFunctions.limitFloat(event.getRightEyePosition()[2]);
 
