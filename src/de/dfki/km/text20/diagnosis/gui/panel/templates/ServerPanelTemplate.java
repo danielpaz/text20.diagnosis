@@ -119,7 +119,7 @@ public class ServerPanelTemplate extends JPanel {
     }
 
     public JLabel getBrainTrackingEventRateValue() {
-        return brainTrackingEventRateValue;
+        return this.brainTrackingEventRateValue;
     }
 
     public JStatusIndicator getBrainTrackingEventRateIndicator() {
@@ -174,6 +174,7 @@ public class ServerPanelTemplate extends JPanel {
         return this.performRecalibrationLink;
     }
 
+    @SuppressWarnings("unqualified-field-access")
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
         // Generated using JFormDesigner non-commercial license

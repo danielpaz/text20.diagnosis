@@ -128,6 +128,7 @@ public class PupilSizeDisplay extends AbstractTrackingEventComponent {
             return;
         }
 
+        if (event == null) return;
         final float leftSize = CommonFunctions.limitFloat(event.getPupilSizeLeft(), 0.0f, 8.0f);
         final float rightSize = CommonFunctions.limitFloat(event.getPupilSizeRight(), 0.0f, 8.0f);
 
