@@ -712,7 +712,7 @@
             <string>javax.swing.JLabel</string> 
             <void method="setProperty"> 
              <string>text</string> 
-             <string>Brain Tracker Recording Status</string> 
+             <string>Brain Tracking Recording Status</string> 
             </void> 
             <void property="name"> 
              <string>brainTrackerRecordingStatusLabel</string> 
@@ -1764,7 +1764,7 @@
             <string>javax.swing.JLabel</string> 
             <void method="setProperty"> 
              <string>text</string> 
-             <string>30s</string> 
+             <string>5s</string> 
             </void> 
             <void property="name"> 
              <string>bufferSizeBrainTrackerHistoryValueLabel</string> 
@@ -1797,7 +1797,7 @@
             <string>javax.swing.JSlider</string> 
             <void method="setProperty"> 
              <string>maximum</string> 
-             <int>120</int> 
+             <int>30</int> 
             </void> 
             <void method="setProperty"> 
              <string>minimum</string> 
@@ -1809,11 +1809,11 @@
             </void> 
             <void method="setProperty"> 
              <string>majorTickSpacing</string> 
-             <int>5</int> 
+             <int>1</int> 
             </void> 
             <void method="setProperty"> 
              <string>value</string> 
-             <int>30</int> 
+             <int>5</int> 
             </void> 
             <void property="name"> 
              <string>bufferSizeBrainTrackerHistorySlider</string> 

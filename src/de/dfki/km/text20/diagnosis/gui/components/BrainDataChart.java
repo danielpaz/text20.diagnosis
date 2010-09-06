@@ -171,6 +171,7 @@ public class BrainDataChart extends AbstractTrackingEventComponent {
                 // Getting previous tracking event from ring buffer
                 BrainTrackingEvent previousBrainTrackingEvent = this.serverInfo.getBrainTrackingRingBuffer().get(previousBufferPosition);
 
+                // TODO: Think about using drawPolyline()
                 for (int currentXPosition = 0; currentXPosition < areaWidth; currentXPosition++) {
                     final int currentBufferPosition = Math.max(Math.round(currentXPosition * this.serverInfo.getBrainTrackingRingBuffer().size() / areaWidth - 1), 0);
 
