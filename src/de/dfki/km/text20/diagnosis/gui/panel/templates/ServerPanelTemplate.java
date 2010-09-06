@@ -357,7 +357,7 @@ public class ServerPanelTemplate extends JPanel {
                 overallPanel.add(brainTrackingDeviceLocationValueLabel, cc.xy(5, 15));
 
                 //---- brainTrackerRecordingStatusLabel ----
-                brainTrackerRecordingStatusLabel.setText("Brain Tracker Recording Status");
+                brainTrackerRecordingStatusLabel.setText("Brain Tracking Recording Status");
                 overallPanel.add(brainTrackerRecordingStatusLabel, cc.xy(1, 17));
                 overallPanel.add(brainRecordIndicator, cc.xy(3, 17));
 
@@ -504,15 +504,15 @@ public class ServerPanelTemplate extends JPanel {
                 settingsPanel.add(bufferSizeBrainTrackerHistoryLabel, cc.xy(1, 3));
 
                 //---- bufferSizeBrainTrackerHistoryValueLabel ----
-                bufferSizeBrainTrackerHistoryValueLabel.setText("30s");
+                bufferSizeBrainTrackerHistoryValueLabel.setText("5s");
                 settingsPanel.add(bufferSizeBrainTrackerHistoryValueLabel, cc.xywh(3, 3, 1, 1, CellConstraints.CENTER, CellConstraints.DEFAULT));
 
                 //---- bufferSizeBrainTrackerHistorySlider ----
-                bufferSizeBrainTrackerHistorySlider.setMaximum(120);
+                bufferSizeBrainTrackerHistorySlider.setMaximum(30);
                 bufferSizeBrainTrackerHistorySlider.setMinimum(5);
                 bufferSizeBrainTrackerHistorySlider.setSnapToTicks(true);
-                bufferSizeBrainTrackerHistorySlider.setMajorTickSpacing(5);
-                bufferSizeBrainTrackerHistorySlider.setValue(30);
+                bufferSizeBrainTrackerHistorySlider.setMajorTickSpacing(1);
+                bufferSizeBrainTrackerHistorySlider.setValue(5);
                 settingsPanel.add(bufferSizeBrainTrackerHistorySlider, cc.xy(5, 3));
 
                 //---- transparentLocalRecalibrationLabel2 ----
