@@ -128,7 +128,6 @@ public class ServerPanel extends ServerPanelTemplate implements TrackingListener
     /** */
     BrainDataChart brainHistory;
 
-
     /** */
     RecalibrationWindow recalibrationWindow;
 
