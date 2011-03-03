@@ -142,7 +142,7 @@ public class ServerPanel extends ServerPanelTemplate implements TrackingListener
 
     private final ChangeListener bufferSliderProcessor = new SliderChangedListener();
 
-    private final String[] statusLabels = { "Bad", "Vage", "Ok", "Off", "On" };
+    private final String[] statusLabels = { "Bad", "Vague", "Ok", "Off", "On" };
 
     /**
      * @param applicationData
