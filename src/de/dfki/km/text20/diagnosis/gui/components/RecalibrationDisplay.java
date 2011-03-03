@@ -64,7 +64,7 @@ import de.dfki.km.text20.util.filter.displacement.ReferencePoint;
  * Warning. This component should only be used fullscreen.
  * 
  * @author rb
- *
+ * 
  */
 public class RecalibrationDisplay extends AbstractTrackingEventComponent {
 
@@ -74,8 +74,10 @@ public class RecalibrationDisplay extends AbstractTrackingEventComponent {
     /** Master filter also contianing noise filter */
     final ChainedFilter globalFilter = new ChainedFilter();
 
-    /** And we use that filter to smooth incoming events (so that we don't select displacements noisily) - dont put 
-     * this in the chain! */
+    /**
+     * And we use that filter to smooth incoming events (so that we don't select displacements noisily) - dont put
+     * this in the chain!
+     */
     final AbstractFilter filter = new SmoothingFilter(19);
 
     /** And that filter is used for displacemnts */
@@ -90,12 +92,14 @@ public class RecalibrationDisplay extends AbstractTrackingEventComponent {
     /** */
     final RecalibrationWindow recalibrationWindow;
 
+    /** */
     private boolean transparency;
 
+    /** */
     private BufferedImage backgroundImage;
 
     /**
-     * @param recalibrationWindow 
+     * @param recalibrationWindow
      * 
      */
     public RecalibrationDisplay(RecalibrationWindow recalibrationWindow) {
@@ -103,7 +107,7 @@ public class RecalibrationDisplay extends AbstractTrackingEventComponent {
     }
 
     /**
-     * @param recalibrationWindow 
+     * @param recalibrationWindow
      * @param applicationData
      * @param serverInfo
      */
@@ -175,25 +179,32 @@ public class RecalibrationDisplay extends AbstractTrackingEventComponent {
         repaint();
     }
 
-    /* (non-Javadoc)
-     * @see de.dfki.km.augmentedtext.diagnosis.gui.components.AbstractEyeTrackingEventComponent#newEyeTrackingEvent(de.dfki.km.augmentedtext.services.trackingdevices.EyeTrackingEvent)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * de.dfki.km.augmentedtext.diagnosis.gui.components.AbstractEyeTrackingEventComponent#newEyeTrackingEvent(de.dfki
+     * .km.augmentedtext.services.trackingdevices.EyeTrackingEvent)
      */
     @Override
     public void newTrackingEvent(TrackingEvent evt) {
-        boolean areValid = ((EyeTrackingEvent)evt).areValid(EyeTrackingEventValidity.CENTER_POSITION_VALID);
+        boolean areValid = ((EyeTrackingEvent) evt).areValid(EyeTrackingEventValidity.CENTER_POSITION_VALID);
         if (!areValid) return;
-        
-        Point c = ((EyeTrackingEvent)evt).getGazeCenter();
+
+        Point c = ((EyeTrackingEvent) evt).getGazeCenter();
         if (c.x <= 0 || c.y <= 0) return;
-        
-        final EyeTrackingEvent filtered = this.filter.filterEvent(((EyeTrackingEvent)evt));
+
+        final EyeTrackingEvent filtered = this.filter.filterEvent(((EyeTrackingEvent) evt));
         this.lastUnfilteredEvent = filtered;
         this.lastEvent = this.globalFilter.filterEvent(filtered);
         repaint();
     }
 
-    /* (non-Javadoc)
-     * @see de.dfki.km.augmentedtext.diagnosis.gui.components.AbstractEyeTrackingEventComponent#render(java.awt.Graphics)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * de.dfki.km.augmentedtext.diagnosis.gui.components.AbstractEyeTrackingEventComponent#render(java.awt.Graphics)
      */
     @Override
     public void render(Graphics g) {
@@ -221,7 +232,7 @@ public class RecalibrationDisplay extends AbstractTrackingEventComponent {
     }
 
     /**
-     * Clears the last calibration information 
+     * Clears the last calibration information
      */
     public void clearCalibraionInfo() {
         this.displacementFilter.clearReferencePoints();
@@ -236,7 +247,7 @@ public class RecalibrationDisplay extends AbstractTrackingEventComponent {
 
     /**
      * @param args
-     * @throws URISyntaxException 
+     * @throws URISyntaxException
      */
     public static void main(String[] args) throws URISyntaxException {
 
@@ -296,7 +307,7 @@ public class RecalibrationDisplay extends AbstractTrackingEventComponent {
         final EyeTrackingDeviceProvider deviceProvider = pluginManager.getPlugin(EyeTrackingDeviceProvider.class, new OptionCapabilities("eyetrackingdevice:trackingserver"));
         final EyeTrackingDevice openDevice = deviceProvider.openDevice("discover://youngest");
 
-        // Listen to the flow of gaze ... 
+        // Listen to the flow of gaze ...
         openDevice.addTrackingListener(new EyeTrackingListener() {
             @Override
             public void newTrackingEvent(final EyeTrackingEvent event) {

@@ -103,6 +103,11 @@ public class RecalibrationWindow extends JFrame {
                     endRecalibration();
                 }
 
+                if (e.getKeyCode() == KeyEvent.VK_C) {
+                    serverInfo.getEyeTrackingDevice().sendLowLevelCommand(TrackingCommand.DROP_RECALIBRATION);
+                    RecalibrationWindow.this.recalibrationDisplay.clearCalibraionInfo();
+                }
+
                 if (e.getKeyCode() == KeyEvent.VK_PLUS) {
                     final Color old = RecalibrationWindow.this.recalibrationDisplay.getBackground();
                     int value = old.getRed();
@@ -227,7 +232,6 @@ public class RecalibrationWindow extends JFrame {
             if (this.serverInfo == null || this.serverInfo.getEyeTrackingDevice() == null) return;
 
             // Drop recalib and go fullscreen.
-            this.serverInfo.getEyeTrackingDevice().sendLowLevelCommand(TrackingCommand.DROP_RECALIBRATION);
             this.recalibrationDisplay.clearCalibraionInfo();
             this.graphicsDevice.setFullScreenWindow(this);
         } else {
