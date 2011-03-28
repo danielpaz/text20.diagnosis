@@ -94,6 +94,7 @@ public class RecalibrationWindow extends JFrame {
         getContentPane().setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
         getContentPane().setLayout(new BorderLayout());
 
+        
         // Init key handling
         addKeyListener(new KeyListener() {
 
