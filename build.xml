@@ -9,8 +9,8 @@
     
 
     <!-- Define different global variables -->
-    <property name="prefix" value="atdiagnosis"/>
-    <property name="version" value="0.1.0"/>
+    <property name="prefix" value="diagnosis"/>
+    <property name="version" value="1.0"/>
     
     <!-- Define different roots -->
     <property name="build.root" value="ant.build/"/>
