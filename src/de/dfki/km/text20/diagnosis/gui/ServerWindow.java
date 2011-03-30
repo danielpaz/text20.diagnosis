@@ -26,6 +26,7 @@ import java.awt.Container;
 import java.util.logging.Logger;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 
 import net.xeoh.plugins.base.PluginManager;
@@ -123,8 +124,8 @@ public class ServerWindow extends JFrame {
         
         // Shutting down if no device is found at all
         if (this.openEyeTrackingDevice == null && this.openBrainTrackingDevice == null) {
-            this.logger.warning("Neither eye nor brain device found! Shutting down.");
-            
+            JOptionPane.showMessageDialog(null, "Please make sure you start the Tracking Sever before " +
+            		"running the diagnosis.", "No Tracking Server Found", JOptionPane.ERROR_MESSAGE);
             shutdown();
             return;
         }

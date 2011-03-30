@@ -21,12 +21,14 @@
  */
 package de.dfki.km.text20.diagnosis;
 
+import static net.jcores.CoreKeeper.$;
+
 import javax.swing.UIManager;
 
+import net.jcores.interfaces.functions.F0;
 import de.dfki.km.text20.diagnosis.gui.ServerBrowserWindow;
 import de.dfki.km.text20.diagnosis.model.ApplicationData;
 import de.dfki.km.text20.diagnosis.model.ServerInfo;
-import de.dfki.km.text20.diagnosis.util.CommonFunctions;
 
 /**
  * @author rb, ABu
@@ -47,25 +49,15 @@ public class ServerBrowser {
             //
         }
 
-        // Dirty hack to do everything in the swing edt
-        CommonFunctions.invokeAndWaitAndShutup(new Runnable() {
-
+        // Perform the app-start in the edt 
+        $.edtnow(new F0(){
             @SuppressWarnings("unused")
             @Override
-            public void run() {
+            public void f() {
                 final ApplicationData applicationData = new ApplicationData();
                 final ServerInfo serverInfo = new ServerInfo("init");
-//                applicationData.setTray(new ServerDiagnosisSystemTray(applicationData));
-//                final ServerInfo serverInfo = new ServerInfo("discover://youngest");
-//                serverInfo.setMainWindow(
-                  new ServerBrowserWindow(applicationData, serverInfo);
-
-//                applicationData.getServerInfos().add(serverInfo);
-                
-                
+                new ServerBrowserWindow(applicationData, serverInfo);
             }
         });
-
-//        applicationData.getServerInfos().add(serverInfo);
     }
 }

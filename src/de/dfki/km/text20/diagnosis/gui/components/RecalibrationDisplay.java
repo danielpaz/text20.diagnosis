@@ -21,6 +21,8 @@
  */
 package de.dfki.km.text20.diagnosis.gui.components;
 
+import static net.jcores.CoreKeeper.$;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -41,13 +43,13 @@ import java.util.concurrent.atomic.AtomicReference;
 import javax.swing.JFrame;
 import javax.swing.border.EmptyBorder;
 
+import net.jcores.interfaces.functions.F0;
 import net.xeoh.plugins.base.PluginManager;
 import net.xeoh.plugins.base.impl.PluginManagerFactory;
 import net.xeoh.plugins.base.options.getplugin.OptionCapabilities;
 import de.dfki.km.text20.diagnosis.gui.RecalibrationWindow;
 import de.dfki.km.text20.diagnosis.model.ApplicationData;
 import de.dfki.km.text20.diagnosis.model.ServerInfo;
-import de.dfki.km.text20.diagnosis.util.CommonFunctions;
 import de.dfki.km.text20.services.trackingdevices.common.TrackingEvent;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingDevice;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingDeviceProvider;
@@ -255,11 +257,9 @@ public class RecalibrationDisplay extends AbstractTrackingEventComponent {
         final GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         final AtomicReference<RecalibrationDisplay> rc = new AtomicReference<RecalibrationDisplay>();
 
-        // Initialize swing
-        CommonFunctions.invokeAndWaitAndShutup(new Runnable() {
+        $.edtnow(new F0(){
             @Override
-            public void run() {
-
+            public void f() {
                 final JFrame frame = new JFrame();
                 final RecalibrationDisplay rd = new RecalibrationDisplay(null);
 

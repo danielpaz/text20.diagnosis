@@ -21,17 +21,19 @@
  */
 package de.dfki.km.text20.diagnosis;
 
+import static net.jcores.CoreKeeper.$;
+
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 
+import net.jcores.interfaces.functions.F0;
 import de.dfki.km.text20.diagnosis.gui.ServerWindow;
 import de.dfki.km.text20.diagnosis.model.ApplicationData;
 import de.dfki.km.text20.diagnosis.model.ServerInfo;
-import de.dfki.km.text20.diagnosis.util.CommonFunctions;
 
 /**
  * @author rb, ABu
- *
+ * 
  */
 public class ServerDiagnosis {
 
@@ -49,20 +51,16 @@ public class ServerDiagnosis {
         }
 
         // Dirty hack to do everything in the swing edt
-        CommonFunctions.invokeAndWaitAndShutup(new Runnable() {
-
+        $.edtnow(new F0() {
             @Override
-            public void run() {
+            public void f() {
                 final ApplicationData applicationData = new ApplicationData();
                 final ServerInfo serverInfo = new ServerInfo("discover://nearest");
-
-                // Bring up tray
-                //applicationData.setTray(new ServerDiagnosisSystemTray(applicationData));
 
                 // Register main window
                 serverInfo.setMainWindow(new ServerWindow(applicationData, serverInfo));
 
-                // Add the server info 
+                // Add the server info
                 applicationData.getServerInfos().add(serverInfo);
 
                 // Bring up GUI
@@ -71,5 +69,4 @@ public class ServerDiagnosis {
             }
         });
     }
-
 }
