@@ -1,8 +1,5 @@
 package de.dfki.km.text20.diagnosis.util;
 
-import java.lang.reflect.InvocationTargetException;
-
-import javax.swing.SwingUtilities;
 
 /**
  * @author rb
@@ -110,83 +107,4 @@ public class CommonFunctions {
                                  final int upperLimit) {
       return Math.min(Math.max(val, lowerLimit), upperLimit);
   }
-
-
-    /**
-     * A more convenient way to call SwingUtilities
-     * 
-     * @param r
-     * @return .
-     */
-    public static boolean invokeAndWaitAndShutup(Runnable r) {
-        try {
-            SwingUtilities.invokeAndWait(r);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-            return false;
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * TODO: DOCUMENT ME!!!!!  
-     * 
-     * calculates an average value of values from  a eyeTrackingRingBuffer,
-     * starting from the i-th element with clusterSize elements  
-     * 
-     * @param i  start index 
-     * @param clusterSize number of values 
-     * @param eyeTrackingRingBuffer the ringbuffer
-     * @param select 0: left eye;  1: right eye
-     * @return average value
-     */
-    //    private float getAverageValue(final int i, final int select) {
-    //
-    //        float sum = 0;
-    //        float ps = 0;
-    //        int ignored = 0;
-    //        for (int j = 0; j < this.clusterSize; j++) {
-    //
-    //            final int readPosition = (this.ringBuffer.getWritePointer() + i * this.clusterSize + j -1) % this.ringBuffer.size();
-    //            //            System.out.println(i+j + ". " + readPosition);
-    //            try {
-    //                switch (select) {
-    //
-    //                case 0: {
-    //                    ps = this.ringBuffer.get(readPosition).getPupilSizeLeft() / 10;
-    //                }
-    //                    break;
-    //
-    //                case 1: {
-    //                    ps = this.ringBuffer.get(j + i).getPupilSizeRight() / 10;
-    //                }
-    //                    break;
-    //
-    //                default:
-    //                    break;
-    //                }
-    //
-    //                //                ps = (float) (Math.random() * 0.35); 
-    //                if (ps > 0) {
-    //                    sum += ps;
-    //                } else {
-    //                    ignored++;
-    //                }
-    //            } catch (final Exception e) {
-    //                ignored++;
-    //            }
-    //        }
-    //
-    //        float avg = 0;
-    //        try {
-    //            avg = sum / (this.clusterSize - ignored);
-    //        } catch (final Exception e) {
-    //            return 0;
-    //        }
-    //        return avg;
-    //    }
 }
