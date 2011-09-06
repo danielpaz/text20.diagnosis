@@ -62,6 +62,7 @@ import de.dfki.km.text20.diagnosis.util.EyeTrackingEventEvaluator;
 import de.dfki.km.text20.diagnosis.util.EyeTrackingEventEvaluator.DataPartition;
 import de.dfki.km.text20.diagnosis.util.EyeTrackingEventEvaluator.DiagState;
 import de.dfki.km.text20.diagnosis.util.EyeTrackingEventRingbuffer;
+import de.dfki.km.text20.services.trackingdevices.brain.BrainTrackingDeviceInfo;
 import de.dfki.km.text20.services.trackingdevices.brain.BrainTrackingEvent;
 import de.dfki.km.text20.services.trackingdevices.common.TrackingEvent;
 import de.dfki.km.text20.services.trackingdevices.common.TrackingListener;
@@ -332,8 +333,10 @@ public class ServerPanel extends ServerPanelTemplate implements TrackingListener
      * For every channel found a checkbox is constructed.
      */
     private void setBrainTrackingChannelGUIComponents(final BrainTrackingEvent event) {
+        BrainTrackingDeviceInfo info = this.serverInfo.getBrainTrackingDevice().getDeviceInfo();
+        
         // Getting the number of channels found in the event
-        final int channelNumber = event.getChannels().size();
+        final int channelNumber = info.getChannelNames().size();
 
         // Constraints needed for the correct gui layout
         final CellConstraints cc = new CellConstraints();
@@ -348,7 +351,7 @@ public class ServerPanel extends ServerPanelTemplate implements TrackingListener
 
         // Construction of the checkboxes
         int columnIndex = 1;
-        for (String channelName : event.getChannels()) {
+        for (String channelName : info.getChannelNames()) {
             final JCheckBox checkBox = new JCheckBox(channelName, true);
             checkBox.addItemListener(this.checkBoxProcessor);
 

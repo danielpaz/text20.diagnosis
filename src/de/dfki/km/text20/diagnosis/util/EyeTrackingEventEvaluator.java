@@ -61,6 +61,7 @@ public class EyeTrackingEventEvaluator {
 
     /** limits for valid pupil size values; need not to distinguish between left and right */
     public static float MAX_PUPILSIZE = 5.0f;
+    
     /** limits for valid pupil size values; need not to distinguish between left and right */
     public static float MIN_PUPILSIZE = 2.0f;
 

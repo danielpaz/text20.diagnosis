@@ -1,5 +1,7 @@
 package de.dfki.km.text20.diagnosis.gui.components;
 
+import static net.jcores.jre.CoreKeeper.$;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -9,6 +11,7 @@ import java.util.HashMap;
 
 import de.dfki.km.text20.diagnosis.model.ApplicationData;
 import de.dfki.km.text20.diagnosis.model.ServerInfo;
+import de.dfki.km.text20.services.trackingdevices.brain.BrainTrackingDeviceInfo;
 import de.dfki.km.text20.services.trackingdevices.brain.BrainTrackingEvent;
 
 /**
@@ -81,6 +84,7 @@ public class BrainDataChart extends AbstractTrackingEventComponent {
      */
     @Override
     public void render(final Graphics g) {
+        BrainTrackingDeviceInfo info = this.serverInfo.getBrainTrackingDevice().getDeviceInfo();
 
         Graphics2D g2d = (Graphics2D) g.create();
 
@@ -185,8 +189,9 @@ public class BrainDataChart extends AbstractTrackingEventComponent {
                     }
 
                     if ((previousBufferPosition != currentBufferPosition) && (previousBrainTrackingEvent != null)) {
-                        final double previousTrackingValue = previousBrainTrackingEvent.getValue(channelName);
-                        final double currentTrackingValue = currentBrainTrackingEvent.getValue(channelName);
+                        int i = $(info.getChannelNames()).index(channelName).get(0, 0).intValue();
+                        final double previousTrackingValue = previousBrainTrackingEvent.getReadings()[i];
+                        final double currentTrackingValue = currentBrainTrackingEvent.getReadings()[i];
 
                         // Moving cursor to the previous position and drawing a line to the current position
                         // Y Position is from the baseLineYPosition up or down by the among of the tracking value scaled up to fit the designated area

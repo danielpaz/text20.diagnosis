@@ -43,10 +43,10 @@ import javax.swing.SwingUtilities;
 import de.dfki.km.text20.diagnosis.gui.components.RecalibrationDisplay;
 import de.dfki.km.text20.diagnosis.model.ApplicationData;
 import de.dfki.km.text20.diagnosis.model.ServerInfo;
+import de.dfki.km.text20.services.evaluators.gaze.util.filter.displacement.ReferencePoint;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
 import de.dfki.km.text20.trackingserver.eyes.remote.TrackingCommand;
 import de.dfki.km.text20.trackingserver.eyes.remote.options.sendcommand.OptionRecalibrationPattern;
-import de.dfki.km.text20.util.filter.displacement.ReferencePoint;
 
 /**
  * @author rb
