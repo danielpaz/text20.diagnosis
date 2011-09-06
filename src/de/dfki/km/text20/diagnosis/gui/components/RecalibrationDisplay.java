@@ -21,7 +21,7 @@
  */
 package de.dfki.km.text20.diagnosis.gui.components;
 
-import static net.jcores.CoreKeeper.$;
+import static net.jcores.jre.CoreKeeper.$;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -43,24 +43,24 @@ import java.util.concurrent.atomic.AtomicReference;
 import javax.swing.JFrame;
 import javax.swing.border.EmptyBorder;
 
-import net.jcores.interfaces.functions.F0;
+import net.jcores.jre.interfaces.functions.F0;
 import net.xeoh.plugins.base.PluginManager;
 import net.xeoh.plugins.base.impl.PluginManagerFactory;
 import net.xeoh.plugins.base.options.getplugin.OptionCapabilities;
 import de.dfki.km.text20.diagnosis.gui.RecalibrationWindow;
 import de.dfki.km.text20.diagnosis.model.ApplicationData;
 import de.dfki.km.text20.diagnosis.model.ServerInfo;
+import de.dfki.km.text20.services.evaluators.gaze.util.filter.AbstractFilter;
+import de.dfki.km.text20.services.evaluators.gaze.util.filter.ChainedFilter;
+import de.dfki.km.text20.services.evaluators.gaze.util.filter.centralpoint.SmoothingFilter;
+import de.dfki.km.text20.services.evaluators.gaze.util.filter.displacement.ReferenceBasedDisplacementFilter;
+import de.dfki.km.text20.services.evaluators.gaze.util.filter.displacement.ReferencePoint;
 import de.dfki.km.text20.services.trackingdevices.common.TrackingEvent;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingDevice;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingDeviceProvider;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEventValidity;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingListener;
-import de.dfki.km.text20.util.filter.AbstractFilter;
-import de.dfki.km.text20.util.filter.ChainedFilter;
-import de.dfki.km.text20.util.filter.centralpoint.SmoothingFilter;
-import de.dfki.km.text20.util.filter.displacement.ReferenceBasedDisplacementFilter;
-import de.dfki.km.text20.util.filter.displacement.ReferencePoint;
 
 /**
  * Warning. This component should only be used fullscreen.
@@ -257,7 +257,7 @@ public class RecalibrationDisplay extends AbstractTrackingEventComponent {
         final GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         final AtomicReference<RecalibrationDisplay> rc = new AtomicReference<RecalibrationDisplay>();
 
-        $.edtnow(new F0(){
+        $.ui.edtnow(new F0(){
             @Override
             public void f() {
                 final JFrame frame = new JFrame();

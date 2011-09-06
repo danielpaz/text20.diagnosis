@@ -21,12 +21,12 @@
  */
 package de.dfki.km.text20.diagnosis;
 
-import static net.jcores.CoreKeeper.$;
+import static net.jcores.jre.CoreKeeper.$;
 
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 
-import net.jcores.interfaces.functions.F0;
+import net.jcores.jre.interfaces.functions.F0;
 import de.dfki.km.text20.diagnosis.gui.ServerWindow;
 import de.dfki.km.text20.diagnosis.model.ApplicationData;
 import de.dfki.km.text20.diagnosis.model.ServerInfo;
@@ -51,7 +51,7 @@ public class ServerDiagnosis {
         }
 
         // Dirty hack to do everything in the swing edt
-        $.edtnow(new F0() {
+        $.ui.edtnow(new F0() {
             @Override
             public void f() {
                 final ApplicationData applicationData = new ApplicationData();
